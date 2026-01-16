@@ -208,13 +208,11 @@ function updateLeaderboard() {
         rates = getRatesForDomain(domain, turn);
     }
     
-    // Convert to array and convert non-hallucination rates to hallucination rates (100 - rate)
+    // Convert to array and sort
     const entries = Object.entries(rates).map(([model, rate]) => ({
         model,
-        rate: 100 - rate, // Convert non-hallucination rate to hallucination rate
-        domainBreakdown: domain === 'all' ? (domainBreakdown[model] ? Object.fromEntries(
-            Object.entries(domainBreakdown[model]).map(([d, r]) => [d, 100 - r])
-        ) : null) : null,
+        rate,
+        domainBreakdown: domain === 'all' ? domainBreakdown[model] : null,
         turnProgression: domain !== 'all' ? getTurnProgression(domain, model) : null
     }));
     
@@ -241,15 +239,14 @@ function updateStats(entries) {
     document.getElementById('model-count').textContent = entries.length;
     
     if (entries.length > 0) {
-        const best = entries[0];
+        const best = entries[0]; // Rank 1 model (best/lowest rate)
         document.getElementById('best-model').textContent = best.model;
         
-        // Rates are already converted to hallucination rates in updateLeaderboard
-        const avg = entries.reduce((sum, e) => sum + e.rate, 0) / entries.length;
-        document.getElementById('avg-rate').textContent = avg.toFixed(1) + '%';
+        // Show the rank-1 model's hallucination rate from the table
+        document.getElementById('hallucination-rate').textContent = best.rate.toFixed(1) + '%';
     } else {
         document.getElementById('best-model').textContent = '-';
-        document.getElementById('avg-rate').textContent = '-';
+        document.getElementById('hallucination-rate').textContent = '-';
     }
 }
 

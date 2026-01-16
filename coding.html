@@ -14,7 +14,7 @@
     <div class="container">
         <header>
             <h1>HalluHard</h1>
-            <p class="subtitle">Coding Domain - Turn-wise Statistics</p>
+            <p class="subtitle">Coding Domain</p>
             <p class="description">
                 Hallucination rates across conversation turns for coding tasks.
             </p>
@@ -37,6 +37,14 @@
             </div>
         </div>
 
+        <div class="coding-language-container">
+            <h2>Language-Specific Hallucination Rates</h2>
+            <p class="section-description">Hallucination rates broken down by programming language (Elixir, Python, R, Scala).</p>
+            <div id="coding-language-chart-container">
+                <svg id="coding-language-chart" width="100%" height="500"></svg>
+            </div>
+        </div>
+
         <footer>
             <p>Last updated: <span id="last-updated">-</span></p>
             <p class="footer-links">
@@ -48,9 +56,12 @@
     </div>
 
     <script src="data/leaderboard-data.js"></script>
+    <script src="data/coding-language-rates.js"></script>
     <script src="turn-stats.js"></script>
+    <script src="coding-language-rates.js"></script>
     <script>
         initTurnStats('coding');
+        initCodingLanguageRates();
     </script>
 </body>
 </html>
