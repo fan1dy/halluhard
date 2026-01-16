@@ -4,6 +4,24 @@ let leaderboardData = {};
 // Initialize the leaderboard
 async function init() {
     try {
+        // Prevent scroll restoration on navigation
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        
+        // Prevent navigation when clicking active nav link and scroll to top on navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.classList.contains('active')) {
+                    e.preventDefault();
+                    return false;
+                } else {
+                    // Scroll to top smoothly when navigating to a different page
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        });
+        
         // Load data from the data file
         if (typeof LEADERBOARD_DATA !== 'undefined') {
             leaderboardData = LEADERBOARD_DATA;
@@ -190,11 +208,13 @@ function updateLeaderboard() {
         rates = getRatesForDomain(domain, turn);
     }
     
-    // Convert to array and sort
+    // Convert to array and convert non-hallucination rates to hallucination rates (100 - rate)
     const entries = Object.entries(rates).map(([model, rate]) => ({
         model,
-        rate,
-        domainBreakdown: domain === 'all' ? domainBreakdown[model] : null,
+        rate: 100 - rate, // Convert non-hallucination rate to hallucination rate
+        domainBreakdown: domain === 'all' ? (domainBreakdown[model] ? Object.fromEntries(
+            Object.entries(domainBreakdown[model]).map(([d, r]) => [d, 100 - r])
+        ) : null) : null,
         turnProgression: domain !== 'all' ? getTurnProgression(domain, model) : null
     }));
     
@@ -224,6 +244,7 @@ function updateStats(entries) {
         const best = entries[0];
         document.getElementById('best-model').textContent = best.model;
         
+        // Rates are already converted to hallucination rates in updateLeaderboard
         const avg = entries.reduce((sum, e) => sum + e.rate, 0) / entries.length;
         document.getElementById('avg-rate').textContent = avg.toFixed(1) + '%';
     } else {

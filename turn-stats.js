@@ -1,6 +1,24 @@
 // Turn-wise statistics display with line plots
 function initTurnStats(domain) {
     try {
+        // Prevent scroll restoration on navigation
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        
+        // Prevent navigation when clicking active nav link and scroll to top on navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.classList.contains('active')) {
+                    e.preventDefault();
+                    return false;
+                } else {
+                    // Scroll to top smoothly when navigating to a different page
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        });
+        
         if (typeof LEADERBOARD_DATA === 'undefined') {
             document.getElementById('line-chart-container').innerHTML = 
                 '<div class="loading">Error loading data. Please check the data files.</div>';
