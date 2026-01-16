@@ -1,0 +1,469 @@
+// Leaderboard data structure
+let leaderboardData = {};
+
+// Initialize the leaderboard
+async function init() {
+    try {
+        // Load data from the data file
+        if (typeof LEADERBOARD_DATA !== 'undefined') {
+            leaderboardData = LEADERBOARD_DATA;
+        } else {
+            // Fallback: try to load from JSON files
+            await loadDataFromFiles();
+        }
+        
+        // Set up event listeners
+        document.getElementById('view-select').addEventListener('change', toggleView);
+        document.getElementById('domain-select').addEventListener('change', updateLeaderboard);
+        document.getElementById('turn-select').addEventListener('change', updateLeaderboard);
+        document.getElementById('sort-select').addEventListener('change', updateLeaderboard);
+        
+        // Initial render
+        updateLeaderboard();
+        
+        // Update last updated date
+        document.getElementById('last-updated').textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    } catch (error) {
+        console.error('Error initializing leaderboard:', error);
+        document.getElementById('leaderboard-body').innerHTML = 
+            '<tr><td colspan="5" class="loading">Error loading data. Please check the data files.</td></tr>';
+    }
+}
+
+// Toggle between table and chart view
+function toggleView() {
+    const view = document.getElementById('view-select').value;
+    const tableView = document.getElementById('table-view');
+    const chartView = document.getElementById('chart-view');
+    
+    if (view === 'table') {
+        tableView.style.display = 'block';
+        chartView.style.display = 'none';
+        updateLeaderboard(); // Re-render table
+    } else {
+        tableView.style.display = 'none';
+        chartView.style.display = 'block';
+        updateLeaderboard(); // This will call renderBarChart
+    }
+}
+
+// Load data from individual JSON files (fallback)
+async function loadDataFromFiles() {
+    const domains = ['legal_cases', 'research_questions', 'medical_guidelines', 'coding'];
+    
+    for (const domain of domains) {
+        try {
+            const response = await fetch(`data/${domain}_turn_wise_rates.json`);
+            if (response.ok) {
+                const data = await response.json();
+                leaderboardData[domain] = data;
+            }
+        } catch (error) {
+            console.warn(`Could not load ${domain} data:`, error);
+        }
+    }
+}
+
+// Calculate average across all domains with domain breakdown
+// Uses overall rates from reports when available, falls back to averaging turn rates
+function calculateAverageRates(selectedTurn) {
+    const models = new Set();
+    const domainData = {};
+    
+    // Collect all models and their rates
+    Object.keys(leaderboardData).forEach(domain => {
+        if (domain === 'all') return;
+        domainData[domain] = leaderboardData[domain];
+        Object.keys(leaderboardData[domain]).forEach(model => models.add(model));
+    });
+    
+    const averages = {};
+    const domainBreakdown = {};
+    
+    models.forEach(model => {
+        const rates = [];
+        const domainRates = {};
+        
+        Object.keys(domainData).forEach(domain => {
+            if (domainData[domain][model]) {
+                let rate;
+                
+                // First, try to use overall rate from reports if available
+                // Skip if rate is 0.0% and we have turn data (likely a report issue)
+                if (typeof OVERALL_RATES !== 'undefined' && 
+                    OVERALL_RATES[domain] && 
+                    OVERALL_RATES[domain][model] !== undefined &&
+                    !(OVERALL_RATES[domain][model] === 0.0 && domainData[domain][model] && Object.keys(domainData[domain][model]).length > 0)) {
+                    // Use overall rate from report (for 'avg' turn selection)
+                    if (selectedTurn === 'avg') {
+                        rate = OVERALL_RATES[domain][model];
+                    } else {
+                        // For specific turns, still use turn-wise data
+                        rate = domainData[domain][model][selectedTurn];
+                    }
+                } else {
+                    // Fallback: calculate from turn rates
+                    if (selectedTurn === 'avg') {
+                        // Calculate average across all available turns
+                        const turnRates = Object.values(domainData[domain][model]).map(Number);
+                        if (turnRates.length > 0) {
+                            rate = turnRates.reduce((a, b) => a + b, 0) / turnRates.length;
+                        }
+                    } else {
+                        rate = domainData[domain][model][selectedTurn];
+                    }
+                }
+                
+                if (rate !== undefined && rate !== null) {
+                    rates.push(Number(rate));
+                    domainRates[domain] = Number(rate);
+                }
+            }
+        });
+        
+        if (rates.length > 0) {
+            averages[model] = rates.reduce((a, b) => a + b, 0) / rates.length;
+            domainBreakdown[model] = domainRates;
+        }
+    });
+    
+    return { averages, domainBreakdown };
+}
+
+// Get rates for a specific domain and turn
+// Uses overall rates from reports when available for 'avg' turn
+function getRatesForDomain(domain, turn) {
+    if (!leaderboardData[domain]) return {};
+    
+    const rates = {};
+    Object.keys(leaderboardData[domain]).forEach(model => {
+        if (turn === 'avg') {
+            // Try to use overall rate from report first
+            // Skip if rate is 0.0% and we have turn data (likely a report issue)
+            if (typeof OVERALL_RATES !== 'undefined' && 
+                OVERALL_RATES[domain] && 
+                OVERALL_RATES[domain][model] !== undefined &&
+                !(OVERALL_RATES[domain][model] === 0.0 && leaderboardData[domain][model] && Object.keys(leaderboardData[domain][model]).length > 0)) {
+                rates[model] = OVERALL_RATES[domain][model];
+            } else {
+                // Fallback: average turn rates
+                const turnRates = Object.values(leaderboardData[domain][model]).map(Number);
+                if (turnRates.length > 0) {
+                    rates[model] = turnRates.reduce((a, b) => a + b, 0) / turnRates.length;
+                }
+            }
+        } else {
+            const rate = leaderboardData[domain][model][turn];
+            if (rate !== undefined) {
+                rates[model] = Number(rate);
+            }
+        }
+    });
+    
+    return rates;
+}
+
+// Get turn progression data for a model
+function getTurnProgression(domain, model) {
+    if (!leaderboardData[domain] || !leaderboardData[domain][model]) return null;
+    return leaderboardData[domain][model];
+}
+
+// Update the leaderboard display
+function updateLeaderboard() {
+    const domain = document.getElementById('domain-select').value;
+    const turn = document.getElementById('turn-select').value;
+    const sortBy = document.getElementById('sort-select').value;
+    const view = document.getElementById('view-select').value;
+    
+    let rates, domainBreakdown = {};
+    
+    if (domain === 'all') {
+        const result = calculateAverageRates(turn);
+        rates = result.averages;
+        domainBreakdown = result.domainBreakdown;
+    } else {
+        rates = getRatesForDomain(domain, turn);
+    }
+    
+    // Convert to array and sort
+    const entries = Object.entries(rates).map(([model, rate]) => ({
+        model,
+        rate,
+        domainBreakdown: domain === 'all' ? domainBreakdown[model] : null,
+        turnProgression: domain !== 'all' ? getTurnProgression(domain, model) : null
+    }));
+    
+    // Sort
+    if (sortBy === 'rate') {
+        entries.sort((a, b) => a.rate - b.rate);
+    } else {
+        entries.sort((a, b) => a.model.localeCompare(b.model));
+    }
+    
+    // Update stats
+    updateStats(entries);
+    
+    // Render based on view
+    if (view === 'table') {
+        renderLeaderboard(entries, domain, turn);
+    } else {
+        renderBarChart(entries);
+    }
+}
+
+// Update statistics bar
+function updateStats(entries) {
+    document.getElementById('model-count').textContent = entries.length;
+    
+    if (entries.length > 0) {
+        const best = entries[0];
+        document.getElementById('best-model').textContent = best.model;
+        
+        const avg = entries.reduce((sum, e) => sum + e.rate, 0) / entries.length;
+        document.getElementById('avg-rate').textContent = avg.toFixed(1) + '%';
+    } else {
+        document.getElementById('best-model').textContent = '-';
+        document.getElementById('avg-rate').textContent = '-';
+    }
+}
+
+// Render the leaderboard table
+function renderLeaderboard(entries, domain, turn) {
+    const tbody = document.getElementById('leaderboard-body');
+    const domainHeader = document.getElementById('domain-breakdown-header');
+    
+    // Show/hide domain breakdown column
+    if (domain === 'all') {
+        domainHeader.style.display = '';
+    } else {
+        domainHeader.style.display = 'none';
+    }
+    
+    if (entries.length === 0) {
+        const colspan = domain === 'all' ? 5 : 4;
+        tbody.innerHTML = `<tr><td colspan="${colspan}" class="loading">No data available for this selection.</td></tr>`;
+        return;
+    }
+    
+    const maxRate = Math.max(...entries.map(e => e.rate));
+    
+    tbody.innerHTML = entries.map((entry, index) => {
+        const rank = index + 1;
+        const barWidth = (entry.rate / maxRate) * 100;
+        
+        // Domain breakdown HTML
+        let domainBreakdownHtml = '';
+        if (domain === 'all' && entry.domainBreakdown) {
+            const domains = ['legal_cases', 'research_questions', 'medical_guidelines', 'coding'];
+            const domainLabels = ['Legal', 'Research', 'Medical', 'Coding'];
+            domainBreakdownHtml = `
+                <div class="domain-breakdown">
+                    ${domains.map((dom, i) => {
+                        const rate = entry.domainBreakdown[dom];
+                        if (rate !== undefined) {
+                            return `<div class="domain-rate" title="${domainLabels[i]}: ${rate.toFixed(1)}%">${rate.toFixed(1)}%</div>`;
+                        }
+                        return `<div class="domain-rate" style="opacity: 0.3;">-</div>`;
+                    }).join('')}
+                </div>
+            `;
+        }
+        
+        return `
+            <tr>
+                <td class="rank-col">${rank}</td>
+                <td class="model-col">${formatModelName(entry.model)}</td>
+                <td class="rate-col">
+                    <span class="rate-value">${entry.rate.toFixed(1)}%</span>
+                    <div class="rate-bar">
+                        <div class="rate-bar-fill" style="width: ${barWidth}%"></div>
+                    </div>
+                </td>
+                ${domain === 'all' ? `<td class="domain-breakdown-col">${domainBreakdownHtml}</td>` : ''}
+            </tr>
+        `;
+    }).join('');
+}
+
+// Get badge based on rate
+function getBadge(rate) {
+    if (rate < 20) {
+        return { class: 'excellent', label: 'Excellent' };
+    } else if (rate < 40) {
+        return { class: 'good', label: 'Good' };
+    } else if (rate < 60) {
+        return { class: 'fair', label: 'Fair' };
+    } else {
+        return { class: 'poor', label: 'Poor' };
+    }
+}
+
+// Format model name for display
+function formatModelName(name) {
+    // Convert kebab-case to Title Case
+    return name
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+}
+
+// Render bar chart
+function renderBarChart(entries = null) {
+    if (!entries) {
+        const domain = document.getElementById('domain-select').value;
+        const turn = document.getElementById('turn-select').value;
+        let rates, domainBreakdown = {};
+        
+        if (domain === 'all') {
+            const result = calculateAverageRates(turn);
+            rates = result.averages;
+            domainBreakdown = result.domainBreakdown;
+        } else {
+            rates = getRatesForDomain(domain, turn);
+        }
+        
+        entries = Object.entries(rates).map(([model, rate]) => ({
+            model,
+            rate,
+            domainBreakdown: domain === 'all' ? domainBreakdown[model] : null
+        }));
+        
+        entries.sort((a, b) => a.rate - b.rate);
+    }
+    
+    const svg = document.getElementById('bar-chart');
+    svg.innerHTML = ''; // Clear previous chart
+    
+    if (entries.length === 0) {
+        svg.innerHTML = '<text x="50%" y="50%" text-anchor="middle" class="chart-title">No data available</text>';
+        return;
+    }
+    
+    const margin = { top: 40, right: 40, bottom: 100, left: 120 };
+    const width = svg.clientWidth - margin.left - margin.right;
+    const height = 600 - margin.top - margin.bottom;
+    
+    const maxRate = Math.max(...entries.map(e => e.rate));
+    const barHeight = Math.max(20, (height / entries.length) * 0.8);
+    const spacing = height / entries.length;
+    
+    // Create group for chart content
+    const chartGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    chartGroup.setAttribute('transform', `translate(${margin.left}, ${margin.top})`);
+    
+    // Draw bars
+    entries.forEach((entry, index) => {
+        const y = index * spacing;
+        const barWidth = (entry.rate / maxRate) * width;
+        
+        // Determine bar color based on rate (Morandi palette)
+        let barColor;
+        if (entry.rate < 20) {
+            barColor = '#9a9b8a'; // muted green-gray
+        } else if (entry.rate < 40) {
+            barColor = '#8b9a9f'; // muted blue-gray
+        } else if (entry.rate < 60) {
+            barColor = '#c4a88a'; // muted beige
+        } else {
+            barColor = '#b89a8a'; // muted terracotta
+        }
+        
+        // Bar group
+        const barGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        barGroup.setAttribute('class', 'bar-group');
+        barGroup.setAttribute('transform', `translate(0, ${y})`);
+        
+        // Bar rectangle
+        const bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        bar.setAttribute('class', 'bar');
+        bar.setAttribute('x', 0);
+        bar.setAttribute('y', 0);
+        bar.setAttribute('width', barWidth);
+        bar.setAttribute('height', barHeight);
+        bar.setAttribute('fill', barColor);
+        bar.setAttribute('rx', 4);
+        
+        // Model name label
+        const nameLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        nameLabel.setAttribute('x', -10);
+        nameLabel.setAttribute('y', barHeight / 2);
+        nameLabel.setAttribute('text-anchor', 'end');
+        nameLabel.setAttribute('dominant-baseline', 'middle');
+        nameLabel.setAttribute('class', 'chart-axis');
+        nameLabel.setAttribute('font-size', '12px');
+        nameLabel.textContent = formatModelName(entry.model);
+        
+        // Rate value label on bar
+        if (barWidth > 60) {
+            const rateLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            rateLabel.setAttribute('x', barWidth / 2);
+            rateLabel.setAttribute('y', barHeight / 2);
+            rateLabel.setAttribute('text-anchor', 'middle');
+            rateLabel.setAttribute('dominant-baseline', 'middle');
+            rateLabel.setAttribute('fill', 'white');
+            rateLabel.setAttribute('font-size', '11px');
+            rateLabel.setAttribute('font-weight', '600');
+            rateLabel.textContent = `${entry.rate.toFixed(1)}%`;
+            barGroup.appendChild(rateLabel);
+        } else {
+            // If bar is too narrow, put label outside
+            const rateLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            rateLabel.setAttribute('x', barWidth + 10);
+            rateLabel.setAttribute('y', barHeight / 2);
+            rateLabel.setAttribute('text-anchor', 'start');
+            rateLabel.setAttribute('dominant-baseline', 'middle');
+            rateLabel.setAttribute('class', 'chart-axis');
+            rateLabel.setAttribute('font-size', '11px');
+            rateLabel.setAttribute('font-weight', '600');
+            rateLabel.textContent = `${entry.rate.toFixed(1)}%`;
+            barGroup.appendChild(rateLabel);
+        }
+        
+        barGroup.appendChild(bar);
+        barGroup.appendChild(nameLabel);
+        chartGroup.appendChild(barGroup);
+    });
+    
+    // X-axis
+    const xAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    xAxis.setAttribute('x1', 0);
+    xAxis.setAttribute('y1', height);
+    xAxis.setAttribute('x2', width);
+    xAxis.setAttribute('y2', height);
+    xAxis.setAttribute('stroke', '#e2e8f0');
+    xAxis.setAttribute('stroke-width', 2);
+    chartGroup.appendChild(xAxis);
+    
+    // X-axis label
+    const xAxisLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    xAxisLabel.setAttribute('x', width / 2);
+    xAxisLabel.setAttribute('y', height + 40);
+    xAxisLabel.setAttribute('text-anchor', 'middle');
+    xAxisLabel.setAttribute('class', 'chart-axis');
+    xAxisLabel.setAttribute('font-size', '14px');
+    xAxisLabel.setAttribute('font-weight', '600');
+    xAxisLabel.textContent = 'Hallucination Rate (%)';
+    chartGroup.appendChild(xAxisLabel);
+    
+    // Title
+    const title = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    title.setAttribute('x', width / 2);
+    title.setAttribute('y', -20);
+    title.setAttribute('text-anchor', 'middle');
+    title.setAttribute('class', 'chart-title');
+    title.setAttribute('font-size', '18px');
+    title.setAttribute('font-weight', '700');
+    title.textContent = 'Hallucination Rate by Model';
+    chartGroup.appendChild(title);
+    
+    svg.appendChild(chartGroup);
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', init);
+

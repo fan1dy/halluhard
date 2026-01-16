@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coding Domain - Turn-wise Statistics | HalluHard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HalluHard</h1>
+            <p class="subtitle">Coding Domain - Turn-wise Statistics</p>
+            <p class="description">
+                Hallucination rates across conversation turns for coding tasks.
+            </p>
+            <div class="authors">
+                <p class="authors-label">Authors:</p>
+                <p class="authors-list">Dongyang Fan, Sebastien Delsad, Maksym Andriushchenko, Nicolas Flammarion</p>
+            </div>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link">Overview</a>
+                <a href="coding.html" class="nav-link active">Coding</a>
+                <a href="legal_cases.html" class="nav-link">Legal Cases</a>
+                <a href="medical_guidelines.html" class="nav-link">Medical Guidelines</a>
+                <a href="research_questions.html" class="nav-link">Research Questions</a>
+            </nav>
+        </header>
+
+        <div class="turn-stats-container">
+            <div id="line-chart-container">
+                <svg id="line-chart" width="100%" height="600"></svg>
+            </div>
+        </div>
+
+        <footer>
+            <p>Last updated: <span id="last-updated">-</span></p>
+            <p class="footer-links">
+                <a href="https://github.com/yourusername/halluhard" target="_blank">GitHub</a> |
+                <a href="#" target="_blank">Paper</a> |
+                <a href="#" target="_blank">Documentation</a>
+            </p>
+        </footer>
+    </div>
+
+    <script src="data/leaderboard-data.js"></script>
+    <script src="turn-stats.js"></script>
+    <script>
+        initTurnStats('coding');
+    </script>
+</body>
+</html>
+
