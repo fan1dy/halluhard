@@ -378,33 +378,38 @@ function formatModelName(name) {
     // Handle special cases for model naming
     let formatted = name;
     
-    // GPT models: uppercase GPT and keep version with dash
-    formatted = formatted.replace(/^gpt-/i, 'GPT-');
-    formatted = formatted.replace(/gpt-(\d)/gi, 'GPT-$1');
-    
     // Handle websearch -> Web Search
     formatted = formatted.replace(/websearch/gi, 'web-search');
     
     // Handle Claude version numbers: 4-5 -> 4.5
     formatted = formatted.replace(/(\d)-(\d)(?=-|$)/g, '$1.$2');
     
-    // Convert remaining kebab-case to Title Case with spaces
-    formatted = formatted
-        .split('-')
-        .map((word, index) => {
-            // Keep GPT uppercase
-            if (word.toUpperCase() === 'GPT') return 'GPT';
-            // Keep version numbers as-is (e.g., "5.2", "4.5")
-            if (/^\d/.test(word)) return word;
+    // Convert kebab-case to Title Case with spaces, but keep GPT-X format
+    const parts = formatted.split('-');
+    const result = [];
+    
+    for (let i = 0; i < parts.length; i++) {
+        const word = parts[i];
+        const nextWord = parts[i + 1];
+        
+        if (word.toLowerCase() === 'gpt') {
+            // GPT followed by a number should stay as GPT-X
+            if (nextWord && /^\d/.test(nextWord)) {
+                result.push('GPT-' + nextWord);
+                i++; // Skip the next part since we've included it
+            } else {
+                result.push('GPT');
+            }
+        } else if (/^\d/.test(word)) {
+            // Version numbers stay as-is
+            result.push(word);
+        } else {
             // Capitalize first letter of other words
-            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-        })
-        .join(' ');
+            result.push(word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+        }
+    }
     
-    // Fix "Web Search" spacing (in case it got split)
-    formatted = formatted.replace(/Web Search/gi, 'Web Search');
-    
-    return formatted;
+    return result.join(' ');
 }
 
 // Render bar chart
