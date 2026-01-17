@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -34,13 +34,6 @@
 
         <div class="controls">
             <div class="control-group">
-                <label for="view-select">View:</label>
-                <select id="view-select">
-                    <option value="table">Table</option>
-                    <option value="chart">Bar Chart</option>
-                </select>
-            </div>
-            <div class="control-group">
                 <label for="domain-select">Domain:</label>
                 <select id="domain-select">
                     <option value="all" selected>All Domains (Average)</option>
@@ -59,45 +52,28 @@
                     <option value="5">Turn 5</option>
                 </select>
             </div>
-            <div class="control-group">
-                <label for="sort-select">Sort by:</label>
-                <select id="sort-select">
-                    <option value="rate" selected>Hallucination Rate</option>
-                    <option value="name">Model Name</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="stats-bar">
-            <div class="stat">
-                <span class="stat-label">Models Evaluated</span>
-                <span class="stat-value" id="model-count">-</span>
-            </div>
-            <div class="stat">
-                <span class="stat-label">Best Model</span>
-                <span class="stat-value" id="best-model">-</span>
-            </div>
-            <div class="stat">
-                <span class="stat-label">Hallucination Rate</span>
-                <span class="stat-value" id="hallucination-rate">-</span>
-            </div>
         </div>
 
         <div class="leaderboard-container">
+            <div id="chart-view">
+                <div class="chart-container">
+                    <svg id="bar-chart" width="100%" height="600"></svg>
+                </div>
+            </div>
             <div id="table-view">
                 <table class="leaderboard" id="leaderboard">
                     <thead>
                         <tr>
-                            <th class="rank-col">Rank</th>
-                            <th class="model-col">Model</th>
-                            <th class="rate-col">Avg Hallucination Rate</th>
+                            <th class="rank-col sortable" data-sort="rank">Rank <span class="sort-icon">↕</span></th>
+                            <th class="model-col sortable" data-sort="name">Model <span class="sort-icon">↕</span></th>
+                            <th class="rate-col sortable active-sort" data-sort="rate">Hallucination Rate <span class="sort-icon">↑</span></th>
                             <th class="domain-breakdown-col" id="domain-breakdown-header" style="display: none;">
                                 <div>Domain Breakdown</div>
                                 <div class="domain-labels">
-                                    <span>Legal</span>
-                                    <span>Research</span>
-                                    <span>Medical</span>
-                                    <span>Coding</span>
+                                    <span class="domain-sortable" data-sort="legal_cases">Legal <span class="sort-icon">↕</span></span>
+                                    <span class="domain-sortable" data-sort="research_questions">Research <span class="sort-icon">↕</span></span>
+                                    <span class="domain-sortable" data-sort="medical_guidelines">Medical <span class="sort-icon">↕</span></span>
+                                    <span class="domain-sortable" data-sort="coding">Coding <span class="sort-icon">↕</span></span>
                                 </div>
                             </th>
                         </tr>
@@ -108,11 +84,6 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-            <div id="chart-view" style="display: none;">
-                <div class="chart-container">
-                    <svg id="bar-chart" width="100%" height="600"></svg>
-                </div>
             </div>
         </div>
 

@@ -59,7 +59,7 @@ function renderGroundingFailuresChart(modelStats) {
         refBar.setAttribute('y', height - refHeight);
         refBar.setAttribute('width', barWidth);
         refBar.setAttribute('height', refHeight);
-        refBar.setAttribute('fill', '#b89a8a'); // muted terracotta for reference failures
+        refBar.setAttribute('fill', '#7a9a8b'); // muted teal-green for reference failures
         refBar.setAttribute('rx', 4);
         refBar.setAttribute('class', 'grounding-bar');
         chartGroup.appendChild(refBar);
@@ -70,7 +70,7 @@ function renderGroundingFailuresChart(modelStats) {
         contentBar.setAttribute('y', height - contentHeight);
         contentBar.setAttribute('width', barWidth);
         contentBar.setAttribute('height', contentHeight);
-        contentBar.setAttribute('fill', '#c4a88a'); // muted beige for content failures
+        contentBar.setAttribute('fill', '#c4a88a'); // muted beige/tan for content failures
         contentBar.setAttribute('rx', 4);
         contentBar.setAttribute('class', 'grounding-bar');
         chartGroup.appendChild(contentBar);
@@ -78,11 +78,11 @@ function renderGroundingFailuresChart(modelStats) {
         // Model name label (on x-axis, rotated)
         const nameLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         nameLabel.setAttribute('x', x + barWidth + groupSpacing / 2);
-        nameLabel.setAttribute('y', height + 20);
-        nameLabel.setAttribute('text-anchor', 'middle');
+        nameLabel.setAttribute('y', height + 15);
+        nameLabel.setAttribute('text-anchor', 'end');
         nameLabel.setAttribute('class', 'chart-axis');
         nameLabel.setAttribute('font-size', '11px');
-        nameLabel.setAttribute('transform', `rotate(-45, ${x + barWidth + groupSpacing / 2}, ${height + 20})`);
+        nameLabel.setAttribute('transform', `rotate(-45, ${x + barWidth + groupSpacing / 2}, ${height + 15})`);
         nameLabel.textContent = formatModelName(stat.model);
         chartGroup.appendChild(nameLabel);
 
@@ -159,7 +159,7 @@ function renderGroundingFailuresChart(modelStats) {
     chartGroup.appendChild(title);
 
     // Legend
-    const legendY = height + 70;
+    const legendY = height + 100;
     const legendX = width / 2 - 100;
     
     // Reference legend
@@ -168,7 +168,7 @@ function renderGroundingFailuresChart(modelStats) {
     refLegendRect.setAttribute('y', legendY);
     refLegendRect.setAttribute('width', 20);
     refLegendRect.setAttribute('height', 15);
-    refLegendRect.setAttribute('fill', '#b89a8a');
+    refLegendRect.setAttribute('fill', '#7a9a8b');
     refLegendRect.setAttribute('rx', 2);
     chartGroup.appendChild(refLegendRect);
     
@@ -202,8 +202,31 @@ function renderGroundingFailuresChart(modelStats) {
 }
 
 function formatModelName(name) {
-    return name
+    // Handle special cases for model naming
+    let formatted = name;
+    
+    // GPT models: uppercase GPT and keep version with dash
+    formatted = formatted.replace(/^gpt-/i, 'GPT-');
+    formatted = formatted.replace(/gpt-(\d)/gi, 'GPT-$1');
+    
+    // Handle websearch -> Web Search
+    formatted = formatted.replace(/websearch/gi, 'web-search');
+    
+    // Handle Claude version numbers: 4-5 -> 4.5
+    formatted = formatted.replace(/(\d)-(\d)(?=-|$)/g, '$1.$2');
+    
+    // Convert remaining kebab-case to Title Case with spaces
+    formatted = formatted
         .split('-')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .map((word, index) => {
+            // Keep GPT uppercase
+            if (word.toUpperCase() === 'GPT') return 'GPT';
+            // Keep version numbers as-is (e.g., "5.2", "4.5")
+            if (/^\d/.test(word)) return word;
+            // Capitalize first letter of other words
+            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        })
         .join(' ');
+    
+    return formatted;
 }

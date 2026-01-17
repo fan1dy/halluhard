@@ -80,11 +80,11 @@ function renderCodingLanguageChart(modelStats, languages, languageLabels) {
         // Model name label (on x-axis, rotated)
         const nameLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         nameLabel.setAttribute('x', x + (barWidth * languages.length + groupSpacing * (languages.length - 1)) / 2);
-        nameLabel.setAttribute('y', height + 20);
-        nameLabel.setAttribute('text-anchor', 'middle');
+        nameLabel.setAttribute('y', height + 15);
+        nameLabel.setAttribute('text-anchor', 'end');
         nameLabel.setAttribute('class', 'chart-axis');
         nameLabel.setAttribute('font-size', '11px');
-        nameLabel.setAttribute('transform', `rotate(-45, ${x + (barWidth * languages.length + groupSpacing * (languages.length - 1)) / 2}, ${height + 20})`);
+        nameLabel.setAttribute('transform', `rotate(-45, ${x + (barWidth * languages.length + groupSpacing * (languages.length - 1)) / 2}, ${height + 15})`);
         nameLabel.textContent = formatModelName(stat.model);
         chartGroup.appendChild(nameLabel);
     });
@@ -161,7 +161,7 @@ function renderCodingLanguageChart(modelStats, languages, languageLabels) {
     chartGroup.appendChild(title);
 
     // Legend
-    const legendY = height + 70;
+    const legendY = height + 100;
     const legendX = width / 2 - 150;
     const legendSpacing = 80;
 
@@ -190,8 +190,31 @@ function renderCodingLanguageChart(modelStats, languages, languageLabels) {
 }
 
 function formatModelName(name) {
-    return name
+    // Handle special cases for model naming
+    let formatted = name;
+    
+    // GPT models: uppercase GPT and keep version with dash
+    formatted = formatted.replace(/^gpt-/i, 'GPT-');
+    formatted = formatted.replace(/gpt-(\d)/gi, 'GPT-$1');
+    
+    // Handle websearch -> Web Search
+    formatted = formatted.replace(/websearch/gi, 'web-search');
+    
+    // Handle Claude version numbers: 4-5 -> 4.5
+    formatted = formatted.replace(/(\d)-(\d)(?=-|$)/g, '$1.$2');
+    
+    // Convert remaining kebab-case to Title Case with spaces
+    formatted = formatted
         .split('-')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .map((word, index) => {
+            // Keep GPT uppercase
+            if (word.toUpperCase() === 'GPT') return 'GPT';
+            // Keep version numbers as-is (e.g., "5.2", "4.5")
+            if (/^\d/.test(word)) return word;
+            // Capitalize first letter of other words
+            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        })
         .join(' ');
+    
+    return formatted;
 }

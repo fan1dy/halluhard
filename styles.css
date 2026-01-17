@@ -29,13 +29,13 @@ html {
 }
 
 body {
-    font-family: 'Crimson Pro', 'Georgia', 'Times New Roman', serif;
-    font-size: 1.125rem;
+    font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 1rem;
     background: linear-gradient(135deg, #d4d1cc 0%, #c4c1bc 100%);
     min-height: 100vh;
     padding: 2rem 1rem;
     color: var(--text-primary);
-    line-height: 1.7;
+    line-height: 1.6;
     width: 100%;
     overflow-x: hidden;
 }
@@ -59,11 +59,11 @@ header {
 }
 
 header h1 {
-    font-size: 3rem;
-    font-weight: 400;
+    font-size: 2.75rem;
+    font-weight: 700;
     margin-bottom: 0.5rem;
-    letter-spacing: 0.02em;
-    font-family: 'Cormorant Garamond', serif;
+    letter-spacing: -0.01em;
+    font-family: 'Source Sans 3', sans-serif;
 }
 
 .subtitle {
@@ -100,9 +100,9 @@ header h1 {
 }
 
 .authors-list {
-    font-size: 1.125rem;
+    font-size: 1.05rem;
     opacity: 0.95;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Source Sans 3', sans-serif;
     font-weight: 500;
     line-height: 1.6;
 }
@@ -121,8 +121,8 @@ header h1 {
     padding: 0.5rem 1rem;
     border-radius: 6px;
     transition: all 0.2s;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.125rem;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1rem;
     font-weight: 500;
     opacity: 0.8;
 }
@@ -166,8 +166,8 @@ header h1 {
     padding: 0.75rem 1rem;
     border: 2px solid var(--border-color);
     border-radius: 8px;
-    font-size: 1.125rem;
-    font-family: 'Crimson Pro', serif;
+    font-size: 1rem;
+    font-family: 'Source Sans 3', sans-serif;
     background: white;
     color: var(--text-primary);
     cursor: pointer;
@@ -212,15 +212,23 @@ header h1 {
 
 .stat-value {
     display: block;
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 600;
     color: #7a7974;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Source Sans 3', sans-serif;
 }
 
 .leaderboard-container {
     padding: 2rem;
     overflow-x: auto;
+}
+
+#chart-view {
+    margin-bottom: 2rem;
+}
+
+#table-view {
+    margin-top: 1rem;
 }
 
 .leaderboard {
@@ -239,13 +247,33 @@ header h1 {
 .leaderboard th {
     padding: 0.75rem 1rem;
     text-align: left;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--text-primary);
-    font-size: 1rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.05em;
     border-bottom: 2px solid var(--border-color);
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Source Sans 3', sans-serif;
+}
+
+.leaderboard th.sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+}
+
+.leaderboard th.sortable:hover {
+    background: var(--bg-tertiary);
+}
+
+.leaderboard th.sortable .sort-icon {
+    margin-left: 0.5rem;
+    opacity: 0.4;
+    font-size: 0.75rem;
+}
+
+.leaderboard th.sortable.active-sort .sort-icon {
+    opacity: 1;
 }
 
 .leaderboard tbody tr {
@@ -267,7 +295,7 @@ header h1 {
 }
 
 .rank-col {
-    width: 80px;
+    width: 90px;
     text-align: center;
     font-weight: 700;
     color: var(--text-secondary);
@@ -276,20 +304,20 @@ header h1 {
 .model-col {
     font-weight: 500;
     color: var(--text-primary);
-    min-width: 200px;
-    font-family: 'Cormorant Garamond', serif;
+    min-width: 180px;
+    font-family: 'Source Sans 3', sans-serif;
 }
 
 .rate-col {
-    width: 180px;
+    width: 160px;
 }
 
 .rate-value {
-    font-size: 1.75rem;
-    font-weight: 500;
+    font-size: 1.5rem;
+    font-weight: 600;
     display: inline-block;
     margin-right: 0.5rem;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Source Sans 3', sans-serif;
     color: #6b6a67;
 }
 
@@ -335,6 +363,30 @@ header h1 {
     padding: 0.25rem;
     background: var(--bg-tertiary);
     border-radius: 4px;
+}
+
+.domain-labels span.domain-sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+}
+
+.domain-labels span.domain-sortable:hover {
+    background: var(--border-color);
+}
+
+.domain-labels span.domain-sortable .sort-icon {
+    margin-left: 0.25rem;
+    opacity: 0.4;
+    font-size: 0.65rem;
+}
+
+.domain-labels span.domain-sortable.active-sort {
+    background: var(--border-color);
+}
+
+.domain-labels span.domain-sortable.active-sort .sort-icon {
+    opacity: 1;
 }
 
 .domain-breakdown {
@@ -471,12 +523,12 @@ header h1 {
 }
 
 .insights-section h2 {
-    font-size: 2rem;
+    font-size: 1.75rem;
     margin-bottom: 2rem;
     text-align: center;
     color: var(--text-primary);
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 500;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
 }
 
 .insights-grid {
@@ -516,10 +568,10 @@ header h1 {
 }
 
 .insight-card h3 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     margin-bottom: 0.75rem;
     color: var(--text-primary);
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Source Sans 3', sans-serif;
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -530,14 +582,14 @@ header h1 {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.25rem;
+    height: 2.25rem;
     background: #8b9a9f;
     color: white;
     border-radius: 50%;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    font-family: 'Crimson Pro', serif;
+    font-family: 'Source Sans 3', sans-serif;
     flex-shrink: 0;
 }
 
@@ -561,12 +613,12 @@ header h1 {
 }
 
 .challenge-section h2 {
-    font-size: 2rem;
+    font-size: 1.75rem;
     margin-bottom: 2rem;
     text-align: center;
     color: var(--text-primary);
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 500;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
 }
 
 .challenge-grid {
@@ -592,10 +644,10 @@ header h1 {
 }
 
 .challenge-card h3 {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     margin-bottom: 0.75rem;
     color: var(--text-primary);
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Source Sans 3', sans-serif;
     font-weight: 600;
     text-align: center;
 }
@@ -685,12 +737,12 @@ footer {
 
 .grounding-failures-container h2,
 .coding-language-container h2 {
-    font-size: 2rem;
+    font-size: 1.75rem;
     margin-bottom: 1rem;
     text-align: center;
     color: var(--text-primary);
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 500;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
 }
 
 .section-description {
@@ -765,13 +817,13 @@ footer {
 .turn-stats-table th {
     padding: 1rem;
     text-align: left;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--text-primary);
-    font-size: 0.875rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.05em;
     border-bottom: 2px solid var(--border-color);
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Source Sans 3', sans-serif;
 }
 
 .turn-stats-table tbody tr {
@@ -806,10 +858,10 @@ footer {
 }
 
 .turn-value {
-    font-size: 1.125rem;
-    font-weight: 500;
+    font-size: 1.05rem;
+    font-weight: 600;
     margin-bottom: 0.5rem;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Source Sans 3', sans-serif;
     color: #6b6a67;
 }
 

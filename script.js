@@ -1,6 +1,9 @@
 // Leaderboard data structure
 let leaderboardData = {};
 
+// Current sort state
+let currentSort = { by: 'rate', order: 'asc' };
+
 // Initialize the leaderboard
 async function init() {
     try {
@@ -31,10 +34,25 @@ async function init() {
         }
         
         // Set up event listeners
-        document.getElementById('view-select').addEventListener('change', toggleView);
         document.getElementById('domain-select').addEventListener('change', updateLeaderboard);
         document.getElementById('turn-select').addEventListener('change', updateLeaderboard);
-        document.getElementById('sort-select').addEventListener('change', updateLeaderboard);
+        
+        // Set up sortable column headers
+        document.querySelectorAll('.sortable').forEach(th => {
+            th.addEventListener('click', function() {
+                const sortBy = this.dataset.sort;
+                handleSort(sortBy);
+            });
+        });
+        
+        // Set up sortable domain breakdown headers
+        document.querySelectorAll('.domain-sortable').forEach(span => {
+            span.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent event bubbling
+                const sortBy = this.dataset.sort;
+                handleSort(sortBy);
+            });
+        });
         
         // Initial render
         updateLeaderboard();
@@ -52,22 +70,45 @@ async function init() {
     }
 }
 
-// Toggle between table and chart view
-function toggleView() {
-    const view = document.getElementById('view-select').value;
-    const tableView = document.getElementById('table-view');
-    const chartView = document.getElementById('chart-view');
-    
-    if (view === 'table') {
-        tableView.style.display = 'block';
-        chartView.style.display = 'none';
-        updateLeaderboard(); // Re-render table
+// Handle column header sorting
+function handleSort(sortBy) {
+    // If clicking the same column, toggle order
+    if (currentSort.by === sortBy) {
+        currentSort.order = currentSort.order === 'asc' ? 'desc' : 'asc';
     } else {
-        tableView.style.display = 'none';
-        chartView.style.display = 'block';
-        updateLeaderboard(); // This will call renderBarChart
+        currentSort.by = sortBy;
+        // Default order: rate ascending (lower is better), name ascending
+        currentSort.order = 'asc';
     }
+    
+    // Update main header icons
+    document.querySelectorAll('.sortable').forEach(th => {
+        th.classList.remove('active-sort');
+        th.querySelector('.sort-icon').textContent = '↕';
+    });
+    
+    // Update domain breakdown header icons
+    document.querySelectorAll('.domain-sortable').forEach(span => {
+        span.classList.remove('active-sort');
+        span.querySelector('.sort-icon').textContent = '↕';
+    });
+    
+    // Set active state on the correct header
+    const activeHeader = document.querySelector(`.sortable[data-sort="${sortBy}"]`);
+    if (activeHeader) {
+        activeHeader.classList.add('active-sort');
+        activeHeader.querySelector('.sort-icon').textContent = currentSort.order === 'asc' ? '↑' : '↓';
+    }
+    
+    const activeDomainHeader = document.querySelector(`.domain-sortable[data-sort="${sortBy}"]`);
+    if (activeDomainHeader) {
+        activeDomainHeader.classList.add('active-sort');
+        activeDomainHeader.querySelector('.sort-icon').textContent = currentSort.order === 'asc' ? '↑' : '↓';
+    }
+    
+    updateLeaderboard();
 }
+
 
 // Load data from individual JSON files (fallback)
 async function loadDataFromFiles() {
@@ -195,8 +236,6 @@ function getTurnProgression(domain, model) {
 function updateLeaderboard() {
     const domain = document.getElementById('domain-select').value;
     const turn = document.getElementById('turn-select').value;
-    const sortBy = document.getElementById('sort-select').value;
-    const view = document.getElementById('view-select').value;
     
     let rates, domainBreakdown = {};
     
@@ -216,38 +255,49 @@ function updateLeaderboard() {
         turnProgression: domain !== 'all' ? getTurnProgression(domain, model) : null
     }));
     
-    // Sort
-    if (sortBy === 'rate') {
-        entries.sort((a, b) => a.rate - b.rate);
-    } else {
-        entries.sort((a, b) => a.model.localeCompare(b.model));
+    // Sort based on current sort state
+    if (currentSort.by === 'rate' || currentSort.by === 'rank') {
+        // Rank is based on rate (lower rate = better rank)
+        entries.sort((a, b) => {
+            const diff = a.rate - b.rate;
+            return currentSort.order === 'asc' ? diff : -diff;
+        });
+    } else if (currentSort.by === 'name') {
+        entries.sort((a, b) => {
+            const diff = a.model.localeCompare(b.model);
+            return currentSort.order === 'asc' ? diff : -diff;
+        });
+    } else if (['legal_cases', 'research_questions', 'medical_guidelines', 'coding'].includes(currentSort.by)) {
+        // Sort by specific domain rate
+        entries.sort((a, b) => {
+            const aRate = a.domainBreakdown ? (a.domainBreakdown[currentSort.by] ?? Infinity) : Infinity;
+            const bRate = b.domainBreakdown ? (b.domainBreakdown[currentSort.by] ?? Infinity) : Infinity;
+            const diff = aRate - bRate;
+            return currentSort.order === 'asc' ? diff : -diff;
+        });
     }
     
-    // Update stats
-    updateStats(entries);
+    // Render both views
+    renderLeaderboard(entries, domain, turn);
     
-    // Render based on view
-    if (view === 'table') {
-        renderLeaderboard(entries, domain, turn);
-    } else {
-        renderBarChart(entries);
-    }
+    // For bar chart, always show sorted by rate (lowest first)
+    const chartEntries = [...entries].sort((a, b) => a.rate - b.rate);
+    renderBarChart(chartEntries);
 }
 
-// Update statistics bar
-function updateStats(entries) {
-    document.getElementById('model-count').textContent = entries.length;
+
+// Color interpolation function for table bars (same as chart)
+function getBarColor(rate, minRate, maxRate) {
+    // Normalize rate to 0-1 range based on min/max in data
+    const t = (rate - minRate) / (maxRate - minRate || 1);
     
-    if (entries.length > 0) {
-        const best = entries[0]; // Rank 1 model (best/lowest rate)
-        document.getElementById('best-model').textContent = best.model;
-        
-        // Show the rank-1 model's hallucination rate from the table
-        document.getElementById('hallucination-rate').textContent = best.rate.toFixed(1) + '%';
-    } else {
-        document.getElementById('best-model').textContent = '-';
-        document.getElementById('hallucination-rate').textContent = '-';
-    }
+    // Start color (low/good): muted teal #7a9a8b -> RGB(122, 154, 139)
+    // End color (high/bad): muted tan #c4a88a -> RGB(196, 168, 138)
+    const r = Math.round(122 + t * (196 - 122));
+    const g = Math.round(154 + t * (168 - 154));
+    const b = Math.round(139 + t * (138 - 139));
+    
+    return `rgb(${r}, ${g}, ${b})`;
 }
 
 // Render the leaderboard table
@@ -269,10 +319,12 @@ function renderLeaderboard(entries, domain, turn) {
     }
     
     const maxRate = Math.max(...entries.map(e => e.rate));
+    const minRate = Math.min(...entries.map(e => e.rate));
     
     tbody.innerHTML = entries.map((entry, index) => {
         const rank = index + 1;
         const barWidth = (entry.rate / maxRate) * 100;
+        const barColor = getBarColor(entry.rate, minRate, maxRate);
         
         // Domain breakdown HTML
         let domainBreakdownHtml = '';
@@ -299,7 +351,7 @@ function renderLeaderboard(entries, domain, turn) {
                 <td class="rate-col">
                     <span class="rate-value">${entry.rate.toFixed(1)}%</span>
                     <div class="rate-bar">
-                        <div class="rate-bar-fill" style="width: ${barWidth}%"></div>
+                        <div class="rate-bar-fill" style="width: ${barWidth}%; background: ${barColor};"></div>
                     </div>
                 </td>
                 ${domain === 'all' ? `<td class="domain-breakdown-col">${domainBreakdownHtml}</td>` : ''}
@@ -323,11 +375,36 @@ function getBadge(rate) {
 
 // Format model name for display
 function formatModelName(name) {
-    // Convert kebab-case to Title Case
-    return name
+    // Handle special cases for model naming
+    let formatted = name;
+    
+    // GPT models: uppercase GPT and keep version with dash
+    formatted = formatted.replace(/^gpt-/i, 'GPT-');
+    formatted = formatted.replace(/gpt-(\d)/gi, 'GPT-$1');
+    
+    // Handle websearch -> Web Search
+    formatted = formatted.replace(/websearch/gi, 'web-search');
+    
+    // Handle Claude version numbers: 4-5 -> 4.5
+    formatted = formatted.replace(/(\d)-(\d)(?=-|$)/g, '$1.$2');
+    
+    // Convert remaining kebab-case to Title Case with spaces
+    formatted = formatted
         .split('-')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .map((word, index) => {
+            // Keep GPT uppercase
+            if (word.toUpperCase() === 'GPT') return 'GPT';
+            // Keep version numbers as-is (e.g., "5.2", "4.5")
+            if (/^\d/.test(word)) return word;
+            // Capitalize first letter of other words
+            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        })
         .join(' ');
+    
+    // Fix "Web Search" spacing (in case it got split)
+    formatted = formatted.replace(/Web Search/gi, 'Web Search');
+    
+    return formatted;
 }
 
 // Render bar chart
@@ -362,11 +439,12 @@ function renderBarChart(entries = null) {
         return;
     }
     
-    const margin = { top: 40, right: 40, bottom: 100, left: 120 };
+    const margin = { top: 40, right: 40, bottom: 100, left: 200 };
     const width = svg.clientWidth - margin.left - margin.right;
     const height = 600 - margin.top - margin.bottom;
     
     const maxRate = Math.max(...entries.map(e => e.rate));
+    const minRate = Math.min(...entries.map(e => e.rate));
     const barHeight = Math.max(20, (height / entries.length) * 0.8);
     const spacing = height / entries.length;
     
@@ -374,22 +452,27 @@ function renderBarChart(entries = null) {
     const chartGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     chartGroup.setAttribute('transform', `translate(${margin.left}, ${margin.top})`);
     
+    // Color interpolation function (from teal/green for low rates to warm tan for high rates)
+    function interpolateColor(rate) {
+        // Normalize rate to 0-1 range based on min/max in data
+        const t = (rate - minRate) / (maxRate - minRate || 1);
+        
+        // Start color (low/good): muted teal #7a9a8b -> RGB(122, 154, 139)
+        // End color (high/bad): muted tan #c4a88a -> RGB(196, 168, 138)
+        const r = Math.round(122 + t * (196 - 122));
+        const g = Math.round(154 + t * (168 - 154));
+        const b = Math.round(139 + t * (138 - 139));
+        
+        return `rgb(${r}, ${g}, ${b})`;
+    }
+    
     // Draw bars
     entries.forEach((entry, index) => {
         const y = index * spacing;
         const barWidth = (entry.rate / maxRate) * width;
         
-        // Determine bar color based on rate (Morandi palette)
-        let barColor;
-        if (entry.rate < 20) {
-            barColor = '#9a9b8a'; // muted green-gray
-        } else if (entry.rate < 40) {
-            barColor = '#8b9a9f'; // muted blue-gray
-        } else if (entry.rate < 60) {
-            barColor = '#c4a88a'; // muted beige
-        } else {
-            barColor = '#b89a8a'; // muted terracotta
-        }
+        // Gradient color based on rate
+        const barColor = interpolateColor(entry.rate);
         
         // Bar group
         const barGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
