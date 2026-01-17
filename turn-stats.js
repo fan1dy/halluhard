@@ -281,9 +281,9 @@ function renderLineChart(stats, domain) {
     title.setAttribute('text-anchor', 'middle');
     title.setAttribute('class', 'chart-title');
     title.setAttribute('font-size', '18px');
-    title.setAttribute('font-weight', '500');
+    title.setAttribute('font-weight', '600');
     title.setAttribute('fill', '#3a3936');
-    title.setAttribute('font-family', 'Cormorant Garamond, serif');
+    title.setAttribute('font-family', "'Source Sans 3', sans-serif");
     title.textContent = 'Turn-wise Hallucination Rates';
     chartGroup.appendChild(title);
 
@@ -311,7 +311,7 @@ function renderLineChart(stats, domain) {
         text.setAttribute('y', y + 8);
         text.setAttribute('font-size', '12px');
         text.setAttribute('fill', '#3a3936');
-        text.setAttribute('font-family', 'Cormorant Garamond, serif');
+        text.setAttribute('font-family', "'Source Sans 3', sans-serif");
         text.textContent = formatModelName(stat.model);
         legendGroup.appendChild(text);
     });
