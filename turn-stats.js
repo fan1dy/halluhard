@@ -281,9 +281,9 @@ function renderLineChart(stats, domain) {
     title.setAttribute('text-anchor', 'middle');
     title.setAttribute('class', 'chart-title');
     title.setAttribute('font-size', '18px');
-    title.setAttribute('font-weight', '500');
+    title.setAttribute('font-weight', '600');
     title.setAttribute('fill', '#3a3936');
-    title.setAttribute('font-family', 'Cormorant Garamond, serif');
+    title.setAttribute('font-family', "'Source Sans 3', sans-serif");
     title.textContent = 'Turn-wise Hallucination Rates';
     chartGroup.appendChild(title);
 
@@ -311,7 +311,7 @@ function renderLineChart(stats, domain) {
         text.setAttribute('y', y + 8);
         text.setAttribute('font-size', '12px');
         text.setAttribute('fill', '#3a3936');
-        text.setAttribute('font-family', 'Cormorant Garamond, serif');
+        text.setAttribute('font-family', "'Source Sans 3', sans-serif");
         text.textContent = formatModelName(stat.model);
         legendGroup.appendChild(text);
     });
@@ -321,40 +321,28 @@ function renderLineChart(stats, domain) {
 }
 
 function formatModelName(name) {
-    // Handle special cases for model naming
-    let formatted = name;
+    const nameMap = {
+        'gpt-5-nano': 'GPT-5-nano',
+        'gpt-5-mini': 'GPT-5-mini',
+        'gpt-5': 'GPT-5',
+        'gpt-5-medium': 'GPT-5-thinking',
+        'gpt-5.2': 'GPT-5.2',
+        'gpt-5.2-medium-websearch': 'GPT-5.2-thinking-Web-Search',
+        'claude-haiku-4-5': 'Claude-Haiku-4.5',
+        'claude-sonnet-4-5': 'Claude-Sonnet-4.5',
+        'claude-opus-4-5': 'Claude-Opus-4.5',
+        'claude-opus-4-5-websearch': 'Claude-Opus-4.5-Web-Search',
+        'gemini-3-flash': 'Gemini-3-Flash',
+        'gemini-3-pro': 'Gemini-3-Pro',
+        'deepseek-chat': 'DeepSeek-Chat',
+        'deepseek-reasoner': 'DeepSeek-Reasoner',
+        'kimi-k2-thinking': 'Kimi-K2-thinking'
+    };
     
-    // Handle websearch -> Web Search
-    formatted = formatted.replace(/websearch/gi, 'web-search');
-    
-    // Handle Claude version numbers: 4-5 -> 4.5
-    formatted = formatted.replace(/(\d)-(\d)(?=-|$)/g, '$1.$2');
-    
-    // Convert kebab-case to Title Case with spaces, but keep GPT-X format
-    const parts = formatted.split('-');
-    const result = [];
-    
-    for (let i = 0; i < parts.length; i++) {
-        const word = parts[i];
-        const nextWord = parts[i + 1];
-        
-        if (word.toLowerCase() === 'gpt') {
-            // GPT followed by a number should stay as GPT-X
-            if (nextWord && /^\d/.test(nextWord)) {
-                result.push('GPT-' + nextWord);
-                i++; // Skip the next part since we've included it
-            } else {
-                result.push('GPT');
-            }
-        } else if (/^\d/.test(word)) {
-            // Version numbers stay as-is
-            result.push(word);
-        } else {
-            // Capitalize first letter of other words
-            result.push(word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
-        }
+    if (nameMap[name]) {
+        return nameMap[name];
     }
     
-    return result.join(' ');
+    return name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 }
 
