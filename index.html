@@ -7,10 +7,6 @@
     <meta name="scroll-restoration" content="manual">
     <title>HalluHard - Hallucination Benchmark Leaderboard</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
 </head>
 
 <body>
@@ -32,6 +28,13 @@
         </header>
 
         <div class="controls">
+            <div class="benchmark-rationale" style="width: 100%; margin-bottom: 20px;">
+                <h3 style="margin-top: 0; margin-bottom: 15px; font-size: 1.2em; font-weight: 600;">Why Do We Need a New Benchmark?</h3>
+                <p style="margin: 0; line-height: 1.6; font-size: 1em;">
+                    Past benchmarks are <strong>saturated</strong>, focus on <strong>single-turn</strong> scenarios, and have <strong>limited judge capability</strong>. 
+                    HalluHard addresses these limitations by providing a challenging multi-turn benchmark with rigorous verification that can read full-text sources including PDFs.
+                </p>
+            </div>
             <div class="control-group">
                 <label for="domain-select">Domain:</label>
                 <select id="domain-select">
@@ -151,6 +154,647 @@
             </div>
         </div>
 
+        <div class="pipeline-section" style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+            <h2>Pipeline Overview</h2>
+            
+            <div style="margin-bottom: 40px;">
+                <h3 style="font-size: 1.3em; margin-bottom: 15px; font-weight: 600;">Response Generation Pipeline</h3>
+                <div style="background: transparent; padding: 16px; border-radius: 12px; max-width: 100%; overflow-x: auto;">
+                    <style>
+                        .pipeline-wrap{
+                          --bg: transparent;
+                          --panel: rgba(255,255,255,.6);
+                          --stroke: rgba(0,0,0,.15);
+                          --text: rgba(0,0,0,.85);
+                          --muted: rgba(0,0,0,.65);
+                          --seed: #d07a00;
+                          --llm:  #1a202c;
+                          --resp: #6b5876;
+                          --hist: #d8bf86;
+                          --outline1: rgba(214, 125, 63, .75);
+                          --outline2: rgba(115, 185, 201, .65);
+                          max-width: 1100px;
+                          margin: 0 auto;
+                        }
+                        .pipeline-wrap h1{
+                          margin: 0 0 4px 0;
+                          font-size: 18px;
+                          letter-spacing: .2px;
+                          color: rgba(0,0,0,.85);
+                        }
+                        .pipeline-wrap p{
+                          margin: 0 0 12px 0;
+                          color: rgba(0,0,0,.65);
+                          line-height: 1.4;
+                          font-size: 13px;
+                        }
+                        .pipeline-panel{
+                          background: var(--panel);
+                          border: 1px solid var(--stroke);
+                          border-radius: 12px;
+                          padding: 12px;
+                          margin: 8px 0 10px;
+                          box-shadow: 0 2px 8px rgba(0,0,0,.08);
+                        }
+                        .pipeline-panel.outline1{ border: 2px solid var(--outline1); }
+                        .pipeline-panel.outline2{ border: 2px solid var(--outline2); }
+                        .pipeline-panel-title{
+                          display:flex;
+                          align-items:baseline;
+                          justify-content:center;
+                          gap:8px;
+                          margin-bottom: 8px;
+                          color: rgba(0,0,0,.85);
+                        }
+                        .pipeline-panel-title .k{
+                          font-style: italic;
+                          font-size: 18px;
+                          opacity: .95;
+                        }
+                        .pipeline-row{
+                          display:flex;
+                          align-items:center;
+                          justify-content:center;
+                          gap: 10px;
+                          flex-wrap: wrap;
+                        }
+                        .pipeline-col{
+                          display:flex;
+                          flex-direction:column;
+                          align-items:center;
+                          gap:8px;
+                          min-width: 140px;
+                        }
+                        .pipeline-box{
+                          min-width: 140px;
+                          padding: 10px 12px;
+                          border-radius: 8px;
+                          border: 1px solid rgba(0,0,0,.2);
+                          box-shadow: 0 1px 3px rgba(0,0,0,.1);
+                          text-align:center;
+                          font-weight: 650;
+                          font-size: 13px;
+                          color: rgba(0,0,0,.85);
+                          position: relative;
+                        }
+                        .pipeline-box.seed{ background: var(--seed) !important; color: rgba(0,0,0,.85);  }
+                        .pipeline-box.llm { background: var(--llm) !important; color: rgba(255,255,255,.95);  }
+                        .pipeline-box.resp{ background: var(--resp) !important; color: rgba(0,0,0,.85);  }
+                        .pipeline-box.hist{ background: var(--hist) !important; color: rgba(0,0,0,.85); }
+                        .pipeline-box .sub{
+                          display:block;
+                          font-weight: 600;
+                          opacity:.95;
+                          font-size: 12px;
+                        }
+                        .pipeline-box .math{
+                          font-family: ui-serif, "Times New Roman", Times, serif;
+                          font-style: italic;
+                          letter-spacing: .2px;
+                          font-weight: 700;
+                        }
+                        .pipeline-arrow{
+                          display:flex;
+                          align-items:center;
+                          justify-content:center;
+                          width: 36px;
+                          height: 20px;
+                          opacity:.9;
+                        }
+                        .pipeline-arrow svg{ display:block; width: 36px; height: 20px; }
+                        .pipeline-plus{
+                          width: 32px;
+                          height: 32px;
+                          border-radius: 999px;
+                          border: 1px solid var(--stroke);
+                          display:flex;
+                          align-items:center;
+                          justify-content:center;
+                          font-size: 18px;
+                          font-weight: 800;
+                          background: rgba(255,255,255,.5);
+                          box-shadow: 0 1px 4px rgba(0,0,0,.12);
+                          color: var(--text);
+                        }
+                        .pipeline-note{
+                          font-size: 11px;
+                          color: var(--muted);
+                          margin-top: 6px;
+                          text-align:center;
+                        }
+                        .pipeline-legend{
+                          display:flex;
+                          flex-wrap: wrap;
+                          gap:8px;
+                          margin-top: 10px;
+                          justify-content:center;
+                        }
+                        .pipeline-pill{
+                          display:flex;
+                          gap:6px;
+                          align-items:center;
+                          padding: 6px 8px;
+                          border-radius: 999px;
+                          border: 1px solid var(--stroke);
+                          background: rgba(255,255,255,.4);
+                          font-size: 11px;
+                          color: var(--text);
+                        }
+                        .pipeline-swatch{
+                          width: 12px; height: 12px; border-radius: 3px;
+                          border: 1px solid rgba(0,0,0,.25);
+                        }
+                    </style>
+                    <div class="pipeline-wrap">
+                        <h1>Response Generation Pipeline</h1>
+                        <p>
+                            Two-stage loop: first initialize history with a seed query, then iteratively generate new queries using a user LLM
+                            conditioned on the previous history, query the target LLM, and append the new (query, response) pair to history.
+                        </p>
+
+                        <!-- i = 1 -->
+                        <section class="pipeline-panel outline1">
+                            <div class="pipeline-panel-title">
+                                <span class="k">i = 1</span>
+                            </div>
+
+                            <div class="pipeline-row">
+                                <div class="pipeline-box seed">
+                                    seed query <span class="math">q</span><sub>1</sub>
+                                </div>
+
+                                <div class="pipeline-arrow" aria-hidden="true">
+                                    <svg width="46" height="24" viewBox="0 0 46 24" fill="none">
+                                        <defs>
+                                            <marker id="pipelineArrowHead"
+                                                    markerWidth="10" markerHeight="10"
+                                                    refX="9" refY="5"
+                                                    orient="auto"
+                                                    markerUnits="userSpaceOnUse">
+                                                <path d="M0,0 L10,5 L0,10 Z" fill="rgba(0,0,0,.7)"></path>
+                                            </marker>
+                                        </defs>
+                                        <line x1="2" y1="12" x2="40" y2="12" stroke="rgba(0,0,0,.7)" stroke-width="2.5" stroke-linecap="round" marker-end="url(#pipelineArrowHead)"/>
+                                    </svg>
+                                </div>
+
+                                <div class="pipeline-box llm">
+                                    🤖 target LLM
+                                </div>
+
+                                <div class="pipeline-arrow" aria-hidden="true">
+                                    <svg width="46" height="24" viewBox="0 0 46 24" fill="none">
+                                        <defs>
+                                            <marker id="pipelineArrowHead"
+                                                    markerWidth="10" markerHeight="10"
+                                                    refX="9" refY="5"
+                                                    orient="auto"
+                                                    markerUnits="userSpaceOnUse">
+                                                <path d="M0,0 L10,5 L0,10 Z" fill="rgba(0,0,0,.7)"></path>
+                                            </marker>
+                                        </defs>
+                                        <line x1="2" y1="12" x2="40" y2="12" stroke="rgba(0,0,0,.7)" stroke-width="2.5" stroke-linecap="round" marker-end="url(#pipelineArrowHead)"/>
+                                    </svg>
+                                </div>
+
+                                <div class="pipeline-box resp">
+                                    response <span class="math">r</span><sub>1</sub>
+                                </div>
+
+                                <div class="pipeline-arrow" aria-hidden="true">
+                                    <svg width="46" height="24" viewBox="0 0 46 24" fill="none">
+                                        <defs>
+                                            <marker id="pipelineArrowHead"
+                                                    markerWidth="10" markerHeight="10"
+                                                    refX="9" refY="5"
+                                                    orient="auto"
+                                                    markerUnits="userSpaceOnUse">
+                                                <path d="M0,0 L10,5 L0,10 Z" fill="rgba(0,0,0,.7)"></path>
+                                            </marker>
+                                        </defs>
+                                        <line x1="2" y1="12" x2="40" y2="12" stroke="rgba(0,0,0,.7)" stroke-width="2.5" stroke-linecap="round" marker-end="url(#pipelineArrowHead)"/>
+                                    </svg>
+                                </div>
+
+                                <div class="pipeline-box hist">
+                                    History<br/>
+                                    <span class="math">H</span><sub>1</sub> = (<span class="math">q</span><sub>1</sub>, <span class="math">r</span><sub>1</sub>)
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- i >= 2 -->
+                        <section class="pipeline-panel outline2">
+                            <div class="pipeline-panel-title">
+                                <span class="k">i ≥ 2</span>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative;">
+                                <div class="pipeline-row" style="gap:14px; position: relative;">
+                                    <div class="pipeline-box hist">
+                                        History<br/>
+                                        <span class="math">H</span><sub>i−1</sub>
+                                    </div>
+
+                                    <div class="pipeline-arrow" aria-hidden="true">
+                                        <svg width="46" height="24" viewBox="0 0 46 24" fill="none">
+                                            <defs>
+                                                <marker id="pipelineArrowHead3"
+                                                        markerWidth="10" markerHeight="10"
+                                                        refX="9" refY="5"
+                                                        orient="auto"
+                                                        markerUnits="userSpaceOnUse">
+                                                    <path d="M0,0 L10,5 L0,10 Z" fill="rgba(0,0,0,.7)"></path>
+                                                </marker>
+                                            </defs>
+                                            <line x1="2" y1="12" x2="40" y2="12" stroke="rgba(0,0,0,.7)" stroke-width="2.5" stroke-linecap="round" marker-end="url(#pipelineArrowHead3)"/>
+                                        </svg>
+                                    </div>
+
+                                    <div class="pipeline-box llm">
+                                        🤖 user LLM
+                                    </div>
+
+                                    <div class="pipeline-arrow" aria-hidden="true">
+                                        <svg width="46" height="24" viewBox="0 0 46 24" fill="none">
+                                            <defs>
+                                                <marker id="pipelineArrowHead4"
+                                                        markerWidth="10" markerHeight="10"
+                                                        refX="9" refY="5"
+                                                        orient="auto"
+                                                        markerUnits="userSpaceOnUse">
+                                                    <path d="M0,0 L10,5 L0,10 Z" fill="rgba(0,0,0,.7)"></path>
+                                                </marker>
+                                            </defs>
+                                            <line x1="2" y1="12" x2="40" y2="12" stroke="rgba(0,0,0,.7)" stroke-width="2.5" stroke-linecap="round" marker-end="url(#pipelineArrowHead4)"/>
+                                        </svg>
+                                    </div>
+
+                                    <div class="pipeline-box seed">
+                                        query <span class="math">q</span><sub>i</sub>
+                                    </div>
+                                </div>
+
+                                <div class="pipeline-row" style="gap:14px; margin-top: 20px; position: relative; z-index: 2; align-items: center;">
+                                    <div class="pipeline-box seed">
+                                        query <span class="math">q</span><sub>i</sub>
+                                    </div>
+
+                                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; height: 100%;">
+                                        <div class="pipeline-plus" style="width: 28px; height: 28px; font-size: 16px; position: absolute; top: -24px; left: 50%; transform: translateX(-50%); z-index: 3;">+</div>
+                                        <div class="pipeline-arrow" aria-hidden="true" style="align-self: center;">
+                                            <svg width="46" height="24" viewBox="0 0 46 24" fill="none">
+                                                <defs>
+                                                    <marker id="pipelineArrowHead5"
+                                                            markerWidth="10" markerHeight="10"
+                                                            refX="9" refY="5"
+                                                            orient="auto"
+                                                            markerUnits="userSpaceOnUse">
+                                                        <path d="M0,0 L10,5 L0,10 Z" fill="rgba(0,0,0,.7)"></path>
+                                                    </marker>
+                                                </defs>
+                                                <line x1="2" y1="12" x2="40" y2="12" stroke="rgba(0,0,0,.7)" stroke-width="2.5" stroke-linecap="round" marker-end="url(#pipelineArrowHead5)"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    <div class="pipeline-box llm">
+                                        🤖 target LLM
+                                    </div>
+
+                                    <div class="pipeline-arrow" aria-hidden="true">
+                                        <svg width="46" height="24" viewBox="0 0 46 24" fill="none">
+                                            <defs>
+                                                <marker id="pipelineArrowHead6"
+                                                        markerWidth="10" markerHeight="10"
+                                                        refX="9" refY="5"
+                                                        orient="auto"
+                                                        markerUnits="userSpaceOnUse">
+                                                    <path d="M0,0 L10,5 L0,10 Z" fill="rgba(0,0,0,.7)"></path>
+                                                </marker>
+                                            </defs>
+                                            <line x1="2" y1="12" x2="40" y2="12" stroke="rgba(0,0,0,.7)" stroke-width="2.5" stroke-linecap="round" marker-end="url(#pipelineArrowHead6)"/>
+                                        </svg>
+                                    </div>
+
+                                    <div class="pipeline-box resp">
+                                        response <span class="math">r</span><sub>i</sub>
+                                    </div>
+
+                                    <div class="pipeline-arrow" aria-hidden="true">
+                                        <svg width="46" height="24" viewBox="0 0 46 24" fill="none">
+                                            <defs>
+                                                <marker id="pipelineArrowHead7"
+                                                        markerWidth="10" markerHeight="10"
+                                                        refX="9" refY="5"
+                                                        orient="auto"
+                                                        markerUnits="userSpaceOnUse">
+                                                    <path d="M0,0 L10,5 L0,10 Z" fill="rgba(0,0,0,.7)"></path>
+                                                </marker>
+                                            </defs>
+                                            <line x1="2" y1="12" x2="40" y2="12" stroke="rgba(0,0,0,.7)" stroke-width="2.5" stroke-linecap="round" marker-end="url(#pipelineArrowHead7)"/>
+                                        </svg>
+                                    </div>
+
+                                    <div class="pipeline-box hist">
+                                        update History<br/>
+                                        <span class="math">H</span><sub>i</sub> =
+                                        <span class="math">H</span><sub>i−1</sub> ∪
+                                        (<span class="math">q</span><sub>i</sub>, <span class="math">r</span><sub>i</sub>)
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-note">
+                                The "+" indicates combining the new query with conversation history before sending to the target LLM.
+                            </div>
+                        </section>
+
+                        <div class="pipeline-legend">
+                            <div class="pipeline-pill"><span class="pipeline-swatch" style="background:var(--seed)"></span>query</div>
+                            <div class="pipeline-pill"><span class="pipeline-swatch" style="background:var(--llm)"></span>LLM module</div>
+                            <div class="pipeline-pill"><span class="pipeline-swatch" style="background:var(--resp)"></span>response</div>
+                            <div class="pipeline-pill"><span class="pipeline-swatch" style="background:var(--hist)"></span>history / memory</div>
+                        </div>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; line-height: 1.6; color: #666;">
+                    Our multi-turn response generation pipeline uses a user LLM to generate engaging follow-up questions based on conversation history, creating natural multi-turn dialogues.
+                </p>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="font-size: 1.3em; margin-bottom: 15px; font-weight: 600;">Response Verification Pipeline</h3>
+                <style>
+                    .verification-pipeline-root{
+                        --bg:transparent;
+                        --purple:rgba(111, 90, 120, 0.6);
+                        --lav:rgba(223, 228, 255, 0.6);
+                        --orange:rgba(227, 179, 84, 0.6);
+                        --pink:rgba(231, 184, 187, 0.6);
+                        --green:rgba(207, 226, 209, 0.6);
+                        --ink:#2a2a2a;
+                        --muted:#3b3b3b;
+                        --arrow:rgba(0,0,0,.7);
+                        --shadow: 0 2px 8px rgba(0,0,0,.08);
+                    }
+                    .verification-stage{
+                        position:relative;
+                        width: 700px;
+                        max-width: 100%;
+                        height: 480px;
+                        margin: 0 auto;
+                        border-radius: 12px;
+                    }
+                    .verification-block{
+                        position:absolute;
+                        border-radius: 12px;
+                        border: 2px solid rgba(0,0,0,.15);
+                        box-shadow: var(--shadow);
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        text-align:center;
+                        padding: 10px 12px;
+                        line-height:1.1;
+                    }
+                    .verification-responses{
+                        left: 65px; top: 20px;
+                        width: 130px; height: 70px;
+                        background: var(--purple);
+                        color: rgba(0,0,0,.85);
+                        font-size: 13px;
+                        font-weight: 650;
+                        flex-direction:column;
+                        gap: 4px;
+                    }
+                    .verification-atomic{
+                        left: 40px; top: 110px;
+                        width: 180px; height: 85px;
+                        background: var(--lav);
+                        color: rgba(0,0,0,.85);
+                        font-size: 13px;
+                        font-weight: 650;
+                        flex-direction:column;
+                        gap: 4px;
+                        border-radius: 18px;
+                    }
+                    .verification-search{
+                        left: 50px; top: 215px;
+                        width: 160px; height: 45px;
+                        display:flex;
+                        align-items:center;
+                        justify-content:flex-start;
+                        gap: 8px;
+                        padding-left: 14px;
+                        font-size: 13px;
+                        color: rgba(0,0,0,.65);
+                        font-weight: 650;
+                    }
+                    .verification-found{
+                        left: 55px; top: 280px;
+                        width: 150px; height: 45px;
+                        background: var(--orange);
+                        border-radius: 6px;
+                        font-size: 13px;
+                        font-weight: 650;
+                        box-shadow: var(--shadow);
+                    }
+                    .verification-parse{
+                        left: 245px; top: 255px;
+                        width: 250px; height: 95px;
+                        background: var(--lav);
+                        border-radius: 18px;
+                        font-size: 13px;
+                        font-weight: 650;
+                        flex-direction:column;
+                        gap: 8px;
+                        padding: 12px 14px;
+                        align-items:flex-start;
+                        justify-content:center;
+                        text-align:left;
+                    }
+                    .verification-grounded{
+                        left: 290px; top: 180px;
+                        width: 160px; height: 45px;
+                        background: var(--orange);
+                        border-radius: 6px;
+                        font-size: 13px;
+                        font-weight: 650;
+                        box-shadow: var(--shadow);
+                    }
+                    .verification-hall{
+                        background: var(--pink);
+                        color:rgba(0,0,0,.85);
+                        border-radius: 4px;
+                        font-size: 13px;
+                        font-weight: 650;
+                        box-shadow: var(--shadow);
+                    }
+                    .verification-hall.left{
+                        left: 55px; top: 345px;
+                        width: 150px; height: 45px;
+                    }
+                    .verification-hall.top{
+                        left: 295px; top: 75px;
+                        width: 150px; height: 45px;
+                    }
+                    .verification-well{
+                        left: 460px; top: 75px;
+                        width: 170px; height: 45px;
+                        background: var(--green);
+                        color:rgba(0,0,0,.85);
+                        border-radius: 4px;
+                        font-size: 13px;
+                        font-weight: 650;
+                        box-shadow: var(--shadow);
+                    }
+                    .verification-math{
+                        font-family: ui-serif, "Times New Roman", Times, serif;
+                        font-style: italic;
+                        letter-spacing: .2px;
+                        font-weight: 700;
+                    }
+                    .verification-sub{ font-size: .75em; vertical-align: -0.2em; }
+                    .verification-g-badge{
+                        width: 32px; height: 32px;
+                        border-radius: 50%;
+                        display:grid; place-items:center;
+                        background: conic-gradient(#4285F4 0 90deg,#34A853 90deg 180deg,#FBBC05 180deg 270deg,#EA4335 270deg 360deg);
+                        box-shadow: 0 6px 14px rgba(0,0,0,.10);
+                        position: relative;
+                    }
+                    .verification-g-badge::after{
+                        content:"";
+                        position:absolute;
+                        inset: 6px;
+                        background:#fff;
+                        border-radius: 50%;
+                    }
+                    .verification-g-letter{
+                        position:relative;
+                        z-index:1;
+                        font-weight:900;
+                        font-size: 16px;
+                        background: linear-gradient(90deg,#4285F4,#34A853,#FBBC05,#EA4335);
+                        -webkit-background-clip:text;
+                        background-clip:text;
+                        color:transparent;
+                    }
+                    .verification-mark{
+                        position:absolute;
+                        font-size: 20px;
+                        font-weight: 900;
+                        line-height:1;
+                        text-shadow: 0 4px 10px rgba(0,0,0,.12);
+                        user-select:none;
+                    }
+                    .verification-check{ color:#1db954; }
+                    .verification-x{ color:#d62828; }
+                    .verification-check.found{ left: 215px; top: 280px; }
+                    .verification-x.found{ left: 135px; top: 323px; }
+                    .verification-x.grounded{ left: 350px; top: 143px; }
+                    .verification-check.grounded{ left: 460px; top: 147px; }
+                    .verification-arrows{
+                        position:absolute;
+                        inset:0;
+                        width:100%;
+                        height:100%;
+                        pointer-events:none;
+                        z-index:0;
+                    }
+                    .verification-block, .verification-search, .verification-mark{ z-index:1; }
+                </style>
+                <div class="verification-pipeline-root" style="background: transparent; padding: 16px; border-radius: 12px; max-width: 100%; overflow-x: auto;">
+                    <div class="verification-stage" role="img" aria-label="Response verification pipeline diagram">
+                        <!-- Arrows -->
+                        <!-- Arrows using same style as generation pipeline -->
+                        <svg class="verification-arrows" viewBox="0 0 700 480" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:0;">
+                            <defs>
+                                <marker id="arrowHead"
+                                        markerWidth="10" markerHeight="10"
+                                        refX="9" refY="5"
+                                        orient="auto"
+                                        markerUnits="userSpaceOnUse">
+                                    <path d="M0,0 L10,5 L0,10 Z" fill="rgba(0,0,0,.7)"></path>
+                                </marker>
+                            </defs>
+                            <!-- Vertical arrow: responses -> atomic -->
+                            <!-- responses bottom edge: (130, 90), atomic top edge: (130, 110) -->
+                            <g transform="translate(130, 90)">
+                                <line x1="0" y1="0" x2="0" y2="20" stroke="rgba(0,0,0,.7)" stroke-width="2.5" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+                            </g>
+                            <!-- Vertical arrow: atomic -> search -->
+                            <!-- atomic bottom edge: (130, 195), search top edge: (130, 215) -->
+                            <g transform="translate(130, 195)">
+                                <line x1="0" y1="0" x2="0" y2="20" stroke="rgba(0,0,0,.7)" stroke-width="2.5" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+                            </g>
+                            <!-- Vertical arrow: search -> found -->
+                            <!-- search bottom edge: (130, 260), found top edge: (130, 280) -->
+                            <g transform="translate(130, 260)">
+                                <line x1="0" y1="0" x2="0" y2="20" stroke="rgba(0,0,0,.7)" stroke-width="2.5" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+                            </g>
+                            <!-- Horizontal arrow: found -> parse -->
+                            <!-- found right edge: (205, 302.5), parse left edge midpoint: (245, 302.5) -->
+                            <g transform="translate(205, 302.5)">
+                                <line x1="0" y1="0" x2="40" y2="0" stroke="rgba(0,0,0,.7)" stroke-width="2.5" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+                            </g>
+                            <!-- Vertical arrow: found -> hallucination (left) -->
+                            <!-- found bottom edge: (130, 325), hall.left top edge: (130, 345) -->
+                            <g transform="translate(130, 325)">
+                                <line x1="0" y1="0" x2="0" y2="20" stroke="rgba(0,0,0,.7)" stroke-width="2.5" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+                            </g>
+                            <!-- Vertical arrow: parse -> grounded (up) -->
+                            <!-- parse top edge: (370, 255), grounded bottom edge: (370, 225) -->
+                            <g transform="translate(370, 255)">
+                                <line x1="0" y1="0" x2="0" y2="-30" stroke="rgba(0,0,0,.7)" stroke-width="2.5" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+                            </g>
+                            <!-- Vertical arrow: grounded -> hallucination (top-left) -->
+                            <!-- grounded top edge: (370, 180), hall.top bottom edge: (370, 120) -->
+                            <g transform="translate(370, 180)">
+                                <line x1="0" y1="0" x2="0" y2="-60" stroke="rgba(0,0,0,.7)" stroke-width="2.5" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+                            </g>
+                            <!-- Diagonal arrow: grounded -> well-grounded (top-right) -->
+                            <!-- grounded top edge: (370, 180), well bottom edge: (545, 120) -->
+                            <g transform="translate(370, 180)">
+                                <line x1="0" y1="0" x2="175" y2="-60" stroke="rgba(0,0,0,.7)" stroke-width="2.5" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+                            </g>
+                        </svg>
+                        <!-- Blocks -->
+                        <div class="verification-block verification-responses">
+                            <div>responses</div>
+                            <div class="verification-math">r<span class="verification-sub">1</span>, . . . , r<span class="verification-sub">n</span></div>
+                        </div>
+                        <div class="verification-block verification-atomic">
+                            <div>atomic references<br/>+ supported claims</div>
+                            <div class="verification-math">{ ref<span class="verification-sub">i</span>, c<span class="verification-sub">i</span> }</div>
+                        </div>
+                        <div class="verification-block verification-search">
+                            <div class="verification-g-badge" aria-hidden="true"><div class="verification-g-letter">G</div></div>
+                            <div>search for <span class="verification-math">ref<span class="verification-sub">i</span></span></div>
+                        </div>
+                        <div class="verification-block verification-found"><span class="verification-math">ref<span class="verification-sub">i</span></span>&nbsp;found?</div>
+                        <div class="verification-block verification-parse">
+                            <div>HTML? -> read HTML</div>
+                            <div>PDF? -> download and parse PDF</div>
+                        </div>
+                        <div class="verification-block verification-grounded"><span class="verification-math">c<span class="verification-sub">i</span></span>&nbsp;grounded?</div>
+                        <div class="verification-block verification-hall left">Hallucination</div>
+                        <div class="verification-block verification-hall top">Hallucination</div>
+                        <div class="verification-block verification-well">Well-grounded</div>
+                        <!-- Marks -->
+                        <div class="verification-mark verification-check found" aria-hidden="true">✓</div>
+                        <div class="verification-mark verification-x found" aria-hidden="true">✗</div>
+                        <div class="verification-mark verification-x grounded" aria-hidden="true">✗</div>
+                        <div class="verification-mark verification-check grounded" aria-hidden="true">✓</div>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; line-height: 1.6; color: #666;">
+                    Our verification pipeline extracts claims, retrieves evidence via web search, and fetches full-text sources (including PDF parsing) to verify 1) whether the cited material exists and 2) whether the cited material supports the generated content.
+                </p>
+            </div>
+        </div>
+
         <div class="challenge-section">
             <h2>Why This Benchmark Is Hard</h2>
             <div class="challenge-grid">
@@ -198,7 +842,7 @@
             <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #007bff;">
                 <h3 style="margin-top: 0; margin-bottom: 15px; font-size: 1.1em;">BibTeX</h3>
                 <pre
-                    style="background: #ffffff; padding: 15px; border-radius: 5px; overflow-x: auto; margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6;"><code>@inproceedings{fan2026halluhard,
+                    style="background: #ffffff; padding: 15px; border-radius: 5px; overflow-x: auto; margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6;"><code>@misc{fan2026halluhard,
   title={HalluHard: A Hard Multi-Turn Hallucination Benchmark},
   author={Fan, Dongyang and Delsad, Sebastien and Flammarion, Nicolas and Andriushchenko, Maksym},
   year={2026}
