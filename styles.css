@@ -344,7 +344,7 @@ header h1 {
     min-width: 300px;
 }
 
-.domain-breakdown-col > div:first-child {
+.domain-breakdown-col>div:first-child {
     margin-bottom: 0.5rem;
     font-weight: 600;
 }
@@ -897,7 +897,79 @@ footer {
     color: #a8a5a0;
 }
 
+/* Team Section Styles */
+.team-section {
+    padding: 3rem 2rem;
+    background: #faf9f7;
+    /* Very light beige */
+    border-top: 1px solid var(--border-color);
+}
+
+.team-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    color: #3a3936;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.team-card {
+    background: #f2f0eb;
+    /* Beige card background */
+    padding: 3rem 2rem;
+    border-radius: 12px;
+    border: 1px solid #e0ded9;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 220px;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.team-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    background: #ebe9e4;
+}
+
+.team-card h3 {
+    font-size: 1.5rem;
+    color: #a67c52;
+    /* Brownish color for names */
+    margin-bottom: 1rem;
+    font-weight: 700;
+    font-family: 'Source Sans 3', sans-serif;
+    letter-spacing: 0.02em;
+}
+
+.team-card p {
+    color: #5c5b57;
+    line-height: 1.5;
+    font-size: 1rem;
+    margin: 0;
+    font-weight: 500;
+}
+
 @media (max-width: 768px) {
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+
     header h1 {
         font-size: 2rem;
     }
@@ -951,4 +1023,3 @@ footer {
         padding: 0.75rem 0.5rem;
     }
 }
-
