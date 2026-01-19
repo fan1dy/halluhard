@@ -56,13 +56,6 @@ async function init() {
         
         // Initial render
         updateLeaderboard();
-        
-        // Update last updated date
-        document.getElementById('last-updated').textContent = new Date().toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
     } catch (error) {
         console.error('Error initializing leaderboard:', error);
         document.getElementById('leaderboard-body').innerHTML = 
@@ -535,10 +528,38 @@ function renderBarChart(entries = null) {
     xAxis.setAttribute('stroke-width', 2);
     chartGroup.appendChild(xAxis);
     
+    // X-axis ticks with numbers
+    const numTicks = 6; // Number of ticks to show
+    for (let i = 0; i <= numTicks; i++) {
+        const tickValue = (maxRate / numTicks) * i;
+        const tickX = (tickValue / maxRate) * width;
+        
+        // Tick mark line
+        const tickLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        tickLine.setAttribute('x1', tickX);
+        tickLine.setAttribute('y1', height);
+        tickLine.setAttribute('x2', tickX);
+        tickLine.setAttribute('y2', height + 6);
+        tickLine.setAttribute('stroke', '#e2e8f0');
+        tickLine.setAttribute('stroke-width', 1.5);
+        chartGroup.appendChild(tickLine);
+        
+        // Tick label (number)
+        const tickLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        tickLabel.setAttribute('x', tickX);
+        tickLabel.setAttribute('y', height + 22);
+        tickLabel.setAttribute('text-anchor', 'middle');
+        tickLabel.setAttribute('class', 'chart-axis');
+        tickLabel.setAttribute('font-size', '11px');
+        tickLabel.setAttribute('fill', '#64748b');
+        tickLabel.textContent = tickValue.toFixed(1);
+        chartGroup.appendChild(tickLabel);
+    }
+    
     // X-axis label
     const xAxisLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     xAxisLabel.setAttribute('x', width / 2);
-    xAxisLabel.setAttribute('y', height + 40);
+    xAxisLabel.setAttribute('y', height + 50);
     xAxisLabel.setAttribute('text-anchor', 'middle');
     xAxisLabel.setAttribute('class', 'chart-axis');
     xAxisLabel.setAttribute('font-size', '14px');

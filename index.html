@@ -14,6 +14,20 @@
         <header>
             <h1>HalluHard</h1>
             <p class="subtitle">Hallucination Benchmark Leaderboard</p>
+            <div class="header-links" style="margin-top: 1.5rem; margin-bottom: 1rem; display: flex; gap: 1.5rem; justify-content: center; align-items: center; flex-wrap: wrap;">
+                <a href="https://github.com/fan1dy/halluhard" target="_blank" class="header-link" style="color: #faf9f7; text-decoration: none; font-family: 'Avenir', 'Avenir Next', sans-serif; font-weight: 500; font-size: 1.1rem; opacity: 0.9; transition: opacity 0.2s; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.opacity='1'; this.style.textDecoration='underline';" onmouseout="this.style.opacity='0.9'; this.style.textDecoration='none';">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink: 0;">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    GitHub
+                </a>
+                <a href="#" class="header-link paper-link" style="color: #faf9f7; text-decoration: none; font-family: 'Avenir', 'Avenir Next', sans-serif; font-weight: 500; font-size: 1.1rem; opacity: 0.7; transition: opacity 0.2s; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;" onmouseover="this.style.opacity='1';" onmouseout="this.style.opacity='0.7';" onclick="event.preventDefault(); toggleComingSoon(this); return false;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink: 0; opacity: 0.7;">
+                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                    </svg>
+                    Paper <span id="coming-soon-text" style="font-size: 0.9em; font-style: italic; margin-left: 0.25rem; display: none;">(coming soon)</span>
+                </a>
+            </div>
             <!-- <p class="description">
                 A comprehensive benchmark evaluating hallucination rates across multiple domains and conversation turns.
                 Lower hallucination rates indicate better performance.
@@ -30,9 +44,9 @@
         <div class="controls">
             <div class="benchmark-rationale" style="width: 100%; margin-bottom: 20px;">
                 <h3 style="margin-top: 0; margin-bottom: 15px; font-size: 1.2em; font-weight: 600;">Why Do We Need a New Benchmark?</h3>
-                <p style="margin: 0; line-height: 1.6; font-size: 1em;">
-                    Past benchmarks are <strong>saturated</strong>, focus on <strong>single-turn</strong> scenarios, and have <strong>limited judge capability</strong>. 
-                    HalluHard addresses these limitations by providing a challenging multi-turn benchmark with rigorous verification that can read full-text sources including PDFs.
+                <p style="margin: 0; line-height: 1.6; font-size: 1.15em;">
+                    Past benchmarks are <strong>saturated</strong>, focus on <strong>single-turn</strong> scenarios, and have <strong>limited judge capability</strong>. HalluHard addresses these limitations by providing a challenging multi-turn benchmark with rigorous verification that can read and parse full-text sources, including PDFs.
+
                 </p>
             </div>
             <div class="control-group">
@@ -141,12 +155,19 @@
             
             <div class="benchmark-overview"
                 style="background: #f8f9fa; padding: 25px; border-radius: 10px; margin-bottom: 30px; border-left: 4px solid #007bff; max-width: 1200px; margin-left: auto; margin-right: auto;">
-                <p style="font-size: 1.1em; line-height: 1.8; margin: 0;">
+                <p style="font-size: 1.1em; line-height: 1.8; margin: 0 0 1.2em 0;">
                     HalluHard is a challenging multi-turn hallucination benchmark with <strong>950 seed
                         questions</strong> across four domains: legal cases (250), research questions (250), medical
                     guidelines (250), and coding (200). A <strong>user LLM</strong> generates engaging follow-up
                     questions, and we measure <strong>3 rounds of conversation</strong> (initial question plus 2
-                    follow-ups). For legal, research, and medical domains, we sample <strong>5 claims per
+                    follow-ups).
+                </p>
+                <p style="font-size: 1.1em; line-height: 1.8; margin: 0 0 1.2em 0;">
+                    HalluHard elicits open-ended responses while requiring models to ground factual claims in cited sources. 
+                    This design ensures that the benchmark focuses specifically on hallucination (<strong>ungrounded factual mistakes</strong>), not on other aspects of the response.
+                </p>
+                <p style="font-size: 1.1em; line-height: 1.8; margin: 0;">
+                    For legal, research, and medical domains, we sample <strong>5 claims per
                         response</strong> and judge claim-wise; for coding, we judge response-wise. Our verification
                     pipeline extracts claims, retrieves evidence via web search, and fetches full-text sources
                     (including PDF parsing) to verify whether cited material supports the generated content.
@@ -167,10 +188,10 @@
                           --stroke: rgba(0,0,0,.15);
                           --text: rgba(0,0,0,.85);
                           --muted: rgba(0,0,0,.65);
-                          --seed: #d07a00;
-                          --llm:  #1a202c;
-                          --resp: #6b5876;
-                          --hist: #d8bf86;
+                          --seed: rgba(208, 122, 0, 0.6);
+                          --llm:  rgba(26, 32, 44, 0.6);
+                          --resp: rgba(107, 88, 118, 0.6);
+                          --hist: rgba(216, 191, 134, 0.6);
                           --outline1: rgba(214, 125, 63, .75);
                           --outline2: rgba(115, 185, 201, .65);
                           max-width: 1100px;
@@ -208,7 +229,7 @@
                         }
                         .pipeline-panel-title .k{
                           font-style: italic;
-                          font-size: 18px;
+                          font-size: 20px;
                           opacity: .95;
                         }
                         .pipeline-row{
@@ -233,7 +254,7 @@
                           box-shadow: 0 1px 3px rgba(0,0,0,.1);
                           text-align:center;
                           font-weight: 650;
-                          font-size: 13px;
+                          font-size: 15px;
                           color: rgba(0,0,0,.85);
                           position: relative;
                         }
@@ -245,7 +266,7 @@
                           display:block;
                           font-weight: 600;
                           opacity:.95;
-                          font-size: 12px;
+                          font-size: 14px;
                         }
                         .pipeline-box .math{
                           font-family: ui-serif, "Times New Roman", Times, serif;
@@ -277,7 +298,7 @@
                           color: var(--text);
                         }
                         .pipeline-note{
-                          font-size: 11px;
+                          font-size: 13px;
                           color: var(--muted);
                           margin-top: 6px;
                           text-align:center;
@@ -297,7 +318,7 @@
                           border-radius: 999px;
                           border: 1px solid var(--stroke);
                           background: rgba(255,255,255,.4);
-                          font-size: 11px;
+                          font-size: 13px;
                           color: var(--text);
                         }
                         .pipeline-swatch{
@@ -563,7 +584,7 @@
                         width: 130px; height: 70px;
                         background: var(--purple);
                         color: rgba(0,0,0,.85);
-                        font-size: 13px;
+                        font-size: 15px;
                         font-weight: 650;
                         flex-direction:column;
                         gap: 4px;
@@ -573,7 +594,7 @@
                         width: 180px; height: 85px;
                         background: var(--lav);
                         color: rgba(0,0,0,.85);
-                        font-size: 13px;
+                        font-size: 15px;
                         font-weight: 650;
                         flex-direction:column;
                         gap: 4px;
@@ -587,7 +608,7 @@
                         justify-content:flex-start;
                         gap: 8px;
                         padding-left: 14px;
-                        font-size: 13px;
+                        font-size: 15px;
                         color: rgba(0,0,0,.65);
                         font-weight: 650;
                     }
@@ -596,7 +617,7 @@
                         width: 150px; height: 45px;
                         background: var(--orange);
                         border-radius: 6px;
-                        font-size: 13px;
+                        font-size: 15px;
                         font-weight: 650;
                         box-shadow: var(--shadow);
                     }
@@ -605,7 +626,7 @@
                         width: 250px; height: 95px;
                         background: var(--lav);
                         border-radius: 18px;
-                        font-size: 13px;
+                        font-size: 15px;
                         font-weight: 650;
                         flex-direction:column;
                         gap: 8px;
@@ -619,7 +640,7 @@
                         width: 160px; height: 45px;
                         background: var(--orange);
                         border-radius: 6px;
-                        font-size: 13px;
+                        font-size: 15px;
                         font-weight: 650;
                         box-shadow: var(--shadow);
                     }
@@ -627,7 +648,7 @@
                         background: var(--pink);
                         color:rgba(0,0,0,.85);
                         border-radius: 4px;
-                        font-size: 13px;
+                        font-size: 15px;
                         font-weight: 650;
                         box-shadow: var(--shadow);
                     }
@@ -645,7 +666,7 @@
                         background: var(--green);
                         color:rgba(0,0,0,.85);
                         border-radius: 4px;
-                        font-size: 13px;
+                        font-size: 15px;
                         font-weight: 650;
                         box-shadow: var(--shadow);
                     }
@@ -675,7 +696,7 @@
                         position:relative;
                         z-index:1;
                         font-weight:900;
-                        font-size: 16px;
+                        font-size: 18px;
                         background: linear-gradient(90deg,#4285F4,#34A853,#FBBC05,#EA4335);
                         -webkit-background-clip:text;
                         background-clip:text;
@@ -683,7 +704,7 @@
                     }
                     .verification-mark{
                         position:absolute;
-                        font-size: 20px;
+                        font-size: 22px;
                         font-weight: 900;
                         line-height:1;
                         text-shadow: 0 4px 10px rgba(0,0,0,.12);
@@ -849,17 +870,16 @@
 }</code></pre>
             </div>
         </div>
-
-        <footer>
-            <p>Last updated: <span id="last-updated">-</span></p>
-            <p class="footer-links">
-                <a href="https://github.com/fan1dy/halluhard" target="_blank">GitHub</a> |
-                <a href="#" target="_blank">Paper</a> |
-                <a href="#" target="_blank">Documentation</a>
-            </p>
-        </footer>
     </div>
 
+    <script>
+        function toggleComingSoon(element) {
+            const comingSoonText = document.getElementById('coming-soon-text');
+            if (comingSoonText) {
+                comingSoonText.style.display = comingSoonText.style.display === 'none' ? 'inline' : 'none';
+            }
+        }
+    </script>
     <script src="data/leaderboard-data.js"></script>
     <script src="script.js"></script>
 </body>
