@@ -63,13 +63,6 @@ function initTurnStats(domain) {
 
         // Render line chart
         renderLineChart(stats, domain);
-
-        // Update last updated date
-        document.getElementById('last-updated').textContent = new Date().toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
     } catch (error) {
         console.error('Error initializing turn stats:', error);
         document.getElementById('line-chart-container').innerHTML = 
@@ -89,9 +82,17 @@ function renderLineChart(stats, domain) {
     // Clear previous content
     svg.innerHTML = '';
 
-    const margin = { top: 40, right: 200, bottom: 60, left: 80 };
+    // Responsive margins and height based on screen size
+    const isMobile = window.innerWidth <= 768;
+    const margin = isMobile 
+        ? { top: 30, right: 20, bottom: 50, left: 60 }
+        : { top: 40, right: 200, bottom: 60, left: 80 };
+    const chartHeight = isMobile ? 400 : 600;
     const width = svg.clientWidth - margin.left - margin.right;
-    const height = 600 - margin.top - margin.bottom;
+    const height = chartHeight - margin.top - margin.bottom;
+    
+    // Update SVG height dynamically
+    svg.setAttribute('height', chartHeight);
 
     // Find min and max values for scaling
     let minRate = Infinity;
@@ -268,7 +269,7 @@ function renderLineChart(stats, domain) {
     yAxisLabel.setAttribute('text-anchor', 'middle');
     yAxisLabel.setAttribute('transform', 'rotate(-90)');
     yAxisLabel.setAttribute('class', 'chart-axis');
-    yAxisLabel.setAttribute('font-size', '14px');
+    yAxisLabel.setAttribute('font-size', isMobile ? '11px' : '14px');
     yAxisLabel.setAttribute('font-weight', '500');
     yAxisLabel.setAttribute('fill', '#6b6a67');
     yAxisLabel.textContent = 'Hallucination Rate (%)';
@@ -280,7 +281,7 @@ function renderLineChart(stats, domain) {
     title.setAttribute('y', -20);
     title.setAttribute('text-anchor', 'middle');
     title.setAttribute('class', 'chart-title');
-    title.setAttribute('font-size', '18px');
+    title.setAttribute('font-size', isMobile ? '14px' : '18px');
     title.setAttribute('font-weight', '600');
     title.setAttribute('fill', '#3a3936');
     title.setAttribute('font-family', "'Avenir', 'Avenir Next', sans-serif");

@@ -39,9 +39,17 @@ function renderCodingLanguageChart(modelStats, languages, languageLabels) {
         return;
     }
 
-    const margin = { top: 40, right: 40, bottom: 120, left: 80 };
+    // Responsive margins and height based on screen size
+    const isMobile = window.innerWidth <= 768;
+    const margin = isMobile 
+        ? { top: 30, right: 20, bottom: 100, left: 60 }
+        : { top: 40, right: 40, bottom: 120, left: 80 };
+    const chartHeight = isMobile ? 400 : 500;
     const width = svg.clientWidth - margin.left - margin.right;
-    const height = 500 - margin.top - margin.bottom;
+    const height = chartHeight - margin.top - margin.bottom;
+    
+    // Update SVG height dynamically
+    svg.setAttribute('height', chartHeight);
 
     const maxRate = Math.max(...modelStats.flatMap(m => languages.map(lang => m[lang])));
     const barWidth = Math.max(12, (width / modelStats.length) * 0.2); // Width of each bar
@@ -143,7 +151,7 @@ function renderCodingLanguageChart(modelStats, languages, languageLabels) {
     yAxisLabel.setAttribute('y', -50);
     yAxisLabel.setAttribute('text-anchor', 'middle');
     yAxisLabel.setAttribute('class', 'chart-axis');
-    yAxisLabel.setAttribute('font-size', '14px');
+    yAxisLabel.setAttribute('font-size', isMobile ? '11px' : '14px');
     yAxisLabel.setAttribute('font-weight', '600');
     yAxisLabel.setAttribute('transform', 'rotate(-90)');
     yAxisLabel.textContent = 'Hallucination Rate (%)';
@@ -155,7 +163,7 @@ function renderCodingLanguageChart(modelStats, languages, languageLabels) {
     title.setAttribute('y', -20);
     title.setAttribute('text-anchor', 'middle');
     title.setAttribute('class', 'chart-title');
-    title.setAttribute('font-size', '18px');
+    title.setAttribute('font-size', isMobile ? '14px' : '18px');
     title.setAttribute('font-weight', '700');
     title.textContent = 'Hallucination Rates by Programming Language';
     chartGroup.appendChild(title);

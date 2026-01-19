@@ -24,7 +24,7 @@
 
         <div class="turn-stats-container">
             <div id="line-chart-container">
-                <svg id="line-chart" width="100%" height="600"></svg>
+                <svg id="line-chart" width="100%" style="min-height: 400px; height: auto;"></svg>
             </div>
         </div>
 
@@ -32,18 +32,10 @@
             <h2>Reference vs Content Grounding Failures</h2>
             <p class="section-description">Breakdown of hallucination failures into reference grounding (incorrect citations) and content grounding (claims not supported by cited sources).</p>
             <div id="grounding-failures-chart-container">
-                <svg id="grounding-failures-chart" width="100%" height="500"></svg>
+                <svg id="grounding-failures-chart" width="100%" style="min-height: 400px; height: auto;"></svg>
             </div>
         </div>
 
-        <footer>
-            <p>Last updated: <span id="last-updated">-</span></p>
-            <p class="footer-links">
-                <a href="https://github.com/yourusername/halluhard" target="_blank">GitHub</a> |
-                <a href="#" target="_blank">Paper</a> |
-                <a href="#" target="_blank">Documentation</a>
-            </p>
-        </footer>
     </div>
 
     <script src="data/leaderboard-data.js"></script>
