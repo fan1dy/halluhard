@@ -414,7 +414,8 @@ header h1 {
 
 #bar-chart {
     width: 100%;
-    height: 600px;
+    min-height: 400px;
+    height: auto;
 }
 
 .bar-group {
@@ -1078,7 +1079,8 @@ footer {
     }
 
     #bar-chart {
-        height: 400px;
+        min-height: 400px;
+        height: auto;
     }
 
     .turn-progression {
@@ -1372,7 +1374,8 @@ footer {
     }
 
     #bar-chart {
-        height: 300px;
+        min-height: 400px;
+        height: auto;
     }
 
     .pipeline-box {

@@ -432,14 +432,24 @@ function renderBarChart(entries = null) {
     const margin = isMobile 
         ? { top: 30, right: 20, bottom: 80, left: 100 }
         : { top: 40, right: 40, bottom: 100, left: 200 };
-    const chartHeight = isMobile ? 400 : 600;
-    const width = svg.clientWidth - margin.left - margin.right;
-    const height = chartHeight - margin.top - margin.bottom;
     
     const maxRate = Math.max(...entries.map(e => e.rate));
     const minRate = Math.min(...entries.map(e => e.rate));
-    const barHeight = Math.max(20, (height / entries.length) * 0.8);
-    const spacing = height / entries.length;
+    
+    // Define fixed bar height and spacing to prevent overlapping
+    const barHeight = isMobile ? 28 : 32;
+    const barSpacing = isMobile ? 8 : 12;
+    
+    // Calculate required chart height based on number of entries
+    const contentHeight = entries.length * (barHeight + barSpacing) - barSpacing;
+    const chartHeight = contentHeight + margin.top + margin.bottom;
+    
+    // Update SVG height dynamically
+    svg.setAttribute('height', chartHeight);
+    
+    const width = svg.clientWidth - margin.left - margin.right;
+    const height = contentHeight;
+    const spacing = barHeight + barSpacing;
     
     // Create group for chart content
     const chartGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
