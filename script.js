@@ -427,9 +427,14 @@ function renderBarChart(entries = null) {
         return;
     }
     
-    const margin = { top: 40, right: 40, bottom: 100, left: 200 };
+    // Responsive margins based on screen size
+    const isMobile = window.innerWidth <= 768;
+    const margin = isMobile 
+        ? { top: 30, right: 20, bottom: 80, left: 100 }
+        : { top: 40, right: 40, bottom: 100, left: 200 };
+    const chartHeight = isMobile ? 400 : 600;
     const width = svg.clientWidth - margin.left - margin.right;
-    const height = 600 - margin.top - margin.bottom;
+    const height = chartHeight - margin.top - margin.bottom;
     
     const maxRate = Math.max(...entries.map(e => e.rate));
     const minRate = Math.min(...entries.map(e => e.rate));
@@ -479,35 +484,36 @@ function renderBarChart(entries = null) {
         
         // Model name label
         const nameLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        nameLabel.setAttribute('x', -10);
+        nameLabel.setAttribute('x', isMobile ? -5 : -10);
         nameLabel.setAttribute('y', barHeight / 2);
         nameLabel.setAttribute('text-anchor', 'end');
         nameLabel.setAttribute('dominant-baseline', 'middle');
         nameLabel.setAttribute('class', 'chart-axis');
-        nameLabel.setAttribute('font-size', '12px');
+        nameLabel.setAttribute('font-size', isMobile ? '10px' : '12px');
         nameLabel.textContent = formatModelName(entry.model);
         
         // Rate value label on bar
-        if (barWidth > 60) {
+        const minBarWidthForLabel = isMobile ? 50 : 60;
+        if (barWidth > minBarWidthForLabel) {
             const rateLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
             rateLabel.setAttribute('x', barWidth / 2);
             rateLabel.setAttribute('y', barHeight / 2);
             rateLabel.setAttribute('text-anchor', 'middle');
             rateLabel.setAttribute('dominant-baseline', 'middle');
             rateLabel.setAttribute('fill', 'white');
-            rateLabel.setAttribute('font-size', '11px');
+            rateLabel.setAttribute('font-size', isMobile ? '9px' : '11px');
             rateLabel.setAttribute('font-weight', '600');
             rateLabel.textContent = `${entry.rate.toFixed(1)}%`;
             barGroup.appendChild(rateLabel);
         } else {
             // If bar is too narrow, put label outside
             const rateLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-            rateLabel.setAttribute('x', barWidth + 10);
+            rateLabel.setAttribute('x', barWidth + (isMobile ? 5 : 10));
             rateLabel.setAttribute('y', barHeight / 2);
             rateLabel.setAttribute('text-anchor', 'start');
             rateLabel.setAttribute('dominant-baseline', 'middle');
             rateLabel.setAttribute('class', 'chart-axis');
-            rateLabel.setAttribute('font-size', '11px');
+            rateLabel.setAttribute('font-size', isMobile ? '9px' : '11px');
             rateLabel.setAttribute('font-weight', '600');
             rateLabel.textContent = `${entry.rate.toFixed(1)}%`;
             barGroup.appendChild(rateLabel);
@@ -547,10 +553,10 @@ function renderBarChart(entries = null) {
         // Tick label (number)
         const tickLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         tickLabel.setAttribute('x', tickX);
-        tickLabel.setAttribute('y', height + 22);
+        tickLabel.setAttribute('y', height + (isMobile ? 18 : 22));
         tickLabel.setAttribute('text-anchor', 'middle');
         tickLabel.setAttribute('class', 'chart-axis');
-        tickLabel.setAttribute('font-size', '11px');
+        tickLabel.setAttribute('font-size', isMobile ? '9px' : '11px');
         tickLabel.setAttribute('fill', '#64748b');
         tickLabel.textContent = tickValue.toFixed(1);
         chartGroup.appendChild(tickLabel);
@@ -559,10 +565,10 @@ function renderBarChart(entries = null) {
     // X-axis label
     const xAxisLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     xAxisLabel.setAttribute('x', width / 2);
-    xAxisLabel.setAttribute('y', height + 50);
+    xAxisLabel.setAttribute('y', height + (isMobile ? 40 : 50));
     xAxisLabel.setAttribute('text-anchor', 'middle');
     xAxisLabel.setAttribute('class', 'chart-axis');
-    xAxisLabel.setAttribute('font-size', '14px');
+    xAxisLabel.setAttribute('font-size', isMobile ? '11px' : '14px');
     xAxisLabel.setAttribute('font-weight', '600');
     xAxisLabel.textContent = 'Hallucination Rate (%)';
     chartGroup.appendChild(xAxisLabel);
@@ -570,10 +576,10 @@ function renderBarChart(entries = null) {
     // Title
     const title = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     title.setAttribute('x', width / 2);
-    title.setAttribute('y', -20);
+    title.setAttribute('y', isMobile ? -15 : -20);
     title.setAttribute('text-anchor', 'middle');
     title.setAttribute('class', 'chart-title');
-    title.setAttribute('font-size', '18px');
+    title.setAttribute('font-size', isMobile ? '14px' : '18px');
     title.setAttribute('font-weight', '700');
     title.textContent = 'Hallucination Rate by Model';
     chartGroup.appendChild(title);
@@ -584,3 +590,11 @@ function renderBarChart(entries = null) {
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', init);
 
+// Re-render chart on window resize for responsive behavior
+let resizeTimeout;
+window.addEventListener('resize', function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(function() {
+        updateLeaderboard();
+    }, 250);
+});
