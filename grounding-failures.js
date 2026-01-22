@@ -1,3 +1,6 @@
+// Store data for resize handling
+let groundingFailuresData = null;
+
 // Render reference vs content grounding failures chart
 function initGroundingFailures(domain) {
     try {
@@ -18,7 +21,19 @@ function initGroundingFailures(domain) {
             total: domainData[model].reference_failure + domainData[model].content_failure
         })).sort((a, b) => a.total - b.total);
 
+        groundingFailuresData = modelStats;
         renderGroundingFailuresChart(modelStats);
+
+        // Add resize handler
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                if (groundingFailuresData) {
+                    renderGroundingFailuresChart(groundingFailuresData);
+                }
+            }, 250);
+        });
     } catch (error) {
         console.error('Error initializing grounding failures:', error);
         document.getElementById('grounding-failures-chart-container').innerHTML = 
@@ -38,10 +53,20 @@ function renderGroundingFailuresChart(modelStats) {
     // Responsive margins and height based on screen size
     const isMobile = window.innerWidth <= 768;
     const margin = isMobile 
-        ? { top: 30, right: 20, bottom: 140, left: 60 }
-        : { top: 40, right: 40, bottom: 150, left: 80 };
-    const chartHeight = isMobile ? 400 : 500;
-    const width = svg.clientWidth - margin.left - margin.right;
+        ? { top: 50, right: 30, bottom: 160, left: 60 }
+        : { top: 50, right: 40, bottom: 160, left: 80 };
+    const chartHeight = isMobile ? 440 : 520;
+    
+    // For mobile, ensure minimum width so labels don't overlap
+    const containerWidth = svg.clientWidth;
+    const minBarSpacing = isMobile ? 55 : 70; // Minimum space per model group
+    const minChartWidth = modelStats.length * minBarSpacing + margin.left + margin.right;
+    const actualWidth = Math.max(containerWidth, minChartWidth);
+    
+    // Set SVG width to enable horizontal scrolling if needed
+    svg.setAttribute('width', actualWidth);
+    
+    const width = actualWidth - margin.left - margin.right;
     const height = chartHeight - margin.top - margin.bottom;
     
     // Update SVG height dynamically
@@ -89,7 +114,7 @@ function renderGroundingFailuresChart(modelStats) {
         nameLabel.setAttribute('y', height + 15);
         nameLabel.setAttribute('text-anchor', 'end');
         nameLabel.setAttribute('class', 'chart-axis');
-        nameLabel.setAttribute('font-size', '11px');
+        nameLabel.setAttribute('font-size', isMobile ? '9px' : '11px');
         nameLabel.setAttribute('transform', `rotate(-45, ${x + barWidth + groupSpacing / 2}, ${height + 15})`);
         nameLabel.textContent = formatModelName(stat.model);
         chartGroup.appendChild(nameLabel);
@@ -102,7 +127,7 @@ function renderGroundingFailuresChart(modelStats) {
             refLabel.setAttribute('text-anchor', 'middle');
             refLabel.setAttribute('dominant-baseline', 'baseline');
             refLabel.setAttribute('class', 'chart-axis');
-            refLabel.setAttribute('font-size', '10px');
+            refLabel.setAttribute('font-size', isMobile ? '8px' : '10px');
             refLabel.setAttribute('font-weight', '600');
             refLabel.textContent = `${stat.reference.toFixed(1)}%`;
             chartGroup.appendChild(refLabel);
@@ -116,7 +141,7 @@ function renderGroundingFailuresChart(modelStats) {
             contentLabel.setAttribute('text-anchor', 'middle');
             contentLabel.setAttribute('dominant-baseline', 'baseline');
             contentLabel.setAttribute('class', 'chart-axis');
-            contentLabel.setAttribute('font-size', '10px');
+            contentLabel.setAttribute('font-size', isMobile ? '8px' : '10px');
             contentLabel.setAttribute('font-weight', '600');
             contentLabel.textContent = `${stat.content.toFixed(1)}%`;
             chartGroup.appendChild(contentLabel);
@@ -167,42 +192,44 @@ function renderGroundingFailuresChart(modelStats) {
     chartGroup.appendChild(title);
 
     // Legend - positioned lower to avoid overlapping with x-axis labels
-    const legendY = height + (isMobile ? 120 : 130);
-    const legendX = width / 2 - 100;
+    const legendY = height + (isMobile ? 140 : 145);
+    const legendItemWidth = isMobile ? 125 : 150;
+    const legendTotalWidth = legendItemWidth * 2;
+    const legendX = Math.max(10, (width - legendTotalWidth) / 2);
     
     // Reference legend
     const refLegendRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     refLegendRect.setAttribute('x', legendX);
     refLegendRect.setAttribute('y', legendY);
-    refLegendRect.setAttribute('width', 20);
-    refLegendRect.setAttribute('height', 15);
+    refLegendRect.setAttribute('width', 14);
+    refLegendRect.setAttribute('height', 10);
     refLegendRect.setAttribute('fill', '#7a9a8b');
     refLegendRect.setAttribute('rx', 2);
     chartGroup.appendChild(refLegendRect);
     
     const refLegendText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    refLegendText.setAttribute('x', legendX + 25);
-    refLegendText.setAttribute('y', legendY + 12);
+    refLegendText.setAttribute('x', legendX + 18);
+    refLegendText.setAttribute('y', legendY + 9);
     refLegendText.setAttribute('class', 'chart-axis');
-    refLegendText.setAttribute('font-size', '12px');
+    refLegendText.setAttribute('font-size', isMobile ? '10px' : '12px');
     refLegendText.textContent = 'Reference Failure';
     chartGroup.appendChild(refLegendText);
 
     // Content legend
     const contentLegendRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    contentLegendRect.setAttribute('x', legendX + 150);
+    contentLegendRect.setAttribute('x', legendX + legendItemWidth);
     contentLegendRect.setAttribute('y', legendY);
-    contentLegendRect.setAttribute('width', 20);
-    contentLegendRect.setAttribute('height', 15);
+    contentLegendRect.setAttribute('width', 14);
+    contentLegendRect.setAttribute('height', 10);
     contentLegendRect.setAttribute('fill', '#c4a88a');
     contentLegendRect.setAttribute('rx', 2);
     chartGroup.appendChild(contentLegendRect);
     
     const contentLegendText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    contentLegendText.setAttribute('x', legendX + 175);
-    contentLegendText.setAttribute('y', legendY + 12);
+    contentLegendText.setAttribute('x', legendX + legendItemWidth + 18);
+    contentLegendText.setAttribute('y', legendY + 9);
     contentLegendText.setAttribute('class', 'chart-axis');
-    contentLegendText.setAttribute('font-size', '12px');
+    contentLegendText.setAttribute('font-size', isMobile ? '10px' : '12px');
     contentLegendText.textContent = 'Content Failure';
     chartGroup.appendChild(contentLegendText);
 

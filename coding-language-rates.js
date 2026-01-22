@@ -1,3 +1,8 @@
+// Store data for resize handling
+let codingLanguageData = null;
+let codingLanguages = null;
+let codingLanguageLabels = null;
+
 // Render coding language-specific hallucination rates
 function initCodingLanguageRates() {
     try {
@@ -22,7 +27,21 @@ function initCodingLanguageRates() {
                   CODING_LANGUAGE_RATES[model].r + CODING_LANGUAGE_RATES[model].scala) / 4
         })).sort((a, b) => a.avg - b.avg);
 
+        codingLanguageData = modelStats;
+        codingLanguages = languages;
+        codingLanguageLabels = languageLabels;
         renderCodingLanguageChart(modelStats, languages, languageLabels);
+
+        // Add resize handler
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                if (codingLanguageData) {
+                    renderCodingLanguageChart(codingLanguageData, codingLanguages, codingLanguageLabels);
+                }
+            }, 250);
+        });
     } catch (error) {
         console.error('Error initializing coding language rates:', error);
         document.getElementById('coding-language-chart-container').innerHTML = 
@@ -42,10 +61,20 @@ function renderCodingLanguageChart(modelStats, languages, languageLabels) {
     // Responsive margins and height based on screen size
     const isMobile = window.innerWidth <= 768;
     const margin = isMobile 
-        ? { top: 30, right: 20, bottom: 100, left: 60 }
-        : { top: 40, right: 40, bottom: 120, left: 80 };
-    const chartHeight = isMobile ? 400 : 500;
-    const width = svg.clientWidth - margin.left - margin.right;
+        ? { top: 50, right: 30, bottom: 130, left: 60 }
+        : { top: 50, right: 40, bottom: 140, left: 80 };
+    const chartHeight = isMobile ? 440 : 520;
+    
+    // For mobile, ensure minimum width so labels don't overlap
+    const containerWidth = svg.clientWidth;
+    const minBarSpacing = isMobile ? 70 : 85; // Minimum space per model group (4 bars per group)
+    const minChartWidth = modelStats.length * minBarSpacing + margin.left + margin.right;
+    const actualWidth = Math.max(containerWidth, minChartWidth);
+    
+    // Set SVG width to enable horizontal scrolling if needed
+    svg.setAttribute('width', actualWidth);
+    
+    const width = actualWidth - margin.left - margin.right;
     const height = chartHeight - margin.top - margin.bottom;
     
     // Update SVG height dynamically
@@ -91,7 +120,7 @@ function renderCodingLanguageChart(modelStats, languages, languageLabels) {
         nameLabel.setAttribute('y', height + 15);
         nameLabel.setAttribute('text-anchor', 'end');
         nameLabel.setAttribute('class', 'chart-axis');
-        nameLabel.setAttribute('font-size', '11px');
+        nameLabel.setAttribute('font-size', isMobile ? '9px' : '11px');
         nameLabel.setAttribute('transform', `rotate(-45, ${x + (barWidth * languages.length + groupSpacing * (languages.length - 1)) / 2}, ${height + 15})`);
         nameLabel.textContent = formatModelName(stat.model);
         chartGroup.appendChild(nameLabel);
@@ -168,10 +197,11 @@ function renderCodingLanguageChart(modelStats, languages, languageLabels) {
     title.textContent = 'Hallucination Rates by Programming Language';
     chartGroup.appendChild(title);
 
-    // Legend
-    const legendY = height + 100;
-    const legendX = width / 2 - 150;
-    const legendSpacing = 80;
+    // Legend - responsive positioning
+    const legendY = height + (isMobile ? 110 : 120);
+    const legendSpacing = isMobile ? 65 : 80;
+    const legendTotalWidth = languages.length * legendSpacing;
+    const legendX = Math.max(0, (width - legendTotalWidth) / 2);
 
     languages.forEach((lang, index) => {
         const x = legendX + index * legendSpacing;
@@ -179,17 +209,17 @@ function renderCodingLanguageChart(modelStats, languages, languageLabels) {
         const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
         rect.setAttribute('x', x);
         rect.setAttribute('y', legendY);
-        rect.setAttribute('width', 20);
-        rect.setAttribute('height', 15);
+        rect.setAttribute('width', 16);
+        rect.setAttribute('height', 12);
         rect.setAttribute('fill', colors[lang]);
         rect.setAttribute('rx', 2);
         chartGroup.appendChild(rect);
         
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        text.setAttribute('x', x + 25);
-        text.setAttribute('y', legendY + 12);
+        text.setAttribute('x', x + 20);
+        text.setAttribute('y', legendY + 10);
         text.setAttribute('class', 'chart-axis');
-        text.setAttribute('font-size', '12px');
+        text.setAttribute('font-size', isMobile ? '10px' : '12px');
         text.textContent = languageLabels[lang];
         chartGroup.appendChild(text);
     });

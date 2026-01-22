@@ -757,10 +757,20 @@ footer {
     margin-right: auto;
 }
 
+#grounding-failures-chart-container,
+#coding-language-chart-container {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    padding-top: 5px;
+}
+
 #grounding-failures-chart,
 #coding-language-chart {
-    width: 100%;
+    display: block;
     height: 500px;
+    overflow: visible;
 }
 
 .grounding-bar,
@@ -1331,9 +1341,28 @@ footer {
         padding: 0.5rem 0.375rem;
     }
 
+    #grounding-failures-chart-container,
+    #coding-language-chart-container {
+        position: relative;
+        margin-bottom: 1rem;
+        padding-top: 10px;
+    }
+
+    /* Add scroll hint indicator for mobile */
+    #grounding-failures-chart-container::after,
+    #coding-language-chart-container::after {
+        content: '← Scroll →';
+        display: block;
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        padding: 0.5rem;
+        opacity: 0.7;
+    }
+
     #grounding-failures-chart,
     #coding-language-chart {
-        height: 350px;
+        height: 420px;
     }
 
     #line-chart {
