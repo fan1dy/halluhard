@@ -74,6 +74,16 @@ const LEADERBOARD_DATA = {
             "3": 49.5,
             "5": 48.0
         },
+        "gpt-5.2-thinking": {
+            "1": 32.0,
+            "3": 34.0,
+            "5": 30.5
+        },
+        "glm-4-7-thinking": {
+            "1": 64.5,
+            "3": 58.0,
+            "5": 58.5
+        },
         "kimi-k2-thinking": {
             "1": 61.5,
             "3": 60.0,
@@ -152,6 +162,16 @@ const LEADERBOARD_DATA = {
             "5": 60.2,
             "7": 63.8
         },
+        "gpt-5.2-thinking": {
+            "1": 26.0,
+            "3": 34.4,
+            "5": 39.9
+        },
+        "glm-4-7-thinking": {
+            "1": 49.4,
+            "3": 68.5,
+            "5": 77.1
+        },
         "kimi-k2-thinking": {
             "1": 51.5,
             "3": 75.7,
@@ -228,6 +248,16 @@ const LEADERBOARD_DATA = {
             "1": 92.6,
             "3": 93.8,
             "5": 95.3
+        },
+        "gpt-5.2-thinking": {
+            "1": 68.2,
+            "3": 74.4,
+            "5": 78.7
+        },
+        "glm-4-7-thinking": {
+            "1": 89.4,
+            "3": 94.7,
+            "5": 91.1
         },
         "kimi-k2-thinking": {
             "1": 91.2,
@@ -306,6 +336,16 @@ const LEADERBOARD_DATA = {
             "3": 92.5,
             "5": 93.5
         },
+        "gpt-5.2-thinking": {
+            "1": 68.5,
+            "3": 77.3,
+            "5": 80.2
+        },
+        "glm-4-7-thinking": {
+            "1": 87.9,
+            "3": 93.3,
+            "5": 95.1
+        },
         "kimi-k2-thinking": {
             "1": 89.4,
             "3": 94.9,
@@ -332,7 +372,9 @@ const OVERALL_RATES = {
         "gpt-5-nano": 71.0,
         "gpt-5.2-medium-websearch": 15.8,
         "gpt-5.2": 36.8,
+        "gpt-5.2-thinking": 32.2,
         "gpt-5": 50.3,
+        "glm-4-7-thinking": 60.3,
         "kimi-k2-thinking": 61.8
     },
     "legal_cases": {
@@ -348,7 +390,9 @@ const OVERALL_RATES = {
         "gpt-5-nano": 77.3,
         "gpt-5.2-medium-websearch": 35.6,
         "gpt-5.2": 46.4,
+        "gpt-5.2-thinking": 33.5,
         "gpt-5": 52.8,
+        "glm-4-7-thinking": 64.6,
         "kimi-k2-thinking": 70.0
     },
     "medical_guidelines": {
@@ -365,7 +409,9 @@ const OVERALL_RATES = {
         "gpt-5-nano": 95.3,
         "gpt-5.2-medium-websearch": 48.8,
         "gpt-5.2": 72.7,
+        "gpt-5.2-thinking": 74.0,
         "gpt-5": 92.8,
+        "glm-4-7-thinking": 91.7,
         "kimi-k2-thinking": 95.0
     },
     "research_questions": {
@@ -382,7 +428,9 @@ const OVERALL_RATES = {
         "gpt-5-nano": 96.9,
         "gpt-5.2-medium-websearch": 52.6,
         "gpt-5.2": 79.4,
+        "gpt-5.2-thinking": 75.3,
         "gpt-5": 91.1,
+        "glm-4-7-thinking": 92.0,
         "kimi-k2-thinking": 93.5
     }
 };

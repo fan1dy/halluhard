@@ -175,6 +175,113 @@
             </div>
         </div>
 
+        <div class="info-section" style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
+            <h2>Example Hallucinated Claims</h2>
+            
+            <p style="font-size: 1.1em; line-height: 1.8; margin-bottom: 25px; color: #555;">
+                The following examples illustrate how our verification pipeline evaluates claims by checking both reference grounding (whether the cited source exists) and content grounding (whether the source supports the claim). Each example shows the claim, verification results, and final verdict.
+            </p>
+
+            <style>
+                .example-claim {
+                    background: white;
+                    border: 1px solid #e9ecef;
+                    border-radius: 8px;
+                    margin-bottom: 25px;
+                    overflow: hidden;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                .example-header {
+                    background: #f8f9fa;
+                    padding: 15px;
+                    border-bottom: 1px solid #e9ecef;
+                    font-weight: 600;
+                    color: #495057;
+                }
+                .example-content {
+                    padding: 20px;
+                }
+                .claim-text {
+                    font-style: italic;
+                    color: #495057;
+                    margin-bottom: 15px;
+                    padding: 12px;
+                    background: #f8f9fa;
+                    border-left: 3px solid #6c757d;
+                    line-height: 1.6;
+                }
+                .claim-field {
+                    margin-bottom: 8px;
+                    padding: 8px 12px;
+                    background: #f8f9fa;
+                    border-left: 3px solid #6c757d;
+                    font-size: 0.95em;
+                }
+                .claim-field strong {
+                    color: #495057;
+                }
+                .status-badges {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                    margin-top: 15px;
+                }
+                .badge {
+                    padding: 8px 12px;
+                    border-radius: 4px;
+                    font-size: 0.9em;
+                    font-weight: 600;
+                    flex: 1;
+                    min-width: 200px;
+                }
+                .badge.success {
+                    background-color: #d4edda;
+                    color: #155724;
+                    border: 1px solid #c3e6cb;
+                }
+                .badge.danger {
+                    background-color: #f8d7da;
+                    color: #721c24;
+                    border: 1px solid #f5c6cb;
+                }
+            </style>
+
+            <div style="margin-top: 30px;">
+                <!-- Research Questions - Content Grounding Failure -->
+                <div class="example-claim">
+                    <div class="example-header">
+                        <span style="background: #007bff; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.85em; margin-right: 8px;">Research Questions</span>
+                        Example: Content Grounding Failure
+                    </div>
+                    <div class="example-content">
+                        <div class="claim-text">
+                            <strong>Claim:</strong> SimpleQA (Wei et al. 2024) gathers challenging fact-seek questions that cover diverse topics and time-sensitive knowledge.
+                        </div>
+                        <div class="claim-field">
+                            <strong>Reference:</strong> Wei et al. (2024). "Measuring short-form factuality in large language models." 
+                        </div>
+                        <div class="status-badges">
+                            <span class="badge success">
+                                <strong>Reference:</strong> Yes. The cited paper exists and the details are correct.
+                            </span>
+                            <span class="badge danger">
+                                <strong>Content:</strong> No. The content is partially fabricated, as SimpleQA emphasizes that "reference answers should not change over time".
+                            </span>
+                            <span class="badge danger">
+                                <strong>Verdict:</strong> Hallucination
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 30px; border-left: 4px solid #6c757d;">
+                <p style="margin: 0; font-size: 1.05em; line-height: 1.7; color: #495057;">
+                    <strong>Note:</strong> Our verification pipeline performs two-stage verification: <strong>reference grounding</strong> checks whether the cited source exists and is correctly cited, while <strong>content grounding</strong> verifies whether the cited source actually supports the claim. A claim is marked as a hallucination if either verification fails. The pipeline parses full-text sources, including PDFs, to perform accurate content verification.
+                </p>
+            </div>
+        </div>
+
         <div class="pipeline-section" style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
             <h2>Pipeline Overview</h2>
             

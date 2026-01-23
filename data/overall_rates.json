@@ -13,7 +13,9 @@
     "gpt-5-nano": 71.0,
     "gpt-5.2-medium-websearch": 15.8,
     "gpt-5.2": 36.8,
+    "gpt-5.2-thinking": 0.0,
     "gpt-5": 50.3,
+    "glm-4-7-thinking": 0.0,
     "kimi-k2-thinking": 61.8
 },
 "legal_cases": {
@@ -29,7 +31,9 @@
     "gpt-5-nano": 77.3,
     "gpt-5.2-medium-websearch": 35.6,
     "gpt-5.2": 46.4,
+    "gpt-5.2-thinking": 33.5,
     "gpt-5": 52.8,
+    "glm-4-7-thinking": 64.6,
     "kimi-k2-thinking": 70.0
 },
 "medical_guidelines": {
@@ -46,7 +50,9 @@
     "gpt-5-nano": 95.3,
     "gpt-5.2-medium-websearch": 48.8,
     "gpt-5.2": 72.7,
+    "gpt-5.2-thinking": 74.0,
     "gpt-5": 92.8,
+    "glm-4-7-thinking": 91.7,
     "kimi-k2-thinking": 95.0
 },
 "research_questions": {
@@ -63,7 +69,9 @@
     "gpt-5-nano": 96.9,
     "gpt-5.2-medium-websearch": 52.6,
     "gpt-5.2": 79.4,
+    "gpt-5.2-thinking": 75.3,
     "gpt-5": 91.1,
+    "glm-4-7-thinking": 92.0,
     "kimi-k2-thinking": 93.5
 }
 }
