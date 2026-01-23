@@ -85,9 +85,9 @@ function renderLineChart(stats, domain) {
     // Responsive margins and height based on screen size
     const isMobile = window.innerWidth <= 768;
     const margin = isMobile 
-        ? { top: 30, right: 20, bottom: 50, left: 60 }
-        : { top: 40, right: 200, bottom: 60, left: 80 };
-    const chartHeight = isMobile ? 400 : 600;
+        ? { top: 50, right: 20, bottom: 50, left: 60 }
+        : { top: 50, right: 200, bottom: 60, left: 80 };
+    const chartHeight = isMobile ? 420 : 600;
     const width = svg.clientWidth - margin.left - margin.right;
     const height = chartHeight - margin.top - margin.bottom;
     
