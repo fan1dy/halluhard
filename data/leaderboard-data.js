@@ -374,7 +374,7 @@ const OVERALL_RATES = {
         "gpt-5.2": 36.8,
         "gpt-5.2-thinking": 32.2,
         "gpt-5": 50.3,
-        "glm-4-7-thinking": 60.3,
+        "glm-4-7-thinking": 59.2,
         "kimi-k2-thinking": 61.8
     },
     "legal_cases": {
@@ -392,7 +392,7 @@ const OVERALL_RATES = {
         "gpt-5.2": 46.4,
         "gpt-5.2-thinking": 33.5,
         "gpt-5": 52.8,
-        "glm-4-7-thinking": 64.6,
+        "glm-4-7-thinking": 67.7,
         "kimi-k2-thinking": 70.0
     },
     "medical_guidelines": {
@@ -411,7 +411,7 @@ const OVERALL_RATES = {
         "gpt-5.2": 72.7,
         "gpt-5.2-thinking": 74.0,
         "gpt-5": 92.8,
-        "glm-4-7-thinking": 91.7,
+        "glm-4-7-thinking": 90.9,
         "kimi-k2-thinking": 95.0
     },
     "research_questions": {
@@ -430,7 +430,7 @@ const OVERALL_RATES = {
         "gpt-5.2": 79.4,
         "gpt-5.2-thinking": 75.3,
         "gpt-5": 91.1,
-        "glm-4-7-thinking": 92.0,
+        "glm-4-7-thinking": 90.7,
         "kimi-k2-thinking": 93.5
     }
 };
