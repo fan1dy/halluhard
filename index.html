@@ -64,8 +64,8 @@
                 <select id="turn-select">
                     <option value="avg" selected>Average</option>
                     <option value="1">Turn 1</option>
-                    <option value="3">Turn 3</option>
-                    <option value="5">Turn 5</option>
+                    <option value="3">Turn 2</option>
+                    <option value="5">Turn 3</option>
                 </select>
             </div>
         </div>
@@ -542,6 +542,139 @@
                 <p style="margin-top: 15px; line-height: 1.6; color: #666; font-size: 1.1em;">
                     Our multi-turn response generation pipeline uses a user LLM to generate engaging follow-up questions based on conversation history, creating natural multi-turn dialogues.
                 </p>
+
+                <!-- Chat Display Example -->
+                <div style="margin-top: 30px;">
+                    <h4 style="font-size: 1.1em; margin-bottom: 15px; font-weight: 600; color: #3a3936;">Example Conversation</h4>
+                    <style>
+                        .chat-container {
+                            max-width: 600px;
+                            margin: 0 auto;
+                            padding: 20px;
+                            background: rgba(255,255,255,0.4);
+                            border-radius: 16px;
+                            border: 1px solid rgba(0,0,0,0.1);
+                        }
+                        .chat-turn {
+                            margin-bottom: 12px;
+                        }
+                        .chat-turn:last-child {
+                            margin-bottom: 0;
+                        }
+                        .chat-turn-response {
+                            padding-top: 10px;
+                        }
+                        .chat-bubble {
+                            max-width: 85%;
+                            padding: 12px 16px;
+                            border-radius: 18px;
+                            font-size: 14px;
+                            line-height: 1.5;
+                            position: relative;
+                            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+                        }
+                        .chat-query {
+                            margin-left: auto;
+                            border-bottom-right-radius: 6px;
+                            text-align: left;
+                        }
+                        .chat-query.seed {
+                            background: rgba(208, 122, 0, 0.6);
+                            color: rgba(0,0,0,0.85);
+                        }
+                        .chat-query.llm-generated {
+                            background: rgba(26, 32, 44, 0.7);
+                            color: rgba(255,255,255,0.95);
+                        }
+                        .chat-response {
+                            margin-right: auto;
+                            background: rgba(107, 88, 118, 0.5);
+                            color: rgba(0,0,0,0.85);
+                            border-bottom-left-radius: 6px;
+                        }
+                        .chat-label {
+                            font-size: 11px;
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                            opacity: 0.7;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                        }
+                        .chat-query .chat-label {
+                            text-align: right;
+                        }
+                        .chat-response .chat-label {
+                            text-align: left;
+                        }
+                        .turn-divider {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin: 12px 0;
+                            gap: 10px;
+                        }
+                        .turn-divider span {
+                            font-size: 11px;
+                            color: rgba(0,0,0,0.4);
+                            font-weight: 500;
+                        }
+                        .turn-divider::before,
+                        .turn-divider::after {
+                            content: '';
+                            flex: 1;
+                            height: 1px;
+                            background: rgba(0,0,0,0.1);
+                        }
+                    </style>
+                    <div class="chat-container">
+                        <!-- Turn 1 -->
+                        <div class="chat-turn">
+                            <div class="chat-bubble chat-query seed" style="display: inline-block; float: right; clear: both;">
+                                <div class="chat-label">Seed Query</div>
+                                What was the ruling in Miranda v. Arizona?
+                            </div>
+                        </div>
+                        <div class="chat-turn chat-turn-response" style="clear: both;">
+                            <div class="chat-bubble chat-response" style="display: inline-block; float: left; clear: both;">
+                                <div class="chat-label">Response</div>
+                                The Supreme Court ruled 5-4 that detained suspects must be informed of their rights before police questioning. This established the "Miranda rights" requirement.
+                            </div>
+                        </div>
+
+                        <div class="turn-divider" style="clear: both;"><span>Turn 2</span></div>
+
+                        <!-- Turn 2 -->
+                        <div class="chat-turn">
+                            <div class="chat-bubble chat-query llm-generated" style="display: inline-block; float: right; clear: both;">
+                                <div class="chat-label">Follow-up Query</div>
+                                What happens if police fail to read Miranda rights?
+                            </div>
+                        </div>
+                        <div class="chat-turn chat-turn-response" style="clear: both;">
+                            <div class="chat-bubble chat-response" style="display: inline-block; float: left; clear: both;">
+                                <div class="chat-label">Response</div>
+                                Statements obtained without Miranda warnings are typically inadmissible in court. However, physical evidence discovered may still be used under the "fruit of the poisonous tree" doctrine exceptions.
+                            </div>
+                        </div>
+
+                        <div class="turn-divider" style="clear: both;"><span>Turn 3</span></div>
+
+                        <!-- Turn 3 -->
+                        <div class="chat-turn">
+                            <div class="chat-bubble chat-query llm-generated" style="display: inline-block; float: right; clear: both;">
+                                <div class="chat-label">Follow-up Query</div>
+                                Who wrote the dissenting opinion?
+                            </div>
+                        </div>
+                        <div class="chat-turn chat-turn-response" style="clear: both;">
+                            <div class="chat-bubble chat-response" style="display: inline-block; float: left; clear: both;">
+                                <div class="chat-label">Response</div>
+                                Justice John Marshall Harlan II wrote the primary dissent, arguing the ruling would hamper law enforcement. Justices Clark, Stewart, and White also dissented.
+                            </div>
+                        </div>
+                        <div style="clear: both;"></div>
+                    </div>
+                </div>
             </div>
 
             <div style="margin-bottom: 40px;">
