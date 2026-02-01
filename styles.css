@@ -1055,11 +1055,44 @@ footer {
 
     .rank-col {
         width: 50px;
+        position: sticky;
+        left: 0;
+        background: var(--bg-secondary);
+        z-index: 2;
+        box-shadow: 2px 0 4px rgba(0, 0, 0, 0.06);
+    }
+
+    .leaderboard tbody .rank-col {
+        background: white;
+        z-index: 1;
+    }
+
+    .leaderboard tbody tr:hover .rank-col {
+        background: var(--bg-secondary);
     }
 
     .model-col {
-        min-width: 120px;
+        min-width: 140px;
+        max-width: none;
         font-size: 0.8rem;
+        white-space: normal;
+        word-break: break-word;
+        overflow: visible;
+        /* Sticky so model names stay visible when scrolling table horizontally */
+        position: sticky;
+        left: 50px;
+        background: white;
+        z-index: 1;
+        box-shadow: 2px 0 4px rgba(0, 0, 0, 0.06);
+    }
+
+    .leaderboard thead .model-col {
+        background: var(--bg-secondary);
+        z-index: 2;
+    }
+
+    .leaderboard tbody tr:hover .model-col {
+        background: var(--bg-secondary);
     }
 
     .rate-col {
@@ -1398,8 +1431,11 @@ footer {
     }
 
     .model-col {
-        min-width: 100px;
+        min-width: 120px;
         font-size: 0.75rem;
+        white-space: normal;
+        word-break: break-word;
+        overflow: visible;
     }
 
     #bar-chart {
