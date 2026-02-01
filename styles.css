@@ -1042,13 +1042,10 @@ footer {
 
     .leaderboard-container {
         padding: 1rem;
-        -webkit-overflow-scrolling: touch;
     }
 
     .leaderboard {
         font-size: 0.75rem;
-        min-width: 480px;
-        table-layout: fixed;
     }
 
     .leaderboard th,
@@ -1075,10 +1072,9 @@ footer {
     }
 
     .model-col {
-        width: 200px;
-        min-width: 200px;
+        min-width: 140px;
         max-width: none;
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         white-space: normal;
         word-break: break-word;
         overflow: visible;
@@ -1123,14 +1119,11 @@ footer {
 
     .chart-container {
         padding: 1rem;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
     }
 
     #bar-chart {
         min-height: 400px;
         height: auto;
-        overflow: visible;
     }
 
     .turn-progression {
@@ -1439,7 +1432,7 @@ footer {
 
     .model-col {
         min-width: 120px;
-        font-size: 0.7rem;
+        font-size: 0.75rem;
         white-space: normal;
         word-break: break-word;
         overflow: visible;
