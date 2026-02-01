@@ -427,6 +427,35 @@ header h1 {
     opacity: 0.8;
 }
 
+/* Long-press popup for model name on mobile */
+.chart-model-popup {
+    position: fixed;
+    z-index: 9999;
+    padding: 0.5rem 0.75rem;
+    background: var(--text-primary);
+    color: var(--bg-color);
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+    pointer-events: none;
+    transform: translate(-50%, -100%);
+    max-width: 90vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chart-model-popup::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border: 6px solid transparent;
+    border-top-color: var(--text-primary);
+}
+
 .bar {
     transition: opacity 0.2s;
 }

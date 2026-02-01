@@ -397,6 +397,73 @@ function formatModelName(name) {
     return name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 }
 
+// Long-press popup for model name on mobile
+let chartModelPopupEl = null;
+let chartModelPopupHideTimer = null;
+let barLongPressTimer = null;
+
+function getChartModelPopup() {
+    if (!chartModelPopupEl) {
+        chartModelPopupEl = document.createElement('div');
+        chartModelPopupEl.className = 'chart-model-popup';
+        chartModelPopupEl.setAttribute('aria-live', 'polite');
+        chartModelPopupEl.style.display = 'none';
+        document.body.appendChild(chartModelPopupEl);
+        document.addEventListener('touchstart', onDocumentTouchForPopup, { passive: true });
+    }
+    return chartModelPopupEl;
+}
+
+function showChartModelPopup(modelName, clientX, clientY) {
+    const popup = getChartModelPopup();
+    popup.textContent = formatModelName(modelName);
+    popup.style.left = clientX + 'px';
+    popup.style.top = (clientY - 12) + 'px';
+    popup.style.display = 'block';
+    if (chartModelPopupHideTimer) clearTimeout(chartModelPopupHideTimer);
+    chartModelPopupHideTimer = setTimeout(hideChartModelPopup, 2500);
+}
+
+function hideChartModelPopup() {
+    if (chartModelPopupEl) chartModelPopupEl.style.display = 'none';
+    if (chartModelPopupHideTimer) {
+        clearTimeout(chartModelPopupHideTimer);
+        chartModelPopupHideTimer = null;
+    }
+}
+
+function onDocumentTouchForPopup(e) {
+    if (chartModelPopupEl && chartModelPopupEl.style.display === 'block' && !e.target.closest('.bar-group')) {
+        hideChartModelPopup();
+    }
+}
+
+function setupBarLongPress(barGroup, modelName) {
+    barGroup.addEventListener('touchstart', function (e) {
+        if (e.touches.length !== 1) return;
+        const touch = e.touches[0];
+        barLongPressTimer = setTimeout(function () {
+            barLongPressTimer = null;
+            showChartModelPopup(modelName, touch.clientX, touch.clientY);
+        }, 500);
+    }, { passive: true });
+    barGroup.addEventListener('touchend', function () {
+        if (barLongPressTimer) {
+            clearTimeout(barLongPressTimer);
+            barLongPressTimer = null;
+        }
+    });
+    barGroup.addEventListener('touchmove', function () {
+        if (barLongPressTimer) {
+            clearTimeout(barLongPressTimer);
+            barLongPressTimer = null;
+        }
+    });
+    barGroup.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+    });
+}
+
 // Render bar chart
 function renderBarChart(entries = null) {
     if (!entries) {
@@ -429,7 +496,7 @@ function renderBarChart(entries = null) {
         return;
     }
     
-    // Responsive margins based on screen size
+    // Responsive margins (on mobile, long-press a bar to see full model name)
     const isMobile = window.innerWidth <= 768;
     const margin = isMobile 
         ? { top: 30, right: 20, bottom: 80, left: 100 }
@@ -534,6 +601,9 @@ function renderBarChart(entries = null) {
         barGroup.appendChild(bar);
         barGroup.appendChild(nameLabel);
         chartGroup.appendChild(barGroup);
+        if (isMobile) {
+            setupBarLongPress(barGroup, entry.model);
+        }
     });
     
     // X-axis
