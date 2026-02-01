@@ -38,18 +38,18 @@ function initTurnStats(domain) {
         const stats = models.map(model => {
             const turns = domainData[model];
             const turn1 = turns["1"] !== undefined ? Number(turns["1"]) : null;
-            const turn3 = turns["3"] !== undefined ? Number(turns["3"]) : null;
-            const turn5 = turns["5"] !== undefined ? Number(turns["5"]) : null;
+            const turn2 = turns["3"] !== undefined ? Number(turns["3"]) : null;  // Data turn 3 → Display Turn 2
+            const turn3 = turns["5"] !== undefined ? Number(turns["5"]) : null;  // Data turn 5 → Display Turn 3
             
             // Calculate average
-            const rates = [turn1, turn3, turn5].filter(r => r !== null);
+            const rates = [turn1, turn2, turn3].filter(r => r !== null);
             const avg = rates.length > 0 ? rates.reduce((a, b) => a + b, 0) / rates.length : null;
             
             return {
                 model,
                 turn1,
+                turn2,
                 turn3,
-                turn5,
                 avg
             };
         });
@@ -99,7 +99,7 @@ function renderLineChart(stats, domain) {
     let maxRate = -Infinity;
     
     stats.forEach(stat => {
-        [stat.turn1, stat.turn3, stat.turn5].forEach(rate => {
+        [stat.turn1, stat.turn2, stat.turn3].forEach(rate => {  // turn1, turn2, turn3 for display
             if (rate !== null) {
                 minRate = Math.min(minRate, rate);
                 maxRate = Math.max(maxRate, rate);
@@ -117,9 +117,9 @@ function renderLineChart(stats, domain) {
     chartGroup.setAttribute('transform', `translate(${margin.left}, ${margin.top})`);
 
     // X scale (turns)
-    const turns = [1, 3, 5];
-    const xScale = (turn) => ((turn - 1) / 4) * width;
-    const xStep = width / 4;
+    const turns = [1, 2, 3];
+    const xScale = (turn) => ((turn - 1) / 2) * width;
+    const xStep = width / 2;
 
     // Y scale (rates)
     const yScale = (rate) => height - ((rate - minRate) / (maxRate - minRate)) * height;
