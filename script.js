@@ -429,10 +429,10 @@ function renderBarChart(entries = null) {
         return;
     }
     
-    // Responsive margins based on screen size
+    // Responsive margins based on screen size (left margin must fit full model names)
     const isMobile = window.innerWidth <= 768;
     const margin = isMobile 
-        ? { top: 30, right: 20, bottom: 80, left: 100 }
+        ? { top: 30, right: 20, bottom: 80, left: 220 }
         : { top: 40, right: 40, bottom: 100, left: 200 };
     
     const maxRate = Math.max(...entries.map(e => e.rate));
@@ -501,7 +501,7 @@ function renderBarChart(entries = null) {
         nameLabel.setAttribute('text-anchor', 'end');
         nameLabel.setAttribute('dominant-baseline', 'middle');
         nameLabel.setAttribute('class', 'chart-axis');
-        nameLabel.setAttribute('font-size', isMobile ? '10px' : '12px');
+        nameLabel.setAttribute('font-size', isMobile ? '9px' : '12px');
         nameLabel.textContent = formatModelName(entry.model);
         
         // Rate value label on bar
