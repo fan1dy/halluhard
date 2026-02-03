@@ -568,6 +568,7 @@ function renderBarChart(entries = null) {
         nameLabel.setAttribute('text-anchor', 'end');
         nameLabel.setAttribute('dominant-baseline', 'middle');
         nameLabel.setAttribute('class', 'chart-axis');
+        nameLabel.setAttribute('fill', '#3a3936');
         nameLabel.setAttribute('font-size', isMobile ? '10px' : '12px');
         nameLabel.textContent = formatModelName(entry.model);
         

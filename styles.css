@@ -295,7 +295,7 @@ header h1 {
 }
 
 .rank-col {
-    width: 90px;
+    width: 110px;
     text-align: center;
     font-weight: 700;
     color: var(--text-secondary);
@@ -306,10 +306,12 @@ header h1 {
     color: var(--text-primary);
     min-width: 180px;
     font-family: 'Avenir', 'Avenir Next', sans-serif;
+    font-size: 1.15rem;
 }
 
 .rate-col {
     width: 160px;
+    white-space: nowrap;
 }
 
 .rate-value {
