@@ -91,5 +91,11 @@ const CODING_LANGUAGE_RATES = {
         "python": 44.0,
         "r": 70.7,
         "scala": 66.7
+    },
+    "kimi-k2.5-thinking": {
+        "elixir": 62.0,
+        "python": 40.0,
+        "r": 52.0,
+        "scala": 70.7
     }
 };
