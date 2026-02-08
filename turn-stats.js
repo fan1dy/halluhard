@@ -288,33 +288,80 @@ function renderLineChart(stats, domain) {
     title.textContent = 'Turn-wise Hallucination Rates';
     chartGroup.appendChild(title);
 
-    // Legend
+    // Legend (clickable: highlight corresponding line)
     const legendGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     legendGroup.setAttribute('transform', `translate(${width + 20}, 0)`);
-    
+
+    let highlightedModel = null;
+
+    function setHighlight(model) {
+        highlightedModel = model;
+        // Update chart lines and points
+        chartGroup.querySelectorAll('.line-path').forEach(el => {
+            const m = el.getAttribute('data-model');
+            if (highlightedModel === null || m === highlightedModel) {
+                el.setAttribute('opacity', '1');
+                el.setAttribute('stroke-width', m === highlightedModel ? 3.5 : 2.5);
+            } else {
+                el.setAttribute('opacity', '0.2');
+                el.setAttribute('stroke-width', '2.5');
+            }
+        });
+        chartGroup.querySelectorAll('.line-point').forEach(el => {
+            const m = el.getAttribute('data-model');
+            if (highlightedModel === null || m === highlightedModel) {
+                el.setAttribute('opacity', '1');
+                el.setAttribute('r', m === highlightedModel ? 5 : 4);
+            } else {
+                el.setAttribute('opacity', '0.2');
+                el.setAttribute('r', '4');
+            }
+        });
+        // Update legend item styles
+        legendGroup.querySelectorAll('.legend-item').forEach(g => {
+            const m = g.getAttribute('data-model');
+            const isActive = highlightedModel === null || m === highlightedModel;
+            g.setAttribute('opacity', isActive ? '1' : '0.4');
+            const t = g.querySelector('text');
+            if (t) t.setAttribute('font-weight', m === highlightedModel ? '600' : '400');
+        });
+    }
+
     stats.forEach((stat, index) => {
         const y = index * 25;
         const color = modelColors[stat.model];
-        
+
+        const itemGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        itemGroup.setAttribute('class', 'legend-item');
+        itemGroup.setAttribute('data-model', stat.model);
+        itemGroup.setAttribute('transform', `translate(0, ${y})`);
+        itemGroup.style.cursor = 'pointer';
+
         // Legend line
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         line.setAttribute('x1', 0);
-        line.setAttribute('y1', y + 5);
+        line.setAttribute('y1', 5);
         line.setAttribute('x2', 20);
-        line.setAttribute('y2', y + 5);
+        line.setAttribute('y2', 5);
         line.setAttribute('stroke', color);
         line.setAttribute('stroke-width', 2.5);
-        legendGroup.appendChild(line);
-        
+        itemGroup.appendChild(line);
+
         // Legend text
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         text.setAttribute('x', 25);
-        text.setAttribute('y', y + 8);
+        text.setAttribute('y', 8);
         text.setAttribute('font-size', '12px');
         text.setAttribute('fill', '#3a3936');
         text.setAttribute('font-family', "'Avenir', 'Avenir Next', sans-serif");
         text.textContent = formatModelName(stat.model);
-        legendGroup.appendChild(text);
+        itemGroup.appendChild(text);
+
+        itemGroup.addEventListener('click', () => {
+            setHighlight(highlightedModel === stat.model ? null : stat.model);
+        });
+
+        legendGroup.appendChild(itemGroup);
     });
 
     chartGroup.appendChild(legendGroup);
@@ -337,7 +384,8 @@ function formatModelName(name) {
         'gemini-3-pro': 'Gemini-3-Pro',
         'deepseek-chat': 'DeepSeek-Chat',
         'deepseek-reasoner': 'DeepSeek-Reasoner',
-        'kimi-k2-thinking': 'Kimi-K2-thinking'
+        'kimi-k2-thinking': 'Kimi-K2-thinking',
+        'kimi-k2.5-thinking': 'Kimi-K2.5-thinking'
     };
     
     if (nameMap[name]) {

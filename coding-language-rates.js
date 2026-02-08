@@ -243,7 +243,8 @@ function formatModelName(name) {
         'gemini-3-pro': 'Gemini-3-Pro',
         'deepseek-chat': 'DeepSeek-Chat',
         'deepseek-reasoner': 'DeepSeek-Reasoner',
-        'kimi-k2-thinking': 'Kimi-K2-thinking'
+        'kimi-k2-thinking': 'Kimi-K2-thinking',
+        'kimi-k2.5-thinking': 'Kimi-K2.5-thinking'
     };
     
     if (nameMap[name]) {

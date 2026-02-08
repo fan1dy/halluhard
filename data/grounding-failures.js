@@ -16,7 +16,8 @@ const GROUNDING_FAILURES = {
         "gemini-3-pro": { reference_failure: 11.2, content_failure: 38.5 },
         "deepseek-chat": { reference_failure: 16.8, content_failure: 43.2 },
         "deepseek-reasoner": { reference_failure: 15.5, content_failure: 43.8 },
-        "kimi-k2-thinking": { reference_failure: 19.2, content_failure: 54.3 }
+        "kimi-k2-thinking": { reference_failure: 19.2, content_failure: 54.3 },
+        "kimi-k2.5-thinking": { reference_failure: 34.5, content_failure: 64.9 }
     },
     "research_questions": {
         "gpt-5": { reference_failure: 22.5, content_failure: 72.3 },
@@ -31,7 +32,8 @@ const GROUNDING_FAILURES = {
         "gemini-3-pro": { reference_failure: 19.5, content_failure: 68.2 },
         "deepseek-chat": { reference_failure: 23.2, content_failure: 70.8 },
         "deepseek-reasoner": { reference_failure: 22.8, content_failure: 69.5 },
-        "kimi-k2-thinking": { reference_failure: 26.5, content_failure: 70.8 }
+        "kimi-k2-thinking": { reference_failure: 26.5, content_failure: 70.8 },
+        "kimi-k2.5-thinking": { reference_failure: 49.8, content_failure: 92.7 }
     },
     "medical_guidelines": {
         "gpt-5": { reference_failure: 18.5, content_failure: 78.2 },
@@ -46,6 +48,7 @@ const GROUNDING_FAILURES = {
         "gemini-3-pro": { reference_failure: 18.2, content_failure: 71.5 },
         "deepseek-chat": { reference_failure: 21.8, content_failure: 71.0 },
         "deepseek-reasoner": { reference_failure: 20.5, content_failure: 71.2 },
-        "kimi-k2-thinking": { reference_failure: 23.5, content_failure: 75.2 }
+        "kimi-k2-thinking": { reference_failure: 23.5, content_failure: 75.2 },
+        "kimi-k2.5-thinking": { reference_failure: 53.6, content_failure: 92.4 }
     }
 };

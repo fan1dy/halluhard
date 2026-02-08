@@ -88,6 +88,11 @@ const LEADERBOARD_DATA = {
             "1": 61.5,
             "3": 60.0,
             "5": 64.0
+        },
+        "kimi-k2.5-thinking": {
+            "1": 61.0,
+            "3": 54.5,
+            "5": 53.0
         }
     },
     "legal_cases": {
@@ -176,6 +181,11 @@ const LEADERBOARD_DATA = {
             "1": 51.5,
             "3": 75.7,
             "5": 83.5
+        },
+        "kimi-k2.5-thinking": {
+            "1": 47.5,
+            "3": 71.5,
+            "5": 76.0
         }
     },
     "medical_guidelines": {
@@ -263,6 +273,11 @@ const LEADERBOARD_DATA = {
             "1": 91.2,
             "3": 96.1,
             "5": 97.3
+        },
+        "kimi-k2.5-thinking": {
+            "1": 88.6,
+            "3": 94.5,
+            "5": 96.6
         }
     },
     "research_questions": {
@@ -350,6 +365,11 @@ const LEADERBOARD_DATA = {
             "1": 89.4,
             "3": 94.9,
             "5": 96.3
+        },
+        "kimi-k2.5-thinking": {
+            "1": 87.2,
+            "3": 93.1,
+            "5": 98.4
         }
     }
 };
@@ -375,7 +395,8 @@ const OVERALL_RATES = {
         "gpt-5.2-thinking": 32.2,
         "gpt-5": 50.3,
         "glm-4-7-thinking": 59.2,
-        "kimi-k2-thinking": 61.8
+        "kimi-k2-thinking": 61.8,
+        "kimi-k2.5-thinking": 56.2
     },
     "legal_cases": {
         "claude-haiku-4-5": 67.1,
@@ -393,7 +414,8 @@ const OVERALL_RATES = {
         "gpt-5.2-thinking": 33.5,
         "gpt-5": 52.8,
         "glm-4-7-thinking": 67.7,
-        "kimi-k2-thinking": 70.0
+        "kimi-k2-thinking": 70.0,
+        "kimi-k2.5-thinking": 65.2
     },
     "medical_guidelines": {
         "claude-haiku-4-5": 95.7,
@@ -412,7 +434,8 @@ const OVERALL_RATES = {
         "gpt-5.2-thinking": 74.0,
         "gpt-5": 92.8,
         "glm-4-7-thinking": 90.9,
-        "kimi-k2-thinking": 95.0
+        "kimi-k2-thinking": 95.0,
+        "kimi-k2.5-thinking": 93.2
     },
     "research_questions": {
         "claude-haiku-4-5": 92.9,
@@ -431,6 +454,7 @@ const OVERALL_RATES = {
         "gpt-5.2-thinking": 75.3,
         "gpt-5": 91.1,
         "glm-4-7-thinking": 90.7,
-        "kimi-k2-thinking": 93.5
+        "kimi-k2-thinking": 93.5,
+        "kimi-k2.5-thinking": 92.9
     }
 };
