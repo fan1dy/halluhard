@@ -84,6 +84,11 @@ const LEADERBOARD_DATA = {
             "3": 58.0,
             "5": 58.5
         },
+        "glm-5-thinking": {
+            "1": 52.0,
+            "3": 45.5,
+            "5": 49.5
+        },
         "kimi-k2-thinking": {
             "1": 61.5,
             "3": 60.0,
@@ -187,6 +192,11 @@ const LEADERBOARD_DATA = {
             "3": 68.5,
             "5": 77.1
         },
+        "glm-5-thinking": {
+            "1": 44.5,
+            "3": 61.3,
+            "5": 66.0
+        },
         "kimi-k2-thinking": {
             "1": 51.5,
             "3": 75.7,
@@ -288,6 +298,11 @@ const LEADERBOARD_DATA = {
             "1": 89.4,
             "3": 94.7,
             "5": 91.1
+        },
+        "glm-5-thinking": {
+            "1": 82.7,
+            "3": 87.4,
+            "5": 91.5
         },
         "kimi-k2-thinking": {
             "1": 91.2,
@@ -391,6 +406,11 @@ const LEADERBOARD_DATA = {
             "3": 93.3,
             "5": 95.1
         },
+        "glm-5-thinking": {
+            "1": 86.4,
+            "3": 91.8,
+            "5": 92.1
+        },
         "kimi-k2-thinking": {
             "1": 89.4,
             "3": 94.9,
@@ -435,6 +455,7 @@ const OVERALL_RATES = {
         "gpt-5.2-thinking": 32.2,
         "gpt-5": 50.3,
         "glm-4-7-thinking": 59.2,
+        "glm-5-thinking": 49.0,
         "kimi-k2-thinking": 61.8,
         "kimi-k2.5-thinking": 56.2,
         "grok-4.1-thinking-fast": 77.3,
@@ -456,6 +477,7 @@ const OVERALL_RATES = {
         "gpt-5.2-thinking": 33.5,
         "gpt-5": 52.8,
         "glm-4-7-thinking": 67.7,
+        "glm-5-thinking": 57.3,
         "kimi-k2-thinking": 70.0,
         "kimi-k2.5-thinking": 65.2,
         "grok-4.1-thinking-fast": 73.4,
@@ -478,10 +500,11 @@ const OVERALL_RATES = {
         "gpt-5.2-thinking": 74.0,
         "gpt-5": 92.8,
         "glm-4-7-thinking": 90.9,
+        "glm-5-thinking": 87.3,
         "kimi-k2-thinking": 95.0,
         "kimi-k2.5-thinking": 93.2,
         "grok-4.1-thinking-fast": 96.1,
-        "grok-4": 92.7
+        "grok-4-thinking": 92.7
     },
     "research_questions": {
         "claude-haiku-4-5": 92.9,
@@ -500,6 +523,7 @@ const OVERALL_RATES = {
         "gpt-5.2-thinking": 75.3,
         "gpt-5": 91.1,
         "glm-4-7-thinking": 90.7,
+        "glm-5-thinking": 90.1,
         "kimi-k2-thinking": 93.5,
         "kimi-k2.5-thinking": 92.9,
         "grok-4.1-thinking-fast": 97.4,

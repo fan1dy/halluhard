@@ -377,6 +377,7 @@ function formatModelName(name) {
         'gpt-5.2-medium-websearch': 'GPT-5.2-thinking-Web-Search',
         'gpt-5.2-thinking': 'GPT-5.2-thinking',
         'glm-4-7-thinking': 'GLM-4.7-thinking',
+        'glm-5-thinking': 'GLM-5-thinking',
         'claude-haiku-4-5': 'Claude-Haiku-4.5',
         'claude-sonnet-4-5': 'Claude-Sonnet-4.5',
         'claude-opus-4-5': 'Claude-Opus-4.5',
