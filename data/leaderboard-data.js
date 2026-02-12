@@ -99,7 +99,7 @@ const LEADERBOARD_DATA = {
             "3": 77.3,
             "5": 77.3
         },
-        "grok-4": {
+        "grok-4-thinking": {
             "1": 60.5,
             "3": 54.0,
             "5": 52.5
@@ -202,7 +202,7 @@ const LEADERBOARD_DATA = {
             "3": 73.4,
             "5": 73.4
         },
-        "grok-4": {
+        "grok-4-thinking": {
             "1": 42.3,
             "3": 60.4,
             "5": 76.8
@@ -304,7 +304,7 @@ const LEADERBOARD_DATA = {
             "3": 96.1,
             "5": 96.1
         },
-        "grok-4": {
+        "grok-4-thinking": {
             "1": 87.7,
             "3": 93.4,
             "5": 97.2
@@ -406,7 +406,7 @@ const LEADERBOARD_DATA = {
             "3": 97.4,
             "5": 97.4
         },
-        "grok-4": {
+        "grok-4-thinking": {
             "1": 86.2,
             "3": 94.7,
             "5": 97.6
@@ -438,7 +438,7 @@ const OVERALL_RATES = {
         "kimi-k2-thinking": 61.8,
         "kimi-k2.5-thinking": 56.2,
         "grok-4.1-thinking-fast": 77.3,
-        "grok-4": 55.7
+        "grok-4-thinking": 55.7
     },
     "legal_cases": {
         "claude-haiku-4-5": 67.1,
@@ -459,7 +459,7 @@ const OVERALL_RATES = {
         "kimi-k2-thinking": 70.0,
         "kimi-k2.5-thinking": 65.2,
         "grok-4.1-thinking-fast": 73.4,
-        "grok-4": 60.1
+        "grok-4-thinking": 60.1
     },
     "medical_guidelines": {
         "claude-haiku-4-5": 95.7,
@@ -503,6 +503,6 @@ const OVERALL_RATES = {
         "kimi-k2-thinking": 93.5,
         "kimi-k2.5-thinking": 92.9,
         "grok-4.1-thinking-fast": 97.4,
-        "grok-4": 92.8
+        "grok-4-thinking": 92.8
     }
 };
