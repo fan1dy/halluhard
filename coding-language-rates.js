@@ -244,7 +244,8 @@ function formatModelName(name) {
         'deepseek-chat': 'DeepSeek-Chat',
         'deepseek-reasoner': 'DeepSeek-Reasoner',
         'kimi-k2-thinking': 'Kimi-K2-thinking',
-        'kimi-k2.5-thinking': 'Kimi-K2.5-thinking'
+        'kimi-k2.5-thinking': 'Kimi-K2.5-thinking',
+        'grok-4.1-thinking-fast': 'Grok-4.1-thinking-fast'
     };
     
     if (nameMap[name]) {

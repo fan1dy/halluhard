@@ -285,10 +285,10 @@ function getBarColor(rate, minRate, maxRate) {
     const t = (rate - minRate) / (maxRate - minRate || 1);
     
     // Start color (low/good): muted teal #7a9a8b -> RGB(122, 154, 139)
-    // End color (high/bad): muted tan #c4a88a -> RGB(196, 168, 138)
+    // End color (high/bad): muted red #c47a7a -> RGB(196, 122, 122)
     const r = Math.round(122 + t * (196 - 122));
-    const g = Math.round(154 + t * (168 - 154));
-    const b = Math.round(139 + t * (138 - 139));
+    const g = Math.round(154 + t * (122 - 154));
+    const b = Math.round(139 + t * (122 - 139));
     
     return `rgb(${r}, ${g}, ${b})`;
 }
@@ -386,7 +386,8 @@ function formatModelName(name) {
         'deepseek-chat': 'DeepSeek-Chat',
         'deepseek-reasoner': 'DeepSeek-Reasoner',
         'kimi-k2-thinking': 'Kimi-K2-thinking',
-        'kimi-k2.5-thinking': 'Kimi-K2.5-thinking'
+        'kimi-k2.5-thinking': 'Kimi-K2.5-thinking',
+        'grok-4.1-thinking-fast': 'Grok-4.1-thinking-fast'
     };
     
     // Return mapped name if exists, otherwise return original with basic formatting
@@ -525,16 +526,16 @@ function renderBarChart(entries = null) {
     const chartGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     chartGroup.setAttribute('transform', `translate(${margin.left}, ${margin.top})`);
     
-    // Color interpolation function (from teal/green for low rates to warm tan for high rates)
+    // Color interpolation function (from teal/green for low rates to muted red for high rates)
     function interpolateColor(rate) {
         // Normalize rate to 0-1 range based on min/max in data
         const t = (rate - minRate) / (maxRate - minRate || 1);
         
         // Start color (low/good): muted teal #7a9a8b -> RGB(122, 154, 139)
-        // End color (high/bad): muted tan #c4a88a -> RGB(196, 168, 138)
-        const r = Math.round(122 + t * (196 - 122));
-        const g = Math.round(154 + t * (168 - 154));
-        const b = Math.round(139 + t * (138 - 139));
+        // End color (high/bad): muted red #b87a7a -> RGB(184, 122, 122)
+        const r = Math.round(122 + t * (184 - 122));
+        const g = Math.round(154 + t * (122 - 154));
+        const b = Math.round(139 + t * (122 - 139));
         
         return `rgb(${r}, ${g}, ${b})`;
     }
@@ -570,7 +571,7 @@ function renderBarChart(entries = null) {
         nameLabel.setAttribute('dominant-baseline', 'middle');
         nameLabel.setAttribute('class', 'chart-axis');
         nameLabel.setAttribute('fill', '#3a3936');
-        nameLabel.setAttribute('font-size', isMobile ? '10px' : '12px');
+        nameLabel.setAttribute('font-size', isMobile ? '12px' : '15px');
         nameLabel.textContent = formatModelName(entry.model);
         
         // Rate value label on bar
