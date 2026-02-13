@@ -329,7 +329,7 @@ function renderLeaderboard(entries, domain, turn) {
                     ${domains.map((dom, i) => {
                         const rate = entry.domainBreakdown[dom];
                         if (rate !== undefined) {
-                            return `<div class="domain-rate" title="${domainLabels[i]}: ${rate.toFixed(1)}%">${rate.toFixed(1)}%</div>`;
+                            return `<div class="domain-rate" title="${domainLabels[i]}: ${rate.toFixed(1)}">${rate.toFixed(1)}</div>`;
                         }
                         return `<div class="domain-rate" style="opacity: 0.3;">-</div>`;
                     }).join('')}
@@ -342,7 +342,7 @@ function renderLeaderboard(entries, domain, turn) {
                 <td class="rank-col">${rank}</td>
                 <td class="model-col">${formatModelName(entry.model)}</td>
                 <td class="rate-col">
-                    <span class="rate-value">${entry.rate.toFixed(1)}%</span>
+                    <span class="rate-value">${entry.rate.toFixed(1)}</span>
                     <div class="rate-bar">
                         <div class="rate-bar-fill" style="width: ${barWidth}%; background: ${barColor};"></div>
                     </div>
@@ -521,6 +521,10 @@ function renderBarChart(entries = null) {
     svg.setAttribute('height', chartHeight);
     
     const width = svg.clientWidth - margin.left - margin.right;
+    // Reserve space so the rate label for the longest bar is never clipped
+    const rateLabelGap = isMobile ? 6 : 12;
+    const rateLabelReserved = (isMobile ? 36 : 44);
+    const barMaxWidth = Math.max(0, width - rateLabelReserved);
     const height = contentHeight;
     const spacing = barHeight + barSpacing;
     
@@ -545,7 +549,7 @@ function renderBarChart(entries = null) {
     // Draw bars
     entries.forEach((entry, index) => {
         const y = index * spacing;
-        const barWidth = (entry.rate / maxRate) * width;
+        const barWidth = (entry.rate / maxRate) * barMaxWidth;
         
         // Gradient color based on rate
         const barColor = interpolateColor(entry.rate);
@@ -576,32 +580,18 @@ function renderBarChart(entries = null) {
         nameLabel.setAttribute('font-size', isMobile ? '12px' : '15px');
         nameLabel.textContent = formatModelName(entry.model);
         
-        // Rate value label on bar
-        const minBarWidthForLabel = isMobile ? 50 : 60;
-        if (barWidth > minBarWidthForLabel) {
-            const rateLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-            rateLabel.setAttribute('x', barWidth / 2);
-            rateLabel.setAttribute('y', barHeight / 2);
-            rateLabel.setAttribute('text-anchor', 'middle');
-            rateLabel.setAttribute('dominant-baseline', 'middle');
-            rateLabel.setAttribute('fill', 'white');
-            rateLabel.setAttribute('font-size', isMobile ? '9px' : '11px');
-            rateLabel.setAttribute('font-weight', '600');
-            rateLabel.textContent = `${entry.rate.toFixed(1)}%`;
-            barGroup.appendChild(rateLabel);
-        } else {
-            // If bar is too narrow, put label outside
-            const rateLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-            rateLabel.setAttribute('x', barWidth + (isMobile ? 5 : 10));
-            rateLabel.setAttribute('y', barHeight / 2);
-            rateLabel.setAttribute('text-anchor', 'start');
-            rateLabel.setAttribute('dominant-baseline', 'middle');
-            rateLabel.setAttribute('class', 'chart-axis');
-            rateLabel.setAttribute('font-size', isMobile ? '9px' : '11px');
-            rateLabel.setAttribute('font-weight', '600');
-            rateLabel.textContent = `${entry.rate.toFixed(1)}%`;
-            barGroup.appendChild(rateLabel);
-        }
+        // Rate annotation: always show percentage at end of bar (right of bar)
+        const rateLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        rateLabel.setAttribute('x', barWidth + rateLabelGap);
+        rateLabel.setAttribute('y', barHeight / 2);
+        rateLabel.setAttribute('text-anchor', 'start');
+        rateLabel.setAttribute('dominant-baseline', 'middle');
+        rateLabel.setAttribute('fill', '#3a3936');
+        rateLabel.setAttribute('font-size', isMobile ? '10px' : '12px');
+        rateLabel.setAttribute('font-weight', '600');
+        rateLabel.setAttribute('class', 'chart-axis');
+        rateLabel.textContent = entry.rate.toFixed(1);
+        barGroup.appendChild(rateLabel);
         
         barGroup.appendChild(bar);
         barGroup.appendChild(nameLabel);
@@ -611,11 +601,11 @@ function renderBarChart(entries = null) {
         }
     });
     
-    // X-axis
+    // X-axis (span bar area only)
     const xAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
     xAxis.setAttribute('x1', 0);
     xAxis.setAttribute('y1', height);
-    xAxis.setAttribute('x2', width);
+    xAxis.setAttribute('x2', barMaxWidth);
     xAxis.setAttribute('y2', height);
     xAxis.setAttribute('stroke', '#e2e8f0');
     xAxis.setAttribute('stroke-width', 2);
@@ -625,7 +615,7 @@ function renderBarChart(entries = null) {
     const numTicks = 6; // Number of ticks to show
     for (let i = 0; i <= numTicks; i++) {
         const tickValue = (maxRate / numTicks) * i;
-        const tickX = (tickValue / maxRate) * width;
+        const tickX = (tickValue / maxRate) * barMaxWidth;
         
         // Tick mark line
         const tickLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -651,18 +641,18 @@ function renderBarChart(entries = null) {
     
     // X-axis label
     const xAxisLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    xAxisLabel.setAttribute('x', width / 2);
+    xAxisLabel.setAttribute('x', barMaxWidth / 2);
     xAxisLabel.setAttribute('y', height + (isMobile ? 40 : 50));
     xAxisLabel.setAttribute('text-anchor', 'middle');
     xAxisLabel.setAttribute('class', 'chart-axis');
     xAxisLabel.setAttribute('font-size', isMobile ? '11px' : '14px');
     xAxisLabel.setAttribute('font-weight', '600');
-    xAxisLabel.textContent = 'Hallucination Rate (%)';
+    xAxisLabel.textContent = 'Hallucination Rate';
     chartGroup.appendChild(xAxisLabel);
     
     // Title
     const title = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    title.setAttribute('x', width / 2);
+    title.setAttribute('x', barMaxWidth / 2);
     title.setAttribute('y', isMobile ? -15 : -20);
     title.setAttribute('text-anchor', 'middle');
     title.setAttribute('class', 'chart-title');
