@@ -56,6 +56,12 @@ const CODING_LANGUAGE_RATES = {
         "r": 30.0,
         "scala": 29.3
     },
+    "claude-opus-4-6": {
+        "elixir": 22.7,
+        "python": 20.9,
+        "r": 30.7,
+        "scala": 18.7
+    },
     "claude-opus-4-5-websearch": {
         "elixir": 32.0,
         "python": 22.0,

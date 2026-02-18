@@ -248,6 +248,7 @@ function formatModelName(name) {
         'claude-sonnet-4-5': 'Claude-Sonnet-4.5',
         'claude-opus-4-5': 'Claude-Opus-4.5',
         'claude-opus-4-5-websearch': 'Claude-Opus-4.5-Web-Search',
+        'claude-opus-4-6': 'Claude-Opus-4.6',
         'gemini-3-flash': 'Gemini-3-Flash',
         'gemini-3-pro': 'Gemini-3-Pro',
         'deepseek-chat': 'DeepSeek-Chat',

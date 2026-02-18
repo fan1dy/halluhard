@@ -19,6 +19,11 @@ const LEADERBOARD_DATA = {
             "3": 26.5,
             "5": 19.0
         },
+        "claude-opus-4-6": {
+            "1": 33.0,
+            "3": 19.3,
+            "5": 17.3
+        },
         "claude-sonnet-4-5": {
             "1": 41.0,
             "3": 37.0,
@@ -105,6 +110,11 @@ const LEADERBOARD_DATA = {
             "1": 35.0,
             "3": 48.7,
             "5": 51.1
+        },
+        "claude-opus-4-6": {
+            "1": 39.6,
+            "3": 53.8,
+            "5": 56.5
         },
         "claude-sonnet-4-5": {
             "1": 43.1,
@@ -194,6 +204,11 @@ const LEADERBOARD_DATA = {
             "3": 86.2,
             "5": 89.6
         },
+        "claude-opus-4-6": {
+            "1": 88.8,
+            "3": 89.4,
+            "5": 89.8
+        },
         "claude-sonnet-4-5": {
             "1": 82.2,
             "3": 88.9,
@@ -281,6 +296,11 @@ const LEADERBOARD_DATA = {
             "3": 86.5,
             "5": 87.3
         },
+        "claude-opus-4-6": {
+            "1": 74.3,
+            "3": 86.1,
+            "5": 84.6
+        },
         "claude-sonnet-4-5": {
             "1": 79.6,
             "3": 89.7,
@@ -362,6 +382,7 @@ const OVERALL_RATES = {
         "claude-haiku-4-5": 62.5,
         "claude-opus-4-5-websearch": 29.0,
         "claude-opus-4-5": 25.7,
+        "claude-opus-4-6": 23.2,
         "claude-sonnet-4-5": 37.2,
         "deepseek-chat": 67.8,
         "deepseek-reasoner": 74.6,
@@ -380,6 +401,7 @@ const OVERALL_RATES = {
     "legal_cases": {
         "claude-haiku-4-5": 67.1,
         "claude-opus-4-5": 44.8,
+        "claude-opus-4-6": 49.7,
         "claude-sonnet-4-5": 51.8,
         "deepseek-chat": 56.4,
         "deepseek-reasoner": 55.7,
@@ -399,6 +421,7 @@ const OVERALL_RATES = {
         "claude-haiku-4-5": 95.7,
         "claude-opus-4-5-websearch": 29.2,
         "claude-opus-4-5": 85.6,
+        "claude-opus-4-6": 89.3,
         "claude-sonnet-4-5": 86.1,
         "deepseek-chat": 89.0,
         "deepseek-reasoner": 88.1,
@@ -418,6 +441,7 @@ const OVERALL_RATES = {
         "claude-haiku-4-5": 92.9,
         "claude-opus-4-5-websearch": 29.6,
         "claude-opus-4-5": 84.0,
+        "claude-opus-4-6": 81.6,
         "claude-sonnet-4-5": 87.3,
         "deepseek-chat": 90.1,
         "deepseek-reasoner": 88.6,
