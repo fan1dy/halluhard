@@ -285,10 +285,10 @@ function getBarColor(rate, minRate, maxRate) {
     const t = (rate - minRate) / (maxRate - minRate || 1);
     
     // Start color (low/good): muted teal #7a9a8b -> RGB(122, 154, 139)
-    // End color (high/bad): muted tan #c4a88a -> RGB(196, 168, 138)
+    // End color (high/bad): muted red #c47a7a -> RGB(196, 122, 122)
     const r = Math.round(122 + t * (196 - 122));
-    const g = Math.round(154 + t * (168 - 154));
-    const b = Math.round(139 + t * (138 - 139));
+    const g = Math.round(154 + t * (122 - 154));
+    const b = Math.round(139 + t * (122 - 139));
     
     return `rgb(${r}, ${g}, ${b})`;
 }
@@ -329,7 +329,7 @@ function renderLeaderboard(entries, domain, turn) {
                     ${domains.map((dom, i) => {
                         const rate = entry.domainBreakdown[dom];
                         if (rate !== undefined) {
-                            return `<div class="domain-rate" title="${domainLabels[i]}: ${rate.toFixed(1)}%">${rate.toFixed(1)}%</div>`;
+                            return `<div class="domain-rate" title="${domainLabels[i]}: ${rate.toFixed(1)}">${rate.toFixed(1)}</div>`;
                         }
                         return `<div class="domain-rate" style="opacity: 0.3;">-</div>`;
                     }).join('')}
@@ -342,7 +342,7 @@ function renderLeaderboard(entries, domain, turn) {
                 <td class="rank-col">${rank}</td>
                 <td class="model-col">${formatModelName(entry.model)}</td>
                 <td class="rate-col">
-                    <span class="rate-value">${entry.rate.toFixed(1)}%</span>
+                    <span class="rate-value">${entry.rate.toFixed(1)}</span>
                     <div class="rate-bar">
                         <div class="rate-bar-fill" style="width: ${barWidth}%; background: ${barColor};"></div>
                     </div>
@@ -377,6 +377,7 @@ function formatModelName(name) {
         'gpt-5.2-medium-websearch': 'GPT-5.2-thinking-Web-Search',
         'gpt-5.2-thinking': 'GPT-5.2-thinking',
         'glm-4-7-thinking': 'GLM-4.7-thinking',
+        'glm-5-thinking': 'GLM-5-thinking',
         'claude-haiku-4-5': 'Claude-Haiku-4.5',
         'claude-sonnet-4-5': 'Claude-Sonnet-4.5',
         'claude-opus-4-5': 'Claude-Opus-4.5',
@@ -386,7 +387,10 @@ function formatModelName(name) {
         'gemini-3-pro': 'Gemini-3-Pro',
         'deepseek-chat': 'DeepSeek-Chat',
         'deepseek-reasoner': 'DeepSeek-Reasoner',
-        'kimi-k2-thinking': 'Kimi-K2-thinking'
+        'kimi-k2-thinking': 'Kimi-K2-thinking',
+        'kimi-k2.5-thinking': 'Kimi-K2.5-thinking',
+        'grok-4.1-thinking-fast': 'Grok-4.1-thinking-fast',
+        'grok-4-thinking': 'Grok-4-thinking'
     };
     
     // Return mapped name if exists, otherwise return original with basic formatting
@@ -396,6 +400,73 @@ function formatModelName(name) {
     
     // Fallback: basic title case conversion
     return name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
+
+// Long-press popup for model name on mobile
+let chartModelPopupEl = null;
+let chartModelPopupHideTimer = null;
+let barLongPressTimer = null;
+
+function getChartModelPopup() {
+    if (!chartModelPopupEl) {
+        chartModelPopupEl = document.createElement('div');
+        chartModelPopupEl.className = 'chart-model-popup';
+        chartModelPopupEl.setAttribute('aria-live', 'polite');
+        chartModelPopupEl.style.display = 'none';
+        document.body.appendChild(chartModelPopupEl);
+        document.addEventListener('touchstart', onDocumentTouchForPopup, { passive: true });
+    }
+    return chartModelPopupEl;
+}
+
+function showChartModelPopup(modelName, clientX, clientY) {
+    const popup = getChartModelPopup();
+    popup.textContent = formatModelName(modelName);
+    popup.style.left = clientX + 'px';
+    popup.style.top = (clientY - 12) + 'px';
+    popup.style.display = 'block';
+    if (chartModelPopupHideTimer) clearTimeout(chartModelPopupHideTimer);
+    chartModelPopupHideTimer = setTimeout(hideChartModelPopup, 2500);
+}
+
+function hideChartModelPopup() {
+    if (chartModelPopupEl) chartModelPopupEl.style.display = 'none';
+    if (chartModelPopupHideTimer) {
+        clearTimeout(chartModelPopupHideTimer);
+        chartModelPopupHideTimer = null;
+    }
+}
+
+function onDocumentTouchForPopup(e) {
+    if (chartModelPopupEl && chartModelPopupEl.style.display === 'block' && !e.target.closest('.bar-group')) {
+        hideChartModelPopup();
+    }
+}
+
+function setupBarLongPress(barGroup, modelName) {
+    barGroup.addEventListener('touchstart', function (e) {
+        if (e.touches.length !== 1) return;
+        const touch = e.touches[0];
+        barLongPressTimer = setTimeout(function () {
+            barLongPressTimer = null;
+            showChartModelPopup(modelName, touch.clientX, touch.clientY);
+        }, 500);
+    }, { passive: true });
+    barGroup.addEventListener('touchend', function () {
+        if (barLongPressTimer) {
+            clearTimeout(barLongPressTimer);
+            barLongPressTimer = null;
+        }
+    });
+    barGroup.addEventListener('touchmove', function () {
+        if (barLongPressTimer) {
+            clearTimeout(barLongPressTimer);
+            barLongPressTimer = null;
+        }
+    });
+    barGroup.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+    });
 }
 
 // Render bar chart
@@ -430,7 +501,7 @@ function renderBarChart(entries = null) {
         return;
     }
     
-    // Responsive margins based on screen size
+    // Responsive margins (on mobile, long-press a bar to see full model name)
     const isMobile = window.innerWidth <= 768;
     const margin = isMobile 
         ? { top: 30, right: 20, bottom: 80, left: 100 }
@@ -451,6 +522,10 @@ function renderBarChart(entries = null) {
     svg.setAttribute('height', chartHeight);
     
     const width = svg.clientWidth - margin.left - margin.right;
+    // Reserve space so the rate label for the longest bar is never clipped
+    const rateLabelGap = isMobile ? 6 : 12;
+    const rateLabelReserved = (isMobile ? 36 : 44);
+    const barMaxWidth = Math.max(0, width - rateLabelReserved);
     const height = contentHeight;
     const spacing = barHeight + barSpacing;
     
@@ -458,16 +533,16 @@ function renderBarChart(entries = null) {
     const chartGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     chartGroup.setAttribute('transform', `translate(${margin.left}, ${margin.top})`);
     
-    // Color interpolation function (from teal/green for low rates to warm tan for high rates)
+    // Color interpolation function (from teal/green for low rates to muted red for high rates)
     function interpolateColor(rate) {
         // Normalize rate to 0-1 range based on min/max in data
         const t = (rate - minRate) / (maxRate - minRate || 1);
         
         // Start color (low/good): muted teal #7a9a8b -> RGB(122, 154, 139)
-        // End color (high/bad): muted tan #c4a88a -> RGB(196, 168, 138)
-        const r = Math.round(122 + t * (196 - 122));
-        const g = Math.round(154 + t * (168 - 154));
-        const b = Math.round(139 + t * (138 - 139));
+        // End color (high/bad): muted red #b87a7a -> RGB(184, 122, 122)
+        const r = Math.round(122 + t * (184 - 122));
+        const g = Math.round(154 + t * (122 - 154));
+        const b = Math.round(139 + t * (122 - 139));
         
         return `rgb(${r}, ${g}, ${b})`;
     }
@@ -475,7 +550,7 @@ function renderBarChart(entries = null) {
     // Draw bars
     entries.forEach((entry, index) => {
         const y = index * spacing;
-        const barWidth = (entry.rate / maxRate) * width;
+        const barWidth = (entry.rate / maxRate) * barMaxWidth;
         
         // Gradient color based on rate
         const barColor = interpolateColor(entry.rate);
@@ -502,46 +577,36 @@ function renderBarChart(entries = null) {
         nameLabel.setAttribute('text-anchor', 'end');
         nameLabel.setAttribute('dominant-baseline', 'middle');
         nameLabel.setAttribute('class', 'chart-axis');
-        nameLabel.setAttribute('font-size', isMobile ? '10px' : '12px');
+        nameLabel.setAttribute('fill', '#3a3936');
+        nameLabel.setAttribute('font-size', isMobile ? '12px' : '15px');
         nameLabel.textContent = formatModelName(entry.model);
         
-        // Rate value label on bar
-        const minBarWidthForLabel = isMobile ? 50 : 60;
-        if (barWidth > minBarWidthForLabel) {
-            const rateLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-            rateLabel.setAttribute('x', barWidth / 2);
-            rateLabel.setAttribute('y', barHeight / 2);
-            rateLabel.setAttribute('text-anchor', 'middle');
-            rateLabel.setAttribute('dominant-baseline', 'middle');
-            rateLabel.setAttribute('fill', 'white');
-            rateLabel.setAttribute('font-size', isMobile ? '9px' : '11px');
-            rateLabel.setAttribute('font-weight', '600');
-            rateLabel.textContent = `${entry.rate.toFixed(1)}%`;
-            barGroup.appendChild(rateLabel);
-        } else {
-            // If bar is too narrow, put label outside
-            const rateLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-            rateLabel.setAttribute('x', barWidth + (isMobile ? 5 : 10));
-            rateLabel.setAttribute('y', barHeight / 2);
-            rateLabel.setAttribute('text-anchor', 'start');
-            rateLabel.setAttribute('dominant-baseline', 'middle');
-            rateLabel.setAttribute('class', 'chart-axis');
-            rateLabel.setAttribute('font-size', isMobile ? '9px' : '11px');
-            rateLabel.setAttribute('font-weight', '600');
-            rateLabel.textContent = `${entry.rate.toFixed(1)}%`;
-            barGroup.appendChild(rateLabel);
-        }
+        // Rate annotation: always show percentage at end of bar (right of bar)
+        const rateLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        rateLabel.setAttribute('x', barWidth + rateLabelGap);
+        rateLabel.setAttribute('y', barHeight / 2);
+        rateLabel.setAttribute('text-anchor', 'start');
+        rateLabel.setAttribute('dominant-baseline', 'middle');
+        rateLabel.setAttribute('fill', '#3a3936');
+        rateLabel.setAttribute('font-size', isMobile ? '10px' : '12px');
+        rateLabel.setAttribute('font-weight', '600');
+        rateLabel.setAttribute('class', 'chart-axis');
+        rateLabel.textContent = entry.rate.toFixed(1);
+        barGroup.appendChild(rateLabel);
         
         barGroup.appendChild(bar);
         barGroup.appendChild(nameLabel);
         chartGroup.appendChild(barGroup);
+        if (isMobile) {
+            setupBarLongPress(barGroup, entry.model);
+        }
     });
     
-    // X-axis
+    // X-axis (span bar area only)
     const xAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
     xAxis.setAttribute('x1', 0);
     xAxis.setAttribute('y1', height);
-    xAxis.setAttribute('x2', width);
+    xAxis.setAttribute('x2', barMaxWidth);
     xAxis.setAttribute('y2', height);
     xAxis.setAttribute('stroke', '#e2e8f0');
     xAxis.setAttribute('stroke-width', 2);
@@ -551,7 +616,7 @@ function renderBarChart(entries = null) {
     const numTicks = 6; // Number of ticks to show
     for (let i = 0; i <= numTicks; i++) {
         const tickValue = (maxRate / numTicks) * i;
-        const tickX = (tickValue / maxRate) * width;
+        const tickX = (tickValue / maxRate) * barMaxWidth;
         
         // Tick mark line
         const tickLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -577,18 +642,18 @@ function renderBarChart(entries = null) {
     
     // X-axis label
     const xAxisLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    xAxisLabel.setAttribute('x', width / 2);
+    xAxisLabel.setAttribute('x', barMaxWidth / 2);
     xAxisLabel.setAttribute('y', height + (isMobile ? 40 : 50));
     xAxisLabel.setAttribute('text-anchor', 'middle');
     xAxisLabel.setAttribute('class', 'chart-axis');
     xAxisLabel.setAttribute('font-size', isMobile ? '11px' : '14px');
     xAxisLabel.setAttribute('font-weight', '600');
-    xAxisLabel.textContent = 'Hallucination Rate (%)';
+    xAxisLabel.textContent = 'Hallucination Rate';
     chartGroup.appendChild(xAxisLabel);
     
     // Title
     const title = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    title.setAttribute('x', width / 2);
+    title.setAttribute('x', barMaxWidth / 2);
     title.setAttribute('y', isMobile ? -15 : -20);
     title.setAttribute('text-anchor', 'middle');
     title.setAttribute('class', 'chart-title');

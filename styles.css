@@ -295,7 +295,7 @@ header h1 {
 }
 
 .rank-col {
-    width: 90px;
+    width: 110px;
     text-align: center;
     font-weight: 700;
     color: var(--text-secondary);
@@ -306,10 +306,12 @@ header h1 {
     color: var(--text-primary);
     min-width: 180px;
     font-family: 'Avenir', 'Avenir Next', sans-serif;
+    font-size: 1.15rem;
 }
 
 .rate-col {
     width: 160px;
+    white-space: nowrap;
 }
 
 .rate-value {
@@ -425,6 +427,35 @@ header h1 {
 
 .bar-group:hover {
     opacity: 0.8;
+}
+
+/* Long-press popup for model name on mobile */
+.chart-model-popup {
+    position: fixed;
+    z-index: 9999;
+    padding: 0.5rem 0.75rem;
+    background: var(--text-primary);
+    color: var(--bg-color);
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+    pointer-events: none;
+    transform: translate(-50%, -100%);
+    max-width: 90vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chart-model-popup::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border: 6px solid transparent;
+    border-top-color: var(--text-primary);
 }
 
 .bar {
@@ -1055,11 +1086,44 @@ footer {
 
     .rank-col {
         width: 50px;
+        position: sticky;
+        left: 0;
+        background: var(--bg-secondary);
+        z-index: 2;
+        box-shadow: 2px 0 4px rgba(0, 0, 0, 0.06);
+    }
+
+    .leaderboard tbody .rank-col {
+        background: white;
+        z-index: 1;
+    }
+
+    .leaderboard tbody tr:hover .rank-col {
+        background: var(--bg-secondary);
     }
 
     .model-col {
-        min-width: 120px;
+        min-width: 140px;
+        max-width: none;
         font-size: 0.8rem;
+        white-space: normal;
+        word-break: break-word;
+        overflow: visible;
+        /* Sticky so model names stay visible when scrolling table horizontally */
+        position: sticky;
+        left: 50px;
+        background: white;
+        z-index: 1;
+        box-shadow: 2px 0 4px rgba(0, 0, 0, 0.06);
+    }
+
+    .leaderboard thead .model-col {
+        background: var(--bg-secondary);
+        z-index: 2;
+    }
+
+    .leaderboard tbody tr:hover .model-col {
+        background: var(--bg-secondary);
     }
 
     .rate-col {
@@ -1398,8 +1462,11 @@ footer {
     }
 
     .model-col {
-        min-width: 100px;
+        min-width: 120px;
         font-size: 0.75rem;
+        white-space: normal;
+        word-break: break-word;
+        overflow: visible;
     }
 
     #bar-chart {
