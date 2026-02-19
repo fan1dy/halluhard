@@ -29,6 +29,11 @@ const LEADERBOARD_DATA = {
             "3": 37.0,
             "5": 33.5
         },
+        "claude-sonnet-4-6": {
+            "1": 34.5,
+            "3": 34.0,
+            "5": 20.5
+        },
         "deepseek-chat": {
             "1": 71.0,
             "3": 68.0,
@@ -140,6 +145,11 @@ const LEADERBOARD_DATA = {
             "1": 43.1,
             "3": 57.3,
             "5": 59.0
+        },
+        "claude-sonnet-4-6": {
+            "1": 46.0,
+            "3": 51.5,
+            "5": 51.0
         },
         "deepseek-chat": {
             "1": 45.0,
@@ -254,6 +264,11 @@ const LEADERBOARD_DATA = {
             "3": 88.9,
             "5": 88.8
         },
+        "claude-sonnet-4-6": {
+            "1": 84.7,
+            "3": 91.2,
+            "5": 93.0
+        },
         "deepseek-chat": {
             "1": 84.7,
             "3": 91.2,
@@ -366,6 +381,11 @@ const LEADERBOARD_DATA = {
             "3": 89.7,
             "5": 92.7
         },
+        "claude-sonnet-4-6": {
+            "1": 81.8,
+            "3": 88.4,
+            "5": 87.2
+        },
         "deepseek-chat": {
             "1": 86.3,
             "3": 92.4,
@@ -464,6 +484,7 @@ const OVERALL_RATES = {
         "claude-opus-4-5": 25.7,
         "claude-opus-4-6": 23.2,
         "claude-sonnet-4-5": 37.2,
+        "claude-sonnet-4-6": 29.7,
         "deepseek-chat": 67.8,
         "deepseek-reasoner": 74.6,
         "gemini-3-flash": 48.3,
@@ -487,6 +508,7 @@ const OVERALL_RATES = {
         "claude-opus-4-5": 44.8,
         "claude-opus-4-6": 49.7,
         "claude-sonnet-4-5": 51.8,
+        "claude-sonnet-4-6": 49.5,
         "deepseek-chat": 56.4,
         "deepseek-reasoner": 55.7,
         "gemini-3-flash": 52.0,
@@ -511,6 +533,7 @@ const OVERALL_RATES = {
         "claude-opus-4-5": 85.6,
         "claude-opus-4-6": 89.3,
         "claude-sonnet-4-5": 86.1,
+        "claude-sonnet-4-6": 89.7,
         "deepseek-chat": 89.0,
         "deepseek-reasoner": 88.1,
         "gemini-3-flash": 89.0,
@@ -535,6 +558,7 @@ const OVERALL_RATES = {
         "claude-opus-4-5": 84.0,
         "claude-opus-4-6": 81.6,
         "claude-sonnet-4-5": 87.3,
+        "claude-sonnet-4-6": 85.8,
         "deepseek-chat": 90.1,
         "deepseek-reasoner": 88.6,
         "gemini-3-flash": 88.6,

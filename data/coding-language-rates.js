@@ -62,6 +62,12 @@ const CODING_LANGUAGE_RATES = {
         "r": 30.7,
         "scala": 18.7
     },
+    "claude-sonnet-4-6": {
+        "elixir": 35.3,
+        "python": 18.0,
+        "r": 36.0,
+        "scala": 29.3
+    },
     "claude-opus-4-5-websearch": {
         "elixir": 32.0,
         "python": 22.0,
