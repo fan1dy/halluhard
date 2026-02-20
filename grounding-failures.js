@@ -10,16 +10,20 @@ function initGroundingFailures(domain) {
             return;
         }
 
-        const domainData = GROUNDING_FAILURES[domain];
-        const models = Object.keys(domainData).filter(model => !model.includes('websearch'));
-        
-        // Sort models by total failure rate (reference + content)
-        const modelStats = models.map(model => ({
-            model,
-            reference: domainData[model].reference_failure,
-            content: domainData[model].content_failure,
-            total: domainData[model].reference_failure + domainData[model].content_failure
-        })).sort((a, b) => a.total - b.total);
+        const groundingData = GROUNDING_FAILURES[domain];
+        // Use all models from leaderboard for this domain; fall back to grounding data keys if no leaderboard
+        const leaderboardModels = typeof LEADERBOARD_DATA !== 'undefined' && LEADERBOARD_DATA[domain]
+            ? Object.keys(LEADERBOARD_DATA[domain]).filter(m => !m.includes('websearch'))
+            : [];
+        const groundingModels = Object.keys(groundingData).filter(m => !m.includes('websearch'));
+        const models = [...new Set([...leaderboardModels, ...groundingModels])];
+
+        // For each model use grounding data when available, else 0
+        const modelStats = models.map(model => {
+            const ref = groundingData[model]?.reference_failure ?? 0;
+            const content = groundingData[model]?.content_failure ?? 0;
+            return { model, reference: ref, content, total: ref + content };
+        }).sort((a, b) => a.total - b.total);
 
         groundingFailuresData = modelStats;
         renderGroundingFailuresChart(modelStats);
@@ -242,7 +246,9 @@ function formatModelName(name) {
         'gpt-5-mini': 'GPT-5-mini',
         'gpt-5': 'GPT-5',
         'gpt-5-medium': 'GPT-5-thinking',
+        'gpt-5.2-medium': 'GPT-5.2-medium',
         'gpt-5.2': 'GPT-5.2',
+        'gpt-5.2-thinking': 'GPT-5.2-thinking',
         'gpt-5.2-medium-websearch': 'GPT-5.2-thinking-Web-Search',
         'claude-haiku-4-5': 'Claude-Haiku-4.5',
         'claude-sonnet-4-5': 'Claude-Sonnet-4.5',
@@ -252,11 +258,14 @@ function formatModelName(name) {
         'claude-sonnet-4-6': 'Claude-Sonnet-4.6',
         'gemini-3-flash': 'Gemini-3-Flash',
         'gemini-3-pro': 'Gemini-3-Pro',
+        'gemini-3.1-pro': 'Gemini-3.1-Pro',
         'deepseek-chat': 'DeepSeek-Chat',
         'deepseek-reasoner': 'DeepSeek-Reasoner',
         'kimi-k2-thinking': 'Kimi-K2-thinking',
         'kimi-k2.5-thinking': 'Kimi-K2.5-thinking',
-        'grok-4.1-thinking-fast': 'Grok-4.1-thinking-fast'
+        'grok-4.1-thinking-fast': 'Grok-4.1-thinking-fast',
+        'glm-5-thinking': 'GLM-5-thinking',
+        'grok-4-thinking': 'Grok-4-thinking'
     };
     
     if (nameMap[name]) {

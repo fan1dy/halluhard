@@ -84,10 +84,14 @@ function renderLineChart(stats, domain) {
 
     // Responsive margins and height based on screen size
     const isMobile = window.innerWidth <= 768;
+    const itemsPerRow = isMobile ? 3 : 6;
+    const legendRowHeight = 24;
+    const legendAreaHeight = Math.ceil(stats.length / itemsPerRow) * legendRowHeight + 28;
     const margin = isMobile 
-        ? { top: 50, right: 20, bottom: 50, left: 60 }
-        : { top: 50, right: 200, bottom: 60, left: 80 };
-    const chartHeight = isMobile ? 420 : 600;
+        ? { top: 50, right: 20, bottom: 50 + legendAreaHeight, left: 60 }
+        : { top: 50, right: 40, bottom: 60 + legendAreaHeight, left: 80 };
+    const baseChartHeight = isMobile ? 420 : 600;
+    const chartHeight = baseChartHeight + legendAreaHeight;
     const width = svg.clientWidth - margin.left - margin.right;
     const height = chartHeight - margin.top - margin.bottom;
     
@@ -288,9 +292,12 @@ function renderLineChart(stats, domain) {
     title.textContent = 'Turn-wise Hallucination Rates';
     chartGroup.appendChild(title);
 
-    // Legend (clickable: highlight corresponding line)
+    // Legend below plot (clickable: highlight corresponding line)
+    const legendTop = height + 50;
     const legendGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    legendGroup.setAttribute('transform', `translate(${width + 20}, 0)`);
+    legendGroup.setAttribute('transform', `translate(0, ${legendTop})`);
+
+    const legendItemWidth = width / itemsPerRow;
 
     let highlightedModel = null;
 
@@ -328,13 +335,16 @@ function renderLineChart(stats, domain) {
     }
 
     stats.forEach((stat, index) => {
-        const y = index * 25;
+        const row = Math.floor(index / itemsPerRow);
+        const col = index % itemsPerRow;
+        const x = col * legendItemWidth + 8;
+        const y = row * legendRowHeight;
         const color = modelColors[stat.model];
 
         const itemGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
         itemGroup.setAttribute('class', 'legend-item');
         itemGroup.setAttribute('data-model', stat.model);
-        itemGroup.setAttribute('transform', `translate(0, ${y})`);
+        itemGroup.setAttribute('transform', `translate(${x}, ${y})`);
         itemGroup.style.cursor = 'pointer';
 
         // Legend line
@@ -351,7 +361,7 @@ function renderLineChart(stats, domain) {
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         text.setAttribute('x', 25);
         text.setAttribute('y', 8);
-        text.setAttribute('font-size', '12px');
+        text.setAttribute('font-size', isMobile ? '10px' : '12px');
         text.setAttribute('fill', '#3a3936');
         text.setAttribute('font-family', "'Avenir', 'Avenir Next', sans-serif");
         text.textContent = formatModelName(stat.model);
@@ -375,6 +385,7 @@ function formatModelName(name) {
         'gpt-5': 'GPT-5',
         'gpt-5-medium': 'GPT-5-thinking',
         'gpt-5.2': 'GPT-5.2',
+        'gpt-5.2-thinking': 'GPT-5.2-thinking',
         'gpt-5.2-medium-websearch': 'GPT-5.2-thinking-Web-Search',
         'claude-haiku-4-5': 'Claude-Haiku-4.5',
         'claude-sonnet-4-5': 'Claude-Sonnet-4.5',
@@ -384,6 +395,7 @@ function formatModelName(name) {
         'claude-sonnet-4-6': 'Claude-Sonnet-4.6',
         'gemini-3-flash': 'Gemini-3-Flash',
         'gemini-3-pro': 'Gemini-3-Pro',
+        'gemini-3.1-pro': 'Gemini-3.1-Pro',
         'deepseek-chat': 'DeepSeek-Chat',
         'deepseek-reasoner': 'DeepSeek-Reasoner',
         'kimi-k2-thinking': 'Kimi-K2-thinking',

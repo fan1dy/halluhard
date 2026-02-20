@@ -32,6 +32,12 @@ const CODING_LANGUAGE_RATES = {
         "r": 39.3,
         "scala": 41.3
     },
+    "gpt-5.2-thinking": {
+        "elixir": 35.3,
+        "python": 30.0,
+        "r": 29.3,
+        "scala": 34.0
+    },
     "gpt-5.2-medium-websearch": {
         "elixir": 18.0,
         "python": 11.3,
@@ -85,6 +91,12 @@ const CODING_LANGUAGE_RATES = {
         "python": 21.3,
         "r": 21.3,
         "scala": 42.0
+    },
+    "gemini-3.1-pro": {
+        "elixir": 32.0,
+        "python": 23.3,
+        "r": 13.3,
+        "scala": 39.3
     },
     "deepseek-chat": {
         "elixir": 82.7,

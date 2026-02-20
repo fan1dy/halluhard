@@ -4,8 +4,11 @@ let leaderboardData = {};
 // Current sort state
 let currentSort = { by: 'rate', order: 'asc' };
 
-// Initialize the leaderboard
+// Initialize the leaderboard (only on index page)
 async function init() {
+    if (!document.getElementById('domain-select') || !document.getElementById('leaderboard-body')) {
+        return;
+    }
     try {
         // Prevent scroll restoration on navigation
         if ('scrollRestoration' in history) {
@@ -386,6 +389,7 @@ function formatModelName(name) {
         'claude-sonnet-4-6': 'Claude-Sonnet-4.6',
         'gemini-3-flash': 'Gemini-3-Flash',
         'gemini-3-pro': 'Gemini-3-Pro',
+        'gemini-3.1-pro': 'Gemini-3.1-Pro',
         'deepseek-chat': 'DeepSeek-Chat',
         'deepseek-reasoner': 'DeepSeek-Reasoner',
         'kimi-k2-thinking': 'Kimi-K2-thinking',
@@ -470,11 +474,14 @@ function setupBarLongPress(barGroup, modelName) {
     });
 }
 
-// Render bar chart
-function renderBarChart(entries = null) {
+// Render bar chart (optional chartId for domain pages; default 'bar-chart')
+function renderBarChart(entries = null, chartId = 'bar-chart') {
     if (!entries) {
-        const domain = document.getElementById('domain-select').value;
-        const turn = document.getElementById('turn-select').value;
+        const domainSelect = document.getElementById('domain-select');
+        const turnSelect = document.getElementById('turn-select');
+        if (!domainSelect || !turnSelect) return;
+        const domain = domainSelect.value;
+        const turn = turnSelect.value;
         let rates, domainBreakdown = {};
         
         if (domain === 'all') {
@@ -494,7 +501,8 @@ function renderBarChart(entries = null) {
         entries.sort((a, b) => a.rate - b.rate);
     }
     
-    const svg = document.getElementById('bar-chart');
+    const svg = document.getElementById(chartId);
+    if (!svg) return;
     svg.innerHTML = ''; // Clear previous chart
     
     if (entries.length === 0) {
@@ -674,6 +682,6 @@ let resizeTimeout;
 window.addEventListener('resize', function() {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(function() {
-        updateLeaderboard();
+        if (document.getElementById('leaderboard-body')) updateLeaderboard();
     }, 250);
 });

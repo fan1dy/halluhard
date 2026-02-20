@@ -1041,21 +1041,21 @@
                 <div class="example-claim">
                     <div class="example-header">
                         <span style="background: #007bff; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.85em; margin-right: 8px;">Research Questions</span>
-                        Example: Reference Grounding Failure
+                        Example: Content Grounding Failure
                     </div>
                     <div class="example-content">
                         <div class="claim-text">
-                            <strong>Claim:</strong> When using CLR/log-ratio methods, handle zeros with principled strategies (e.g., small pseudocounts or model-based replacements) and check sensitivity because zero handling can affect results (Quinn, T. P., Erb, I., Richardson, M. F., & Crowley, T. M. (2019). A field guide for the compositional analysis of any-omics data. *GigaScience*, 8(9), giz107).
+                            <strong>Claim:</strong> SimpleQA (Wei et al. 2024) gathers challenging fact-seek questions that cover diverse topics and time-sensitive knowledge.
                         </div>
                         <div class="claim-field">
-                            <strong>Reference:</strong> (Quinn, T. P., Erb, I., Richardson, M. F., & Crowley, T. M. (2019). A field guide for the compositional analysis of any-omics data. *GigaScience*, 8(9), giz107) 
+                            <strong>Reference:</strong> Wei et al. (2024). "Measuring short-form factuality in large language models." 
                         </div>
                         <div class="status-badges">
-                            <span class="badge danger">
-                                <strong>Reference:</strong> Reference: No. The paper exists (Quinn et al., 2019, GigaScience, giz107) but the provided author list does not exactly match the published record: the published article lists additional authors (e.g., G. Gloor and C. Notredame) and a different full author list/order, so the citation metadata is not an exact match.  
+                            <span class="badge success">
+                                <strong>Reference:</strong> Yes. The cited paper exists and the details are correct.
                             </span>
                             <span class="badge danger">
-                                <strong>Content:</strong> Content: No. Reference not grounded, so content cannot be attributed to a verified source.  
+                                <strong>Content:</strong> No. The content is partially fabricated, as SimpleQA emphasizes that "reference answers should not change over time".
                             </span>
                             <span class="badge danger">
                                 <strong>Verdict:</strong> Hallucination
