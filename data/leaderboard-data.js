@@ -123,6 +123,11 @@ const LEADERBOARD_DATA = {
             "1": 30.7,
             "3": 26.0,
             "5": 24.0
+        },
+        "gemini-3.1-pro-websearch": {
+            "1": 27.5,
+            "3": 20.0,
+            "5": 27.0
         }
     },
     "legal_cases": {
@@ -246,6 +251,11 @@ const LEADERBOARD_DATA = {
             "1": 35.2,
             "3": 45.3,
             "5": 49.5
+        },
+        "gemini-3.1-pro-websearch": {
+            "1": 21.9,
+            "3": 38.4,
+            "5": 44.5
         }
     },
     "medical_guidelines": {
@@ -368,6 +378,11 @@ const LEADERBOARD_DATA = {
             "1": 77.2,
             "3": 80.4,
             "5": 82.3
+        },
+        "gemini-3.1-pro-websearch": {
+            "1": 68.0,
+            "3": 70.8,
+            "5": 76.3
         }
     },
     "research_questions": {
@@ -490,6 +505,11 @@ const LEADERBOARD_DATA = {
             "1": 71.3,
             "3": 80.2,
             "5": 83.0
+        },
+        "gemini-3.1-pro-websearch": {
+            "1": 76.7,
+            "3": 83.4,
+            "5": 87.3
         }
     }
 };
@@ -522,7 +542,8 @@ const OVERALL_RATES = {
         "kimi-k2.5-thinking": 56.2,
         "grok-4.1-thinking-fast": 77.3,
         "grok-4-thinking": 55.7,
-        "gemini-3.1-pro": 27.0
+        "gemini-3.1-pro": 27.0,
+        "gemini-3.1-pro-websearch": 24.8
     },
     "legal_cases": {
         "claude-haiku-4-5": 67.1,
@@ -547,7 +568,8 @@ const OVERALL_RATES = {
         "kimi-k2.5-thinking": 65.2,
         "grok-4.1-thinking-fast": 73.4,
         "grok-4-thinking": 60.1,
-        "gemini-3.1-pro": 43.3
+        "gemini-3.1-pro": 43.3,
+        "gemini-3.1-pro-websearch": 35.0
     },
     "medical_guidelines": {
         "claude-haiku-4-5": 95.7,
@@ -573,7 +595,8 @@ const OVERALL_RATES = {
         "kimi-k2.5-thinking": 93.2,
         "grok-4.1-thinking-fast": 96.1,
         "grok-4-thinking": 92.7,
-        "gemini-3.1-pro": 80.0
+        "gemini-3.1-pro": 80.0,
+        "gemini-3.1-pro-websearch": 71.8
     },
     "research_questions": {
         "claude-haiku-4-5": 92.9,
@@ -599,6 +622,7 @@ const OVERALL_RATES = {
         "kimi-k2.5-thinking": 92.9,
         "grok-4.1-thinking-fast": 97.4,
         "grok-4-thinking": 92.8,
-        "gemini-3.1-pro": 78.2
+        "gemini-3.1-pro": 78.2,
+        "gemini-3.1-pro-websearch": 77.2
     }
 };

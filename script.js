@@ -393,6 +393,7 @@ function formatModelName(name) {
         'gemini-3-flash': 'Gemini-3-Flash',
         'gemini-3-pro': 'Gemini-3-Pro',
         'gemini-3.1-pro': 'Gemini-3.1-Pro',
+        'gemini-3.1-pro-websearch': 'Gemini-3.1-Pro-Web-Search',
         'deepseek-chat': 'DeepSeek-Chat',
         'deepseek-reasoner': 'DeepSeek-Reasoner',
         'kimi-k2-thinking': 'Kimi-K2-thinking',
