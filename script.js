@@ -319,6 +319,9 @@ function renderLeaderboard(entries, domain, turn) {
     
     tbody.innerHTML = entries.map((entry, index) => {
         const rank = index + 1;
+        const rankDisplay = rank <= 3
+            ? `<span class="rank-medal">${rank === 1 ? '🥇' : rank === 2 ? '🥈' : '🥉'}</span>`
+            : String(rank);
         const barWidth = (entry.rate / maxRate) * 100;
         const barColor = getBarColor(entry.rate, minRate, maxRate);
         
@@ -342,7 +345,7 @@ function renderLeaderboard(entries, domain, turn) {
         
         return `
             <tr>
-                <td class="rank-col">${rank}</td>
+                <td class="rank-col">${rankDisplay}</td>
                 <td class="model-col">${formatModelName(entry.model)}</td>
                 <td class="rate-col">
                     <span class="rate-value">${entry.rate.toFixed(1)}</span>
