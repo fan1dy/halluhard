@@ -383,7 +383,7 @@ function formatModelName(name) {
         'gpt-5-nano': 'GPT-5-nano',
         'gpt-5-mini': 'GPT-5-mini',
         'gpt-5': 'GPT-5',
-        'gpt-5-medium': 'GPT-5-thinking',
+        'gpt-5-thinking': 'GPT-5-thinking',
         'gpt-5.2': 'GPT-5.2',
         'gpt-5.2-thinking': 'GPT-5.2-thinking',
         'gpt-5.2-medium-websearch': 'GPT-5.2-thinking-Web-Search',

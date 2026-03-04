@@ -20,7 +20,7 @@ const CODING_LANGUAGE_RATES = {
         "r": 47.3,
         "scala": 63.3
     },
-    "gpt-5-medium": {
+    "gpt-5-thinking": {
         "elixir": 48.7,
         "python": 34.7,
         "r": 40.0,

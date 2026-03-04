@@ -54,7 +54,7 @@ const LEADERBOARD_DATA = {
             "3": 30.5,
             "5": 27.5
         },
-        "gpt-5-medium": {
+        "gpt-5-thinking": {
             "1": 46.5,
             "3": 39.0,
             "5": 38.0
@@ -176,7 +176,7 @@ const LEADERBOARD_DATA = {
             "3": 47.7,
             "5": 55.5
         },
-        "gpt-5-medium": {
+        "gpt-5-thinking": {
             "1": 34.4,
             "3": 49.5,
             "5": 57.2
@@ -299,7 +299,7 @@ const LEADERBOARD_DATA = {
             "3": 87.9,
             "5": 87.7
         },
-        "gpt-5-medium": {
+        "gpt-5-thinking": {
             "1": 76.3,
             "3": 90.0,
             "5": 88.8
@@ -421,7 +421,7 @@ const LEADERBOARD_DATA = {
             "3": 86.4,
             "5": 87.0
         },
-        "gpt-5-medium": {
+        "gpt-5-thinking": {
             "1": 78.7,
             "3": 93.2,
             "5": 91.1
@@ -509,7 +509,7 @@ const OVERALL_RATES = {
         "deepseek-reasoner": 74.6,
         "gemini-3-flash": 48.3,
         "gemini-3-pro": 31.7,
-        "gpt-5-medium": 41.2,
+        "gpt-5-thinking": 41.2,
         "gpt-5-mini": 54.7,
         "gpt-5-nano": 71.0,
         "gpt-5.2-medium-websearch": 15.8,
@@ -534,7 +534,7 @@ const OVERALL_RATES = {
         "deepseek-reasoner": 55.7,
         "gemini-3-flash": 52.0,
         "gemini-3-pro": 46.0,
-        "gpt-5-medium": 46.9,
+        "gpt-5-thinking": 46.9,
         "gpt-5-mini": 63.5,
         "gpt-5-nano": 77.3,
         "gpt-5.2-medium-websearch": 35.6,
@@ -560,7 +560,7 @@ const OVERALL_RATES = {
         "deepseek-reasoner": 88.1,
         "gemini-3-flash": 89.0,
         "gemini-3-pro": 85.9,
-        "gpt-5-medium": 83.8,
+        "gpt-5-thinking": 83.8,
         "gpt-5-mini": 92.7,
         "gpt-5-nano": 95.3,
         "gpt-5.2-medium-websearch": 48.8,
@@ -586,7 +586,7 @@ const OVERALL_RATES = {
         "deepseek-reasoner": 88.6,
         "gemini-3-flash": 88.6,
         "gemini-3-pro": 84.1,
-        "gpt-5-medium": 87.3,
+        "gpt-5-thinking": 87.3,
         "gpt-5-mini": 92.6,
         "gpt-5-nano": 96.9,
         "gpt-5.2-medium-websearch": 52.6,
@@ -599,6 +599,7 @@ const OVERALL_RATES = {
         "kimi-k2.5-thinking": 92.9,
         "grok-4.1-thinking-fast": 97.4,
         "grok-4-thinking": 92.8,
-        "gemini-3.1-pro": 78.2
+        "gemini-3.1-pro": 78.2,
+        "gemini-3.1-pro-websearch": 77.2
     }
 };
