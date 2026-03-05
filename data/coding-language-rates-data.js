@@ -121,5 +121,17 @@ const CODING_LANGUAGE_RATES = {
         "python": 40.0,
         "r": 52.0,
         "scala": 70.7
+    },
+    "gpt-5.3": {
+        "elixir": 60.0,
+        "python": 20.7,
+        "r": 39.3,
+        "scala": 40.7
+    },
+    "gpt-5.3-websearch": {
+        "elixir": 48.7,
+        "python": 17.3,
+        "r": 44.0,
+        "scala": 48.7
     }
 };

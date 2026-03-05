@@ -396,13 +396,15 @@ function formatModelName(name) {
         'gemini-3-flash': 'Gemini-3-Flash',
         'gemini-3-pro': 'Gemini-3-Pro',
         'gemini-3.1-pro': 'Gemini-3.1-Pro',
+        'gpt-5.3': 'GPT-5.3',
+        'gpt-5.3-websearch': 'GPT-5.3-Web-Search',
         'deepseek-chat': 'DeepSeek-Chat',
         'deepseek-reasoner': 'DeepSeek-Reasoner',
         'kimi-k2-thinking': 'Kimi-K2-thinking',
         'kimi-k2.5-thinking': 'Kimi-K2.5-thinking',
         'grok-4.1-thinking-fast': 'Grok-4.1-thinking-fast',
-        'glm-4-7-thinking': 'GLM-4.7-thinking',
-        'glm-5-thinking': 'GLM-5-thinking',
+        'glm-4-7-thinking': 'GLM-4.7-Thinking',
+        'glm-5-thinking': 'GLM-5-Thinking',
         'grok-4-thinking': 'Grok-4-thinking'
     };
     

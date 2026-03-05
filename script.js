@@ -325,6 +325,12 @@ function renderLeaderboard(entries, domain, turn) {
         const barWidth = (entry.rate / maxRate) * 100;
         const barColor = getBarColor(entry.rate, minRate, maxRate);
         
+        // Medal for top 3
+        let medal = '';
+        if (rank === 1) medal = '🥇';
+        else if (rank === 2) medal = '🥈';
+        else if (rank === 3) medal = '🥉';
+        
         // Domain breakdown HTML
         let domainBreakdownHtml = '';
         if (domain === 'all' && entry.domainBreakdown) {
@@ -382,8 +388,8 @@ function formatModelName(name) {
         'gpt-5.2': 'GPT-5.2',
         'gpt-5.2-medium-websearch': 'GPT-5.2-thinking-Web-Search',
         'gpt-5.2-thinking': 'GPT-5.2-thinking',
-        'glm-4-7-thinking': 'GLM-4.7-thinking',
-        'glm-5-thinking': 'GLM-5-thinking',
+        'glm-4-7-thinking': 'GLM-4.7-Thinking',
+        'glm-5-thinking': 'GLM-5-Thinking',
         'claude-haiku-4-5': 'Claude-Haiku-4.5',
         'claude-sonnet-4-5': 'Claude-Sonnet-4.5',
         'claude-opus-4-5': 'Claude-Opus-4.5',
@@ -393,6 +399,8 @@ function formatModelName(name) {
         'gemini-3-flash': 'Gemini-3-Flash',
         'gemini-3-pro': 'Gemini-3-Pro',
         'gemini-3.1-pro': 'Gemini-3.1-Pro',
+        'gpt-5.3': 'GPT-5.3',
+        'gpt-5.3-websearch': 'GPT-5.3-Web-Search',
         'deepseek-chat': 'DeepSeek-Chat',
         'deepseek-reasoner': 'DeepSeek-Reasoner',
         'kimi-k2-thinking': 'Kimi-K2-thinking',

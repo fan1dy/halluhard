@@ -28,7 +28,9 @@ const GROUNDING_FAILURES = {
         "kimi-k2-thinking": { reference_failure: 39.4, content_failure: 69.3 },
         "kimi-k2.5-thinking": { reference_failure: 34.4, content_failure: 64.9 },
         "claude-opus-4-6": { reference_failure: 19.0, content_failure: 49.7 },
-        "claude-sonnet-4-6": { reference_failure: 16.5, content_failure: 49.3 }
+        "claude-sonnet-4-6": { reference_failure: 16.5, content_failure: 49.3 },
+        "gpt-5.3": { reference_failure: 8.1, content_failure: 34.5 },
+        "gpt-5.3-websearch": { reference_failure: 6.4, content_failure: 26.2 }
     },
     "research_questions": {
         "claude-haiku-4-5": { reference_failure: 67.3, content_failure: 92.9 },
@@ -54,7 +56,9 @@ const GROUNDING_FAILURES = {
         "kimi-k2-thinking": { reference_failure: 62.8, content_failure: 93.1 },
         "kimi-k2.5-thinking": { reference_failure: 49.8, content_failure: 92.6 },
         "claude-opus-4-6": { reference_failure: 42.1, content_failure: 81.5 },
-        "claude-sonnet-4-6": { reference_failure: 46.4, content_failure: 85.7 }
+        "claude-sonnet-4-6": { reference_failure: 46.4, content_failure: 85.7 },
+        "gpt-5.3": { reference_failure: 28.5, content_failure: 69.1 },
+        "gpt-5.3-websearch": { reference_failure: 14.2, content_failure: 52.2 }
     },
     "medical_guidelines": {
         "claude-haiku-4-5": { reference_failure: 51.4, content_failure: 95.4 },
@@ -80,6 +84,8 @@ const GROUNDING_FAILURES = {
         "kimi-k2-thinking": { reference_failure: 62.7, content_failure: 94.4 },
         "kimi-k2.5-thinking": { reference_failure: 53.6, content_failure: 92.4 },
         "claude-opus-4-6": { reference_failure: 52.9, content_failure: 89.0 },
-        "claude-sonnet-4-6": { reference_failure: 53.1, content_failure: 89.4 }
+        "claude-sonnet-4-6": { reference_failure: 53.1, content_failure: 89.4 },
+        "gpt-5.3": { reference_failure: 31.1, content_failure: 70.2 },
+        "gpt-5.3-websearch": { reference_failure: 3.1, content_failure: 50.5 }
     }
 };

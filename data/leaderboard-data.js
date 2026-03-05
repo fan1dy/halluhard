@@ -124,6 +124,16 @@ const LEADERBOARD_DATA = {
             "3": 26.0,
             "5": 24.0
         },
+        "gpt-5.3": {
+            "1": 48.0,
+            "3": 38.0,
+            "5": 34.5
+        },
+        "gpt-5.3-websearch": {
+            "1": 50.0,
+            "3": 34.5,
+            "5": 34.5
+        }
     },
     "legal_cases": {
         "claude-haiku-4-5": {
@@ -247,6 +257,16 @@ const LEADERBOARD_DATA = {
             "3": 45.3,
             "5": 49.5
         },
+        "gpt-5.3": {
+            "1": 25.4,
+            "3": 38.9,
+            "5": 39.1
+        },
+        "gpt-5.3-websearch": {
+            "1": 82.7,
+            "3": 72.7,
+            "5": 65.9
+        }
     },
     "medical_guidelines": {
         "claude-haiku-4-5": {
@@ -369,6 +389,16 @@ const LEADERBOARD_DATA = {
             "3": 80.4,
             "5": 82.3
         },
+        "gpt-5.3": {
+            "1": 65.4,
+            "3": 76.3,
+            "5": 71.4
+        },
+        "gpt-5.3-websearch": {
+            "1": 53.5,
+            "3": 41.6,
+            "5": 43.7
+        }
     },
     "research_questions": {
         "claude-haiku-4-5": {
@@ -491,6 +521,16 @@ const LEADERBOARD_DATA = {
             "3": 80.2,
             "5": 83.0
         },
+        "gpt-5.3": {
+            "1": 68.1,
+            "3": 69.2,
+            "5": 69.8
+        },
+        "gpt-5.3-websearch": {
+            "1": 54.0,
+            "3": 41.2,
+            "5": 42.7
+        }
     }
 };
 
@@ -522,7 +562,9 @@ const OVERALL_RATES = {
         "kimi-k2.5-thinking": 56.2,
         "grok-4.1-thinking-fast": 77.3,
         "grok-4-thinking": 55.7,
-        "gemini-3.1-pro": 27.0
+        "gemini-3.1-pro": 27.0,
+        "gpt-5.3": 40.2,
+        "gpt-5.3-websearch": 39.7
     },
     "legal_cases": {
         "claude-haiku-4-5": 67.1,
@@ -547,7 +589,9 @@ const OVERALL_RATES = {
         "kimi-k2.5-thinking": 65.2,
         "grok-4.1-thinking-fast": 73.4,
         "grok-4-thinking": 60.1,
-        "gemini-3.1-pro": 43.3
+        "gemini-3.1-pro": 43.3,
+        "gpt-5.3": 34.6,
+        "gpt-5.3-websearch": 73.7
     },
     "medical_guidelines": {
         "claude-haiku-4-5": 95.7,
@@ -573,7 +617,9 @@ const OVERALL_RATES = {
         "kimi-k2.5-thinking": 93.2,
         "grok-4.1-thinking-fast": 96.1,
         "grok-4-thinking": 92.7,
-        "gemini-3.1-pro": 80.0
+        "gemini-3.1-pro": 80.0,
+        "gpt-5.3": 71.1,
+        "gpt-5.3-websearch": 46.2
     },
     "research_questions": {
         "claude-haiku-4-5": 92.9,
@@ -600,6 +646,8 @@ const OVERALL_RATES = {
         "grok-4.1-thinking-fast": 97.4,
         "grok-4-thinking": 92.8,
         "gemini-3.1-pro": 78.2,
-        "gemini-3.1-pro-websearch": 77.2
+        "gemini-3.1-pro-websearch": 77.2,
+        "gpt-5.3": 69.1,
+        "gpt-5.3-websearch": 46.0
     }
 };
