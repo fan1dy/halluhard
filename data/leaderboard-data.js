@@ -263,9 +263,9 @@ const LEADERBOARD_DATA = {
             "5": 39.1
         },
         "gpt-5.3-websearch": {
-            "1": 82.7,
-            "3": 72.7,
-            "5": 65.9
+            "1": 17.3,
+            "3": 27.3,
+            "5": 34.1
         }
     },
     "medical_guidelines": {
@@ -395,9 +395,9 @@ const LEADERBOARD_DATA = {
             "5": 71.4
         },
         "gpt-5.3-websearch": {
-            "1": 53.5,
-            "3": 41.6,
-            "5": 43.7
+            "1": 46.5,
+            "3": 58.4,
+            "5": 56.3
         }
     },
     "research_questions": {
@@ -527,9 +527,9 @@ const LEADERBOARD_DATA = {
             "5": 69.8
         },
         "gpt-5.3-websearch": {
-            "1": 54.0,
-            "3": 41.2,
-            "5": 42.7
+            "1": 46.0,
+            "3": 58.8,
+            "5": 57.3
         }
     }
 };
@@ -591,7 +591,7 @@ const OVERALL_RATES = {
         "grok-4-thinking": 60.1,
         "gemini-3.1-pro": 43.3,
         "gpt-5.3": 34.6,
-        "gpt-5.3-websearch": 73.7
+        "gpt-5.3-websearch": 26.3
     },
     "medical_guidelines": {
         "claude-haiku-4-5": 95.7,
@@ -619,7 +619,7 @@ const OVERALL_RATES = {
         "grok-4-thinking": 92.7,
         "gemini-3.1-pro": 80.0,
         "gpt-5.3": 71.1,
-        "gpt-5.3-websearch": 46.2
+        "gpt-5.3-websearch": 53.8
     },
     "research_questions": {
         "claude-haiku-4-5": 92.9,
@@ -648,6 +648,6 @@ const OVERALL_RATES = {
         "gemini-3.1-pro": 78.2,
         "gemini-3.1-pro-websearch": 77.2,
         "gpt-5.3": 69.1,
-        "gpt-5.3-websearch": 46.0
+        "gpt-5.3-websearch": 54.0
     }
 };
