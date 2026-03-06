@@ -401,6 +401,8 @@ function formatModelName(name) {
         'gemini-3.1-pro': 'Gemini-3.1-Pro',
         'gpt-5.3': 'GPT-5.3',
         'gpt-5.3-websearch': 'GPT-5.3-Web-Search',
+        'gpt-5.4-thinking': 'GPT-5.4-Thinking',
+        'gpt-5.4-thinking-websearch': 'GPT-5.4-Thinking-Web-Search',
         'deepseek-chat': 'DeepSeek-Chat',
         'deepseek-reasoner': 'DeepSeek-Reasoner',
         'kimi-k2-thinking': 'Kimi-K2-thinking',
