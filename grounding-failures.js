@@ -13,9 +13,9 @@ function initGroundingFailures(domain) {
         const groundingData = GROUNDING_FAILURES[domain];
         // Use all models from leaderboard for this domain; fall back to grounding data keys if no leaderboard
         const leaderboardModels = typeof LEADERBOARD_DATA !== 'undefined' && LEADERBOARD_DATA[domain]
-            ? Object.keys(LEADERBOARD_DATA[domain]).filter(m => !m.includes('websearch'))
+            ? Object.keys(LEADERBOARD_DATA[domain])
             : [];
-        const groundingModels = Object.keys(groundingData).filter(m => !m.includes('websearch'));
+        const groundingModels = Object.keys(groundingData);
         const models = [...new Set([...leaderboardModels, ...groundingModels])];
 
         // For each model use grounding data when available, else 0
@@ -270,7 +270,9 @@ function formatModelName(name) {
         'grok-4.1-thinking-fast': 'Grok-4.1-thinking-fast',
         'glm-4-7-thinking': 'GLM-4.7-Thinking',
         'glm-5-thinking': 'GLM-5-Thinking',
-        'grok-4-thinking': 'Grok-4-thinking'
+        'grok-4-thinking': 'Grok-4-thinking',
+        'glm-5-thinking-websearch': 'GLM-5-Thinking-Web-Search',
+        'kimi-k2.5-websearch': 'Kimi-K2.5-Web-Search'
     };
     
     if (nameMap[name]) {

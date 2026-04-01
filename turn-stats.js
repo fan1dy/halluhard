@@ -34,7 +34,7 @@ function initTurnStats(domain) {
 
         // Get all models and calculate their turn-wise stats
         // Filter out websearch models
-        const models = Object.keys(domainData).filter(model => !model.includes('websearch'));
+        const models = Object.keys(domainData);
         const stats = models.map(model => {
             const turns = domainData[model];
             const turn1 = turns["1"] !== undefined ? Number(turns["1"]) : null;
@@ -407,7 +407,9 @@ function formatModelName(name) {
         'grok-4.1-thinking-fast': 'Grok-4.1-thinking-fast',
         'glm-4-7-thinking': 'GLM-4.7-Thinking',
         'glm-5-thinking': 'GLM-5-Thinking',
-        'grok-4-thinking': 'Grok-4-thinking'
+        'grok-4-thinking': 'Grok-4-thinking',
+        'glm-5-thinking-websearch': 'GLM-5-Thinking-Web-Search',
+        'kimi-k2.5-websearch': 'Kimi-K2.5-Web-Search'
     };
     
     if (nameMap[name]) {
