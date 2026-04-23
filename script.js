@@ -407,6 +407,7 @@ function formatModelName(name) {
         'deepseek-reasoner': 'DeepSeek-Reasoner',
         'kimi-k2-thinking': 'Kimi-K2-thinking',
         'kimi-k2.5-thinking': 'Kimi-K2.5-thinking',
+        'kimi-k2.6-thinking': 'Kimi-K2.6',
         'grok-4.1-thinking-fast': 'Grok-4.1-thinking-fast',
         'grok-4-thinking': 'Grok-4-thinking'
     };

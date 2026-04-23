@@ -104,6 +104,11 @@ const LEADERBOARD_DATA = {
             "3": 60.0,
             "5": 64.0
         },
+        "kimi-k2.6-thinking": {
+            "1": 41.0,
+            "3": 33.0,
+            "5": 31.0
+        },
         "kimi-k2.5-thinking": {
             "1": 61.0,
             "3": 54.5,
@@ -247,6 +252,11 @@ const LEADERBOARD_DATA = {
             "3": 75.7,
             "5": 83.5
         },
+        "kimi-k2.6-thinking": {
+            "1": 39.0,
+            "3": 52.6,
+            "5": 65.7
+        },
         "kimi-k2.5-thinking": {
             "1": 47.5,
             "3": 71.5,
@@ -388,6 +398,11 @@ const LEADERBOARD_DATA = {
             "1": 91.2,
             "3": 96.1,
             "5": 97.3
+        },
+        "kimi-k2.6-thinking": {
+            "1": 81.5,
+            "3": 85.5,
+            "5": 85.3
         },
         "kimi-k2.5-thinking": {
             "1": 88.6,
@@ -531,6 +546,11 @@ const LEADERBOARD_DATA = {
             "3": 94.9,
             "5": 96.3
         },
+        "kimi-k2.6-thinking": {
+            "1": 76.5,
+            "3": 84.5,
+            "5": 87.9
+        },
         "kimi-k2.5-thinking": {
             "1": 87.2,
             "3": 93.1,
@@ -600,6 +620,7 @@ const OVERALL_RATES = {
         "glm-5-thinking": 49.0,
         "kimi-k2-thinking": 61.8,
         "kimi-k2.5-thinking": 56.2,
+        "kimi-k2.6-thinking": 35.0,
         "grok-4.1-thinking-fast": 77.3,
         "grok-4-thinking": 55.7,
         "gemini-3.1-pro": 27.0,
@@ -629,6 +650,7 @@ const OVERALL_RATES = {
         "glm-5-thinking": 57.3,
         "kimi-k2-thinking": 70.0,
         "kimi-k2.5-thinking": 65.2,
+        "kimi-k2.6-thinking": 52.5,
         "grok-4.1-thinking-fast": 73.4,
         "grok-4-thinking": 60.1,
         "gemini-3.1-pro": 43.3,
@@ -659,6 +681,7 @@ const OVERALL_RATES = {
         "glm-5-thinking": 87.3,
         "kimi-k2-thinking": 95.0,
         "kimi-k2.5-thinking": 93.2,
+        "kimi-k2.6-thinking": 84.1,
         "grok-4.1-thinking-fast": 96.1,
         "grok-4-thinking": 92.7,
         "gemini-3.1-pro": 80.0,
@@ -689,6 +712,7 @@ const OVERALL_RATES = {
         "glm-5-thinking": 90.1,
         "kimi-k2-thinking": 93.5,
         "kimi-k2.5-thinking": 92.9,
+        "kimi-k2.6-thinking": 82.9,
         "grok-4.1-thinking-fast": 97.4,
         "grok-4-thinking": 92.8,
         "gemini-3.1-pro": 78.2,
