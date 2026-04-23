@@ -12,7 +12,7 @@ function initCodingLanguageRates() {
             return;
         }
 
-        const models = Object.keys(CODING_LANGUAGE_RATES).filter(model => !model.includes('websearch'));
+        const models = Object.keys(CODING_LANGUAGE_RATES);
         const languages = ['elixir', 'python', 'r', 'scala'];
         const languageLabels = { elixir: 'Elixir', python: 'Python', r: 'R', scala: 'Scala' };
 
@@ -255,7 +255,10 @@ function formatModelName(name) {
         'kimi-k2.5-thinking': 'Kimi-K2.5-thinking',
         'grok-4.1-thinking-fast': 'Grok-4.1-thinking-fast',
         'glm-4-7-thinking': 'GLM-4.7-Thinking',
-        'glm-5-thinking': 'GLM-5-Thinking'
+        'glm-5-thinking': 'GLM-5-Thinking',
+        'grok-4-thinking': 'Grok-4-thinking',
+        'glm-5-thinking-websearch': 'GLM-5-Thinking-Web-Search',
+        'kimi-k2.5-websearch': 'Kimi-K2.5-Web-Search'
     };
     
     if (nameMap[name]) {

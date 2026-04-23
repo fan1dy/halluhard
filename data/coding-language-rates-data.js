@@ -145,5 +145,17 @@ const CODING_LANGUAGE_RATES = {
         "python": 2.7,
         "r": 2.0,
         "scala": 7.3
+    },
+    "glm-5-thinking-websearch": {
+        "elixir": 60.0,
+        "python": 48.7,
+        "r": 47.3,
+        "scala": 76.0
+    },
+    "kimi-k2.5-websearch": {
+        "elixir": 67.3,
+        "python": 46.7,
+        "r": 62.0,
+        "scala": 76.7
     }
 };
