@@ -163,5 +163,23 @@ const CODING_LANGUAGE_RATES = {
         "python": 46.7,
         "r": 62.0,
         "scala": 76.7
+    },
+    "deepseek-v4-pro": {
+        "elixir": 72.0,
+        "python": 56.7,
+        "r": 57.3,
+        "scala": 60.7
+    },
+    "claude-opus-4-7": {
+        "elixir": 28.4,
+        "python": 18.7,
+        "r": 25.7,
+        "scala": 34.9
+    },
+    "gpt-5.5-medium": {
+        "elixir": 11.3,
+        "python": 10.7,
+        "r": 12.0,
+        "scala": 24.0
     }
 };

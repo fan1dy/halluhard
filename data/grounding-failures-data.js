@@ -35,7 +35,10 @@ const GROUNDING_FAILURES = {
         "gpt-5.4-thinking": { reference_failure: 3.8, content_failure: 29.8 },
         "gpt-5.4-thinking-websearch": { reference_failure: 3.3, content_failure: 16.4 },
         "glm-5-thinking-websearch": { reference_failure: 7.3, content_failure: 26.6 },
-        "kimi-k2.5-websearch": { reference_failure: 11.4, content_failure: 42.6 }
+        "kimi-k2.5-websearch": { reference_failure: 11.4, content_failure: 42.6 },
+        "deepseek-v4-pro": { reference_failure: 31.2, content_failure: 57.7 },
+        "claude-opus-4-7": { reference_failure: 15.7, content_failure: 45.4 },
+        "gpt-5.5-medium": { reference_failure: 16.6, content_failure: 38.7 }
     },
     "research_questions": {
         "claude-haiku-4-5": { reference_failure: 67.3, content_failure: 92.9 },
@@ -68,7 +71,10 @@ const GROUNDING_FAILURES = {
         "gpt-5.4-thinking": { reference_failure: 18.4, content_failure: 71.1 },
         "gpt-5.4-thinking-websearch": { reference_failure: 3.6, content_failure: 53.4 },
         "glm-5-thinking-websearch": { reference_failure: 7.5, content_failure: 38.0 },
-        "kimi-k2.5-websearch": { reference_failure: 9.2, content_failure: 61.3 }
+        "kimi-k2.5-websearch": { reference_failure: 9.2, content_failure: 61.3 },
+        "deepseek-v4-pro": { reference_failure: 52.2, content_failure: 89.3 },
+        "claude-opus-4-7": { reference_failure: 29.2, content_failure: 83.8 },
+        "gpt-5.5-medium": { reference_failure: 22.1, content_failure: 73.3 }
     },
     "medical_guidelines": {
         "claude-haiku-4-5": { reference_failure: 51.4, content_failure: 95.4 },
@@ -101,6 +107,9 @@ const GROUNDING_FAILURES = {
         "gpt-5.4-thinking": { reference_failure: 33.9, content_failure: 71.8 },
         "gpt-5.4-thinking-websearch": { reference_failure: 0.6, content_failure: 51.1 },
         "glm-5-thinking-websearch": { reference_failure: 4.6, content_failure: 32.9 },
-        "kimi-k2.5-websearch": { reference_failure: 6.9, content_failure: 63.3 }
+        "kimi-k2.5-websearch": { reference_failure: 6.9, content_failure: 63.3 },
+        "deepseek-v4-pro": { reference_failure: 56.3, content_failure: 89.5 },
+        "claude-opus-4-7": { reference_failure: 32.2, content_failure: 82.2 },
+        "gpt-5.5-medium": { reference_failure: 24.9, content_failure: 71.6 }
     }
 };
