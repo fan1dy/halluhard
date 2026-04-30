@@ -411,7 +411,9 @@ function formatModelName(name) {
         'grok-4.1-thinking-fast': 'Grok-4.1-thinking-fast',
         'grok-4-thinking': 'Grok-4-thinking',
         'glm-5-thinking-websearch': 'GLM-5-Thinking-Web-Search',
-        'kimi-k2.5-websearch': 'Kimi-K2.5-Web-Search'
+        'kimi-k2.5-websearch': 'Kimi-K2.5-Web-Search',
+        'claude-opus-4-7': 'Claude-Opus-4.7',
+        'gpt-5.5-medium': 'GPT-5.5-thinking'
     };
     
     // Return mapped name if exists, otherwise return original with basic formatting

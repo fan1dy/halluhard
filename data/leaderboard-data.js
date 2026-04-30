@@ -158,6 +158,16 @@ const LEADERBOARD_DATA = {
             "1": 70.0,
             "3": 60.5,
             "5": 59.1
+        },
+        "claude-opus-4-7": {
+            "1": 31.8,
+            "3": 22.5,
+            "5": 26.4
+        },
+        "gpt-5.5-medium": {
+            "1": 18.0,
+            "3": 13.5,
+            "5": 12.0
         }
     },
     "legal_cases": {
@@ -316,6 +326,16 @@ const LEADERBOARD_DATA = {
             "1": 31.4,
             "3": 41.8,
             "5": 53.4
+        },
+        "claude-opus-4-7": {
+            "1": 33.8,
+            "3": 47.4,
+            "5": 54.5
+        },
+        "gpt-5.5-medium": {
+            "1": 24.3,
+            "3": 44.9,
+            "5": 46.6
         }
     },
     "medical_guidelines": {
@@ -473,6 +493,16 @@ const LEADERBOARD_DATA = {
             "1": 50.8,
             "3": 73.2,
             "5": 78.5
+        },
+        "claude-opus-4-7": {
+            "1": 76.8,
+            "3": 83.3,
+            "5": 86.3
+        },
+        "gpt-5.5-medium": {
+            "1": 62.0,
+            "3": 72.7,
+            "5": 80.0
         }
     },
     "research_questions": {
@@ -630,6 +660,16 @@ const LEADERBOARD_DATA = {
             "1": 45.0,
             "3": 70.2,
             "5": 75.0
+        },
+        "claude-opus-4-7": {
+            "1": 77.2,
+            "3": 84.9,
+            "5": 89.8
+        },
+        "gpt-5.5-medium": {
+            "1": 63.5,
+            "3": 77.4,
+            "5": 82.2
         }
     }
 };
@@ -669,7 +709,9 @@ const OVERALL_RATES = {
         "gpt-5.4-thinking": 11.7,
         "gpt-5.4-thinking-websearch": 4.3,
         "glm-5-thinking-websearch": 58.0,
-        "kimi-k2.5-websearch": 63.2
+        "kimi-k2.5-websearch": 63.2,
+        "claude-opus-4-7": 26.9,
+        "gpt-5.5-medium": 14.5
     },
     "legal_cases": {
         "claude-haiku-4-5": 67.1,
@@ -701,7 +743,9 @@ const OVERALL_RATES = {
         "gpt-5.4-thinking": 29.9,
         "gpt-5.4-thinking-websearch": 16.5,
         "glm-5-thinking-websearch": 26.8,
-        "kimi-k2.5-websearch": 42.5
+        "kimi-k2.5-websearch": 42.5,
+        "claude-opus-4-7": 45.4,
+        "gpt-5.5-medium": 38.7
     },
     "medical_guidelines": {
         "claude-haiku-4-5": 95.7,
@@ -734,7 +778,9 @@ const OVERALL_RATES = {
         "gpt-5.4-thinking": 72.9,
         "gpt-5.4-thinking-websearch": 51.9,
         "glm-5-thinking-websearch": 35.0,
-        "kimi-k2.5-websearch": 67.5
+        "kimi-k2.5-websearch": 67.5,
+        "claude-opus-4-7": 82.2,
+        "gpt-5.5-medium": 71.6
     },
     "research_questions": {
         "claude-haiku-4-5": 92.9,
@@ -768,6 +814,8 @@ const OVERALL_RATES = {
         "gpt-5.4-thinking": 72.7,
         "gpt-5.4-thinking-websearch": 54.8,
         "glm-5-thinking-websearch": 38.9,
-        "kimi-k2.5-websearch": 63.4
+        "kimi-k2.5-websearch": 63.4,
+        "claude-opus-4-7": 83.8,
+        "gpt-5.5-medium": 74.2
     }
 };
