@@ -4,6 +4,11 @@
 
 const LEADERBOARD_DATA = {
     "coding": {
+        "nemotron-3-ultra": {
+            "1": 80.0,
+            "3": 78.5,
+            "5": 79.5
+        },
         "claude-haiku-4-5": {
             "1": 64.5,
             "3": 63.5,
@@ -176,6 +181,11 @@ const LEADERBOARD_DATA = {
         }
     },
     "legal_cases": {
+        "nemotron-3-ultra": {
+            "1": 48.5,
+            "3": 75.9,
+            "5": 80.3
+        },
         "claude-haiku-4-5": {
             "1": 59.5,
             "3": 68.8,
@@ -349,6 +359,11 @@ const LEADERBOARD_DATA = {
         }
     },
     "medical_guidelines": {
+        "nemotron-3-ultra": {
+            "1": 93.1,
+            "3": 95.4,
+            "5": 97.5
+        },
         "claude-haiku-4-5": {
             "1": 95.1,
             "3": 96.2,
@@ -521,6 +536,11 @@ const LEADERBOARD_DATA = {
         }
     },
     "research_questions": {
+        "nemotron-3-ultra": {
+            "1": 90.9,
+            "3": 93.5,
+            "5": 96.7
+        },
         "claude-haiku-4-5": {
             "1": 89.7,
             "3": 94.1,
@@ -699,6 +719,7 @@ const LEADERBOARD_DATA = {
 // For coding domain, rates are from _coding_direct reports
 const OVERALL_RATES = {
     "coding": {
+        "nemotron-3-ultra": 79.3,
         "claude-haiku-4-5": 62.5,
         "claude-opus-4-5-websearch": 29.0,
         "claude-opus-4-5": 25.7,
@@ -735,6 +756,7 @@ const OVERALL_RATES = {
         "deepseek-v4-pro": 61.7
     },
     "legal_cases": {
+        "nemotron-3-ultra": 69.7,
         "claude-haiku-4-5": 67.1,
         "claude-opus-4-5": 44.8,
         "claude-opus-4-6": 49.7,
@@ -770,6 +792,7 @@ const OVERALL_RATES = {
         "deepseek-v4-pro": 57.9
     },
     "medical_guidelines": {
+        "nemotron-3-ultra": 95.4,
         "claude-haiku-4-5": 95.7,
         "claude-opus-4-5-websearch": 29.2,
         "claude-opus-4-5": 85.6,
@@ -806,6 +829,7 @@ const OVERALL_RATES = {
         "deepseek-v4-pro": 89.9
     },
     "research_questions": {
+        "nemotron-3-ultra": 93.7,
         "claude-haiku-4-5": 92.9,
         "claude-opus-4-5-websearch": 29.6,
         "claude-opus-4-5": 84.0,

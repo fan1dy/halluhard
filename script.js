@@ -3,6 +3,7 @@ let leaderboardData = {};
 
 // Models with publicly released weights
 const OPEN_WEIGHT_MODELS = new Set([
+    'nemotron-3-ultra',
     'deepseek-chat',
     'deepseek-reasoner',
     'deepseek-v4-pro',
@@ -395,6 +396,7 @@ function getBadge(rate) {
 // Format model name for display
 function formatModelName(name) {
     const nameMap = {
+        'nemotron-3-ultra': 'Nemotron-3-Ultra',
         'gpt-5-nano': 'GPT-5-nano',
         'gpt-5-mini': 'GPT-5-mini',
         'gpt-5': 'GPT-5',

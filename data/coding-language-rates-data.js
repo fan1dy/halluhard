@@ -2,6 +2,12 @@
 // Data structure: model -> language -> rate (percentage 0-100)
 
 const CODING_LANGUAGE_RATES = {
+    "nemotron-3-ultra": {
+        "elixir": 86.7,
+        "python": 66.0,
+        "r": 82.7,
+        "scala": 82.0
+    },
     "gpt-5-nano": {
         "elixir": 84.7,
         "python": 56.7,
