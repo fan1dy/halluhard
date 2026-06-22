@@ -17,6 +17,12 @@ const OPEN_WEIGHT_MODELS = new Set([
     'kimi-k2.5-websearch',
 ]);
 
+// Models evaluated on the updated benchmark (after the June 15, 2026 legal-cases
+// seed-question refresh). Marked with a dagger (†) in the leaderboard.
+const POST_UPDATE_MODELS = new Set([
+    'glm-5.2',
+]);
+
 // Current sort state
 let currentSort = { by: 'rate', order: 'asc' };
 
@@ -368,7 +374,7 @@ function renderLeaderboard(entries, domain, turn) {
         return `
             <tr>
                 <td class="rank-col">${rankDisplay}</td>
-                <td class="model-col">${formatModelName(entry.model)}</td>
+                <td class="model-col">${formatModelName(entry.model)}${POST_UPDATE_MODELS.has(entry.model) ? '<sup class="post-update-mark" title="Evaluated on the updated benchmark (after the June 15, 2026 legal-cases seed-question refresh)">†</sup>' : ''}</td>
                 <td class="rate-col">
                     <span class="rate-value">${entry.rate.toFixed(1)}</span>
                     <div class="rate-bar">
@@ -696,7 +702,7 @@ function renderBarChart(entries = null, chartId = 'bar-chart') {
         nameLabel.setAttribute('class', 'chart-axis');
         nameLabel.setAttribute('fill', '#3a3936');
         nameLabel.setAttribute('font-size', nameFontSize);
-        nameLabel.textContent = formatModelName(entry.model);
+        nameLabel.textContent = formatModelName(entry.model) + (POST_UPDATE_MODELS.has(entry.model) ? ' †' : '');
         barGroup.appendChild(nameLabel);
 
         chartGroup.appendChild(barGroup);
