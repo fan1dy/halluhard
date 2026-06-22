@@ -104,6 +104,11 @@ const LEADERBOARD_DATA = {
             "3": 45.5,
             "5": 49.5
         },
+        "glm-5.2": {
+            "1": 54.5,
+            "3": 52.0,
+            "5": 48.5
+        },
         "kimi-k2-thinking": {
             "1": 61.5,
             "3": 60.0,
@@ -282,6 +287,11 @@ const LEADERBOARD_DATA = {
             "3": 61.3,
             "5": 66.0
         },
+        "glm-5.2": {
+            "1": 54.3,
+            "3": 68.0,
+            "5": 74.5
+        },
         "kimi-k2-thinking": {
             "1": 51.5,
             "3": 75.7,
@@ -458,6 +468,11 @@ const LEADERBOARD_DATA = {
             "1": 82.7,
             "3": 87.4,
             "5": 91.5
+        },
+        "glm-5.2": {
+            "1": 85.4,
+            "3": 90.5,
+            "5": 91.6
         },
         "kimi-k2-thinking": {
             "1": 91.2,
@@ -636,6 +651,11 @@ const LEADERBOARD_DATA = {
             "3": 91.8,
             "5": 92.1
         },
+        "glm-5.2": {
+            "1": 85.7,
+            "3": 91.0,
+            "5": 92.4
+        },
         "kimi-k2-thinking": {
             "1": 89.4,
             "3": 94.9,
@@ -739,6 +759,7 @@ const OVERALL_RATES = {
         "gpt-5": 50.3,
         "glm-4-7-thinking": 59.2,
         "glm-5-thinking": 49.0,
+        "glm-5.2": 54.5,
         "kimi-k2-thinking": 61.8,
         "kimi-k2.5-thinking": 56.2,
         "kimi-k2.6-thinking": 35.0,
@@ -775,6 +796,7 @@ const OVERALL_RATES = {
         "gpt-5": 52.8,
         "glm-4-7-thinking": 67.7,
         "glm-5-thinking": 57.3,
+        "glm-5.2": 65.7,
         "kimi-k2-thinking": 70.0,
         "kimi-k2.5-thinking": 65.2,
         "kimi-k2.6-thinking": 52.5,
@@ -812,6 +834,7 @@ const OVERALL_RATES = {
         "gpt-5": 92.8,
         "glm-4-7-thinking": 90.9,
         "glm-5-thinking": 87.3,
+        "glm-5.2": 89.2,
         "kimi-k2-thinking": 95.0,
         "kimi-k2.5-thinking": 93.2,
         "kimi-k2.6-thinking": 84.1,
@@ -849,6 +872,7 @@ const OVERALL_RATES = {
         "gpt-5": 91.1,
         "glm-4-7-thinking": 90.7,
         "glm-5-thinking": 90.1,
+        "glm-5.2": 89.7,
         "kimi-k2-thinking": 93.5,
         "kimi-k2.5-thinking": 92.9,
         "kimi-k2.6-thinking": 82.9,
