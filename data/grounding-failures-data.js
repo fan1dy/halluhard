@@ -5,6 +5,8 @@
 
 const GROUNDING_FAILURES = {
     "legal_cases": {
+        "claude-fable-5": { reference_failure: 14.0, content_failure: 38.1 },
+        "claude-sonnet-5": { reference_failure: 17.3, content_failure: 49.9 },
         "nemotron-3-ultra": { reference_failure: 43.7, content_failure: 69.6 },
         "claude-haiku-4-5": { reference_failure: 37.8, content_failure: 66.1 },
         "claude-opus-4-5": { reference_failure: 17.7, content_failure: 44.5 },
@@ -42,6 +44,8 @@ const GROUNDING_FAILURES = {
         "gpt-5.5-medium": { reference_failure: 16.6, content_failure: 38.7 }
     },
     "research_questions": {
+        "claude-fable-5": { reference_failure: 24.4, content_failure: 71.1 },
+        "claude-sonnet-5": { reference_failure: 31.1, content_failure: 79.9 },
         "nemotron-3-ultra": { reference_failure: 64.1, content_failure: 93.3 },
         "claude-haiku-4-5": { reference_failure: 67.3, content_failure: 92.9 },
         "claude-opus-4-5": { reference_failure: 38.6, content_failure: 83.9 },
@@ -79,6 +83,8 @@ const GROUNDING_FAILURES = {
         "gpt-5.5-medium": { reference_failure: 22.1, content_failure: 73.3 }
     },
     "medical_guidelines": {
+        "claude-fable-5": { reference_failure: 23.9, content_failure: 78.3 },
+        "claude-sonnet-5": { reference_failure: 33.3, content_failure: 82.2 },
         "nemotron-3-ultra": { reference_failure: 71.9, content_failure: 94.9 },
         "claude-haiku-4-5": { reference_failure: 51.4, content_failure: 95.4 },
         "claude-opus-4-5": { reference_failure: 39.4, content_failure: 85.0 },

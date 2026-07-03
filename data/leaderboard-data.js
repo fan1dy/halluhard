@@ -4,6 +4,16 @@
 
 const LEADERBOARD_DATA = {
     "coding": {
+        "claude-fable-5": {
+            "1": 18.8,
+            "3": 9.2,
+            "5": 9.1
+        },
+        "claude-sonnet-5": {
+            "1": 33.3,
+            "3": 18.0,
+            "5": 21.7
+        },
         "nemotron-3-ultra": {
             "1": 80.0,
             "3": 78.5,
@@ -186,6 +196,16 @@ const LEADERBOARD_DATA = {
         }
     },
     "legal_cases": {
+        "claude-fable-5": {
+            "1": 30.8,
+            "3": 38.9,
+            "5": 44.4
+        },
+        "claude-sonnet-5": {
+            "1": 42.6,
+            "3": 51.4,
+            "5": 56.1
+        },
         "nemotron-3-ultra": {
             "1": 48.5,
             "3": 75.9,
@@ -369,6 +389,16 @@ const LEADERBOARD_DATA = {
         }
     },
     "medical_guidelines": {
+        "claude-fable-5": {
+            "1": 65.3,
+            "3": 80.3,
+            "5": 88.3
+        },
+        "claude-sonnet-5": {
+            "1": 73.5,
+            "3": 86.5,
+            "5": 87.7
+        },
         "nemotron-3-ultra": {
             "1": 93.1,
             "3": 95.4,
@@ -551,6 +581,16 @@ const LEADERBOARD_DATA = {
         }
     },
     "research_questions": {
+        "claude-fable-5": {
+            "1": 58.2,
+            "3": 78.0,
+            "5": 79.0
+        },
+        "claude-sonnet-5": {
+            "1": 73.2,
+            "3": 83.5,
+            "5": 83.5
+        },
         "nemotron-3-ultra": {
             "1": 90.9,
             "3": 93.5,
@@ -739,6 +779,8 @@ const LEADERBOARD_DATA = {
 // For coding domain, rates are from _coding_direct reports
 const OVERALL_RATES = {
     "coding": {
+        "claude-fable-5": 16.1,
+        "claude-sonnet-5": 25.8,
         "nemotron-3-ultra": 79.3,
         "claude-haiku-4-5": 62.5,
         "claude-opus-4-5-websearch": 29.0,
@@ -777,6 +819,8 @@ const OVERALL_RATES = {
         "deepseek-v4-pro": 61.7
     },
     "legal_cases": {
+        "claude-fable-5": 38.1,
+        "claude-sonnet-5": 50.1,
         "nemotron-3-ultra": 69.7,
         "claude-haiku-4-5": 67.1,
         "claude-opus-4-5": 44.8,
@@ -814,6 +858,8 @@ const OVERALL_RATES = {
         "deepseek-v4-pro": 57.9
     },
     "medical_guidelines": {
+        "claude-fable-5": 78.5,
+        "claude-sonnet-5": 82.8,
         "nemotron-3-ultra": 95.4,
         "claude-haiku-4-5": 95.7,
         "claude-opus-4-5-websearch": 29.2,
@@ -852,6 +898,8 @@ const OVERALL_RATES = {
         "deepseek-v4-pro": 89.9
     },
     "research_questions": {
+        "claude-fable-5": 71.1,
+        "claude-sonnet-5": 80.1,
         "nemotron-3-ultra": 93.7,
         "claude-haiku-4-5": 92.9,
         "claude-opus-4-5-websearch": 29.6,

@@ -420,6 +420,8 @@ function formatModelName(name) {
         'claude-opus-4-5-websearch': 'Claude-Opus-4.5-Web-Search',
         'claude-opus-4-6': 'Claude-Opus-4.6',
         'claude-sonnet-4-6': 'Claude-Sonnet-4.6',
+        'claude-sonnet-5': 'Claude-Sonnet-5',
+        'claude-fable-5': 'Claude-Fable-5',
         'gemini-3-flash': 'Gemini-3-Flash',
         'gemini-3-pro': 'Gemini-3-Pro',
         'gemini-3.1-pro': 'Gemini-3.1-Pro',
