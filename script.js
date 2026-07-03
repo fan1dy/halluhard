@@ -21,6 +21,8 @@ const OPEN_WEIGHT_MODELS = new Set([
 // seed-question refresh). Marked with a dagger (†) in the leaderboard.
 const POST_UPDATE_MODELS = new Set([
     'glm-5.2',
+    'claude-fable-5',
+    'claude-sonnet-5',
 ]);
 
 // Current sort state
