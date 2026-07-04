@@ -220,6 +220,7 @@ function formatFunctionModelName(name) {
         'claude-sonnet-4-5': 'Claude-Sonnet-4.5',
         'claude-sonnet-5': 'Claude-Sonnet-5',
         'claude-fable-5': 'Claude-Fable-5',
+        'claude-fable-5-websearch': 'Claude-Fable-5-Web-Search',
         'claude-opus-4-5': 'Claude-Opus-4.5',
         'claude-opus-4-5-websearch': 'Claude-Opus-4.5-Web-Search',
         'gemini-3-flash': 'Gemini-3-Flash',

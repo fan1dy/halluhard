@@ -9,6 +9,11 @@ const LEADERBOARD_DATA = {
             "3": 9.2,
             "5": 9.1
         },
+        "claude-fable-5-websearch": {
+            "1": 18.1,
+            "3": 16.3,
+            "5": 11.2
+        },
         "claude-sonnet-5": {
             "1": 33.3,
             "3": 18.0,
@@ -200,6 +205,11 @@ const LEADERBOARD_DATA = {
             "1": 30.8,
             "3": 38.9,
             "5": 44.4
+        },
+        "claude-fable-5-websearch": {
+            "1": 29.8,
+            "3": 45.3,
+            "5": 43.2
         },
         "claude-sonnet-5": {
             "1": 42.6,
@@ -394,6 +404,11 @@ const LEADERBOARD_DATA = {
             "3": 80.3,
             "5": 88.3
         },
+        "claude-fable-5-websearch": {
+            "1": 32.2,
+            "3": 48.5,
+            "5": 53.7
+        },
         "claude-sonnet-5": {
             "1": 73.5,
             "3": 86.5,
@@ -585,6 +600,11 @@ const LEADERBOARD_DATA = {
             "1": 58.2,
             "3": 78.0,
             "5": 79.0
+        },
+        "claude-fable-5-websearch": {
+            "1": 45.2,
+            "3": 64.2,
+            "5": 56.1
         },
         "claude-sonnet-5": {
             "1": 73.2,
@@ -780,6 +800,7 @@ const LEADERBOARD_DATA = {
 const OVERALL_RATES = {
     "coding": {
         "claude-fable-5": 16.1,
+        "claude-fable-5-websearch": 16.1,
         "claude-sonnet-5": 25.8,
         "nemotron-3-ultra": 79.3,
         "claude-haiku-4-5": 62.5,
@@ -820,6 +841,7 @@ const OVERALL_RATES = {
     },
     "legal_cases": {
         "claude-fable-5": 38.1,
+        "claude-fable-5-websearch": 39.6,
         "claude-sonnet-5": 50.1,
         "nemotron-3-ultra": 69.7,
         "claude-haiku-4-5": 67.1,
@@ -859,6 +881,7 @@ const OVERALL_RATES = {
     },
     "medical_guidelines": {
         "claude-fable-5": 78.5,
+        "claude-fable-5-websearch": 44.8,
         "claude-sonnet-5": 82.8,
         "nemotron-3-ultra": 95.4,
         "claude-haiku-4-5": 95.7,
@@ -899,6 +922,7 @@ const OVERALL_RATES = {
     },
     "research_questions": {
         "claude-fable-5": 71.1,
+        "claude-fable-5-websearch": 54.9,
         "claude-sonnet-5": 80.1,
         "nemotron-3-ultra": 93.7,
         "claude-haiku-4-5": 92.9,

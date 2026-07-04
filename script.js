@@ -22,6 +22,7 @@ const OPEN_WEIGHT_MODELS = new Set([
 const POST_UPDATE_MODELS = new Set([
     'glm-5.2',
     'claude-fable-5',
+    'claude-fable-5-websearch',
     'claude-sonnet-5',
 ]);
 
@@ -424,6 +425,7 @@ function formatModelName(name) {
         'claude-sonnet-4-6': 'Claude-Sonnet-4.6',
         'claude-sonnet-5': 'Claude-Sonnet-5',
         'claude-fable-5': 'Claude-Fable-5',
+        'claude-fable-5-websearch': 'Claude-Fable-5-Web-Search',
         'gemini-3-flash': 'Gemini-3-Flash',
         'gemini-3-pro': 'Gemini-3-Pro',
         'gemini-3.1-pro': 'Gemini-3.1-Pro',
