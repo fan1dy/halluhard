@@ -54,6 +54,7 @@ async function init() {
         // Set up event listeners
         document.getElementById('domain-select').addEventListener('change', updateLeaderboard);
         document.getElementById('turn-select').addEventListener('change', updateLeaderboard);
+        document.getElementById('websearch-select').addEventListener('change', updateLeaderboard);
         
         // Set up sortable column headers
         document.querySelectorAll('.sortable').forEach(th => {
@@ -264,7 +265,7 @@ function updateLeaderboard() {
         rate,
         domainBreakdown: domain === 'all' ? domainBreakdown[model] : null,
         turnProgression: domain !== 'all' ? getTurnProgression(domain, model) : null
-    }));
+    })).filter(entry => !excludeWebSearch() || !usesWebSearch(entry.model));
     
     // Sort based on current sort state
     if (currentSort.by === 'rate' || currentSort.by === 'rank') {
@@ -367,7 +368,10 @@ function renderLeaderboard(entries, domain, turn) {
         return `
             <tr>
                 <td class="rank-col">${rankDisplay}</td>
-                <td class="model-col">${formatModelName(entry.model)}</td>
+                <td class="model-col">
+                    <span class="model-name">${formatModelBaseName(entry.model)}</span>
+                    ${webSearchTag(entry.model)}
+                </td>
                 <td class="rate-col">
                     <span class="rate-value">${entry.rate.toFixed(1)}</span>
                     <div class="rate-bar">
@@ -415,6 +419,7 @@ function formatModelName(name) {
         'gemini-3-flash': 'Gemini-3-Flash',
         'gemini-3-pro': 'Gemini-3-Pro',
         'gemini-3.1-pro': 'Gemini-3.1-Pro',
+        'gemini-3.1-pro-websearch': 'Gemini-3.1-Pro-Web-Search',
         'gpt-5.3': 'GPT-5.3',
         'gpt-5.3-websearch': 'GPT-5.3-Web-Search',
         'gpt-5.4-thinking': 'GPT-5.4-Thinking',
@@ -430,6 +435,7 @@ function formatModelName(name) {
         'kimi-k2.5-websearch': 'Kimi-K2.5-Web-Search',
         'claude-opus-4-7': 'Claude-Opus-4.7',
         'gpt-5.5-medium': 'GPT-5.5-thinking',
+        'gpt-6-astra': 'GPT-6-Astra',
         'deepseek-v4-pro': 'DeepSeek-V4-Pro'
     };
     
@@ -440,6 +446,34 @@ function formatModelName(name) {
     
     // Fallback: basic title case conversion
     return name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
+
+// Whether a model was evaluated with web search enabled
+function usesWebSearch(name) {
+    return /-websearch$/.test(name);
+}
+
+// Whether the Web Search filter is set to hide web-search models
+function excludeWebSearch() {
+    const select = document.getElementById('websearch-select');
+    return !!select && select.value === 'exclude';
+}
+
+// Display name without the web-search suffix — the tag carries that information instead
+function formatModelBaseName(name) {
+    return formatModelName(name).replace(/[-\s]web[-\s]?search$/i, '');
+}
+
+// Tag marking whether web search was included for this model
+function webSearchTag(name) {
+    if (usesWebSearch(name)) {
+        return '<span class="ws-tag ws-tag-on" title="Evaluated with web search enabled">Web Search</span>';
+    }
+    // With web-search models filtered out the tag is the same on every row, so drop it
+    if (excludeWebSearch()) {
+        return '';
+    }
+    return '<span class="ws-tag ws-tag-off" title="Evaluated without web search">No Web Search</span>';
 }
 
 // Long-press popup for model name on mobile
@@ -531,7 +565,7 @@ function renderBarChart(entries = null, chartId = 'bar-chart') {
             model,
             rate,
             domainBreakdown: domain === 'all' ? domainBreakdown[model] : null
-        }));
+        })).filter(entry => !excludeWebSearch() || !usesWebSearch(entry.model));
 
         entries.sort((a, b) => a.rate - b.rate);
     }

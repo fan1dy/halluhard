@@ -314,6 +314,36 @@ header h1 {
     font-size: 1.15rem;
 }
 
+.model-col .model-name {
+    margin-right: 0.5rem;
+}
+
+/* Web search inclusion tag */
+.ws-tag {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 20px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    vertical-align: middle;
+    line-height: 1.4;
+}
+
+.ws-tag-on {
+    background: #dfe4e5;
+    color: #566468;
+    border: 1px solid #c6d0d2;
+}
+
+.ws-tag-off {
+    background: transparent;
+    color: #9b9995;
+    border: 1px solid var(--border-color);
+}
+
 .rate-col {
     width: 160px;
     white-space: nowrap;
@@ -1478,6 +1508,11 @@ footer {
         white-space: normal;
         word-break: break-word;
         overflow: visible;
+    }
+
+    .ws-tag {
+        font-size: 0.55rem;
+        padding: 0.1rem 0.35rem;
     }
 
     #bar-chart {
