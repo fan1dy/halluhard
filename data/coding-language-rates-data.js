@@ -187,5 +187,17 @@ const CODING_LANGUAGE_RATES = {
         "python": 10.7,
         "r": 12.0,
         "scala": 24.0
+    },
+    "glm-4-7-thinking": {
+        "elixir": 67.3,
+        "python": 42.7,
+        "r": 58.7,
+        "scala": 68.0
+    },
+    "glm-5-thinking": {
+        "elixir": 60.7,
+        "python": 35.3,
+        "r": 38.7,
+        "scala": 61.3
     }
 };

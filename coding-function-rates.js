@@ -1,56 +1,51 @@
-// Store data for resize handling
-let codingLanguageData = null;
-let codingLanguages = null;
-let codingLanguageLabels = null;
+let codingFunctionData = null;
+let codingFunctionCategories = null;
+let codingFunctionLabels = null;
 
-// Render coding language-specific hallucination rates
-function initCodingLanguageRates() {
+function initCodingFunctionRates() {
     try {
-        if (typeof CODING_LANGUAGE_RATES === 'undefined') {
-            document.getElementById('coding-language-chart-container').innerHTML = 
-                '<div class="loading">Error loading coding language data.</div>';
+        if (typeof CODING_FUNCTION_RATES === 'undefined') {
+            document.getElementById('coding-function-chart-container').innerHTML =
+                '<div class="loading">Error loading coding function data.</div>';
             return;
         }
 
-        const models = Object.keys(CODING_LANGUAGE_RATES);
-        const languages = ['elixir', 'python', 'r', 'scala'];
-        const languageLabels = { elixir: 'Elixir', python: 'Python', r: 'R', scala: 'Scala' };
+        const models = Object.keys(CODING_FUNCTION_RATES);
+        const categories = ['import', 'install', 'function'];
+        const categoryLabels = { import: 'Import', install: 'Install', function: 'Function Call' };
 
-        // Prepare data for grouped bar chart
         const modelStats = models.map(model => ({
             model,
-            elixir: CODING_LANGUAGE_RATES[model].elixir || 0,
-            python: CODING_LANGUAGE_RATES[model].python || 0,
-            r: CODING_LANGUAGE_RATES[model].r || 0,
-            scala: CODING_LANGUAGE_RATES[model].scala || 0,
-            avg: (CODING_LANGUAGE_RATES[model].elixir + CODING_LANGUAGE_RATES[model].python + 
-                  CODING_LANGUAGE_RATES[model].r + CODING_LANGUAGE_RATES[model].scala) / 4
+            import: CODING_FUNCTION_RATES[model].import || 0,
+            install: CODING_FUNCTION_RATES[model].install || 0,
+            function: CODING_FUNCTION_RATES[model].function || 0,
+            avg: (CODING_FUNCTION_RATES[model].import + CODING_FUNCTION_RATES[model].install +
+                  CODING_FUNCTION_RATES[model].function) / 3
         })).sort((a, b) => a.avg - b.avg);
 
-        codingLanguageData = modelStats;
-        codingLanguages = languages;
-        codingLanguageLabels = languageLabels;
-        renderCodingLanguageChart(modelStats, languages, languageLabels);
+        codingFunctionData = modelStats;
+        codingFunctionCategories = categories;
+        codingFunctionLabels = categoryLabels;
+        renderCodingFunctionChart(modelStats, categories, categoryLabels);
 
-        // Add resize handler
         let resizeTimeout;
-        window.addEventListener('resize', function() {
+        window.addEventListener('resize', function () {
             clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(function() {
-                if (codingLanguageData) {
-                    renderCodingLanguageChart(codingLanguageData, codingLanguages, codingLanguageLabels);
+            resizeTimeout = setTimeout(function () {
+                if (codingFunctionData) {
+                    renderCodingFunctionChart(codingFunctionData, codingFunctionCategories, codingFunctionLabels);
                 }
             }, 250);
         });
     } catch (error) {
-        console.error('Error initializing coding language rates:', error);
-        document.getElementById('coding-language-chart-container').innerHTML = 
+        console.error('Error initializing coding function rates:', error);
+        document.getElementById('coding-function-chart-container').innerHTML =
             '<div class="loading">Error loading data.</div>';
     }
 }
 
-function renderCodingLanguageChart(modelStats, languages, languageLabels) {
-    const svg = document.getElementById('coding-language-chart');
+function renderCodingFunctionChart(modelStats, categories, categoryLabels) {
+    const svg = document.getElementById('coding-function-chart');
     svg.innerHTML = '';
 
     if (modelStats.length === 0) {
@@ -58,75 +53,67 @@ function renderCodingLanguageChart(modelStats, languages, languageLabels) {
         return;
     }
 
-    // Responsive margins and height based on screen size
     const isMobile = window.innerWidth <= 768;
-    const margin = isMobile 
+    const margin = isMobile
         ? { top: 50, right: 30, bottom: 130, left: 60 }
         : { top: 50, right: 40, bottom: 140, left: 80 };
     const chartHeight = isMobile ? 440 : 520;
-    
-    // For mobile, ensure minimum width so labels don't overlap
+
     const containerWidth = svg.clientWidth;
-    const minBarSpacing = isMobile ? 70 : 85; // Minimum space per model group (4 bars per group)
+    const minBarSpacing = isMobile ? 60 : 75;
     const minChartWidth = modelStats.length * minBarSpacing + margin.left + margin.right;
     const actualWidth = Math.max(containerWidth, minChartWidth);
-    
-    // Set SVG width to enable horizontal scrolling if needed
+
     svg.setAttribute('width', actualWidth);
-    
+
     const width = actualWidth - margin.left - margin.right;
     const height = chartHeight - margin.top - margin.bottom;
-    
-    // Update SVG height dynamically
+
     svg.setAttribute('height', chartHeight);
 
-    const maxRate = Math.max(...modelStats.flatMap(m => languages.map(lang => m[lang])));
-    const barWidth = Math.max(12, (width / modelStats.length) * 0.2); // Width of each bar
+    const maxRate = Math.max(...modelStats.flatMap(m => categories.map(cat => m[cat])));
+    const barWidth = Math.max(12, (width / modelStats.length) * 0.22);
     const spacing = width / modelStats.length;
-    const groupSpacing = spacing * 0.02; // Reduced space between bars within a group
+    const groupSpacing = spacing * 0.02;
 
     const colors = {
-        elixir: '#b89a8a',  // muted terracotta
-        python: '#9a9b8a',  // muted green-gray
-        r: '#8b9a9f',       // muted blue-gray
-        scala: '#c4a88a'    // muted beige
+        import: '#8fa8c8',   // muted blue
+        install: '#a8c4a8',  // muted green
+        function: '#c8a88f'  // muted orange
     };
 
     const chartGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     chartGroup.setAttribute('transform', `translate(${margin.left}, ${margin.top})`);
 
-    // Draw side-by-side vertical bars (rotated 90 degrees, model names on x-axis)
     modelStats.forEach((stat, modelIndex) => {
-        const x = modelIndex * spacing + (spacing - barWidth * languages.length - groupSpacing * (languages.length - 1)) / 2;
+        const x = modelIndex * spacing + (spacing - barWidth * categories.length - groupSpacing * (categories.length - 1)) / 2;
 
-        languages.forEach((lang, langIndex) => {
-            const barX = x + langIndex * (barWidth + groupSpacing);
-            const barHeight = (stat[lang] / maxRate) * height;
+        categories.forEach((cat, catIndex) => {
+            const barX = x + catIndex * (barWidth + groupSpacing);
+            const barHeight = (stat[cat] / maxRate) * height;
 
             const bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
             bar.setAttribute('x', barX);
             bar.setAttribute('y', height - barHeight);
             bar.setAttribute('width', barWidth);
             bar.setAttribute('height', barHeight);
-            bar.setAttribute('fill', colors[lang]);
+            bar.setAttribute('fill', colors[cat]);
             bar.setAttribute('rx', 2);
             bar.setAttribute('class', 'language-bar');
             chartGroup.appendChild(bar);
         });
 
-        // Model name label (on x-axis, rotated)
         const nameLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        nameLabel.setAttribute('x', x + (barWidth * languages.length + groupSpacing * (languages.length - 1)) / 2);
+        nameLabel.setAttribute('x', x + (barWidth * categories.length + groupSpacing * (categories.length - 1)) / 2);
         nameLabel.setAttribute('y', height + 15);
         nameLabel.setAttribute('text-anchor', 'end');
         nameLabel.setAttribute('class', 'chart-axis');
         nameLabel.setAttribute('font-size', isMobile ? '9px' : '11px');
-        nameLabel.setAttribute('transform', `rotate(-45, ${x + (barWidth * languages.length + groupSpacing * (languages.length - 1)) / 2}, ${height + 15})`);
-        nameLabel.textContent = formatModelName(stat.model);
+        nameLabel.setAttribute('transform', `rotate(-45, ${x + (barWidth * categories.length + groupSpacing * (categories.length - 1)) / 2}, ${height + 15})`);
+        nameLabel.textContent = formatFunctionModelName(stat.model);
         chartGroup.appendChild(nameLabel);
     });
 
-    // X-axis (bottom line)
     const xAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
     xAxis.setAttribute('x1', 0);
     xAxis.setAttribute('y1', height);
@@ -136,7 +123,6 @@ function renderCodingLanguageChart(modelStats, languages, languageLabels) {
     xAxis.setAttribute('stroke-width', 2);
     chartGroup.appendChild(xAxis);
 
-    // Y-axis (left line)
     const yAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
     yAxis.setAttribute('x1', 0);
     yAxis.setAttribute('y1', 0);
@@ -146,13 +132,11 @@ function renderCodingLanguageChart(modelStats, languages, languageLabels) {
     yAxis.setAttribute('stroke-width', 2);
     chartGroup.appendChild(yAxis);
 
-    // Y-axis ticks and labels
     const numTicks = 5;
     for (let i = 0; i <= numTicks; i++) {
         const tickValue = (maxRate / numTicks) * i;
         const tickY = height - (i / numTicks) * height;
 
-        // Tick line
         const tick = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         tick.setAttribute('x1', 0);
         tick.setAttribute('y1', tickY);
@@ -162,7 +146,6 @@ function renderCodingLanguageChart(modelStats, languages, languageLabels) {
         tick.setAttribute('stroke-width', 2);
         chartGroup.appendChild(tick);
 
-        // Tick label
         const tickLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         tickLabel.setAttribute('x', -10);
         tickLabel.setAttribute('y', tickY);
@@ -174,7 +157,6 @@ function renderCodingLanguageChart(modelStats, languages, languageLabels) {
         chartGroup.appendChild(tickLabel);
     }
 
-    // Y-axis label
     const yAxisLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     yAxisLabel.setAttribute('x', -height / 2);
     yAxisLabel.setAttribute('y', -50);
@@ -186,7 +168,6 @@ function renderCodingLanguageChart(modelStats, languages, languageLabels) {
     yAxisLabel.textContent = 'Hallucination Rate (%)';
     chartGroup.appendChild(yAxisLabel);
 
-    // Title
     const title = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     title.setAttribute('x', width / 2);
     title.setAttribute('y', -20);
@@ -194,40 +175,39 @@ function renderCodingLanguageChart(modelStats, languages, languageLabels) {
     title.setAttribute('class', 'chart-title');
     title.setAttribute('font-size', isMobile ? '14px' : '18px');
     title.setAttribute('font-weight', '700');
-    title.textContent = 'Hallucination Rates by Programming Language';
+    title.textContent = 'Hallucination Rates by Error Category';
     chartGroup.appendChild(title);
 
-    // Legend - responsive positioning
     const legendY = height + (isMobile ? 110 : 120);
-    const legendSpacing = isMobile ? 65 : 80;
-    const legendTotalWidth = languages.length * legendSpacing;
+    const legendSpacing = isMobile ? 80 : 100;
+    const legendTotalWidth = categories.length * legendSpacing;
     const legendX = Math.max(0, (width - legendTotalWidth) / 2);
 
-    languages.forEach((lang, index) => {
+    categories.forEach((cat, index) => {
         const x = legendX + index * legendSpacing;
-        
+
         const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
         rect.setAttribute('x', x);
         rect.setAttribute('y', legendY);
         rect.setAttribute('width', 16);
         rect.setAttribute('height', 12);
-        rect.setAttribute('fill', colors[lang]);
+        rect.setAttribute('fill', colors[cat]);
         rect.setAttribute('rx', 2);
         chartGroup.appendChild(rect);
-        
+
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         text.setAttribute('x', x + 20);
         text.setAttribute('y', legendY + 10);
         text.setAttribute('class', 'chart-axis');
         text.setAttribute('font-size', isMobile ? '10px' : '12px');
-        text.textContent = languageLabels[lang];
+        text.textContent = categoryLabels[cat];
         chartGroup.appendChild(text);
     });
 
     svg.appendChild(chartGroup);
 }
 
-function formatModelName(name) {
+function formatFunctionModelName(name) {
     const nameMap = {
         'gpt-5-nano': 'GPT-5-nano',
         'gpt-5-mini': 'GPT-5-mini',
@@ -238,35 +218,24 @@ function formatModelName(name) {
         'gpt-5.2-medium-websearch': 'GPT-5.2-thinking-Web-Search',
         'claude-haiku-4-5': 'Claude-Haiku-4.5',
         'claude-sonnet-4-5': 'Claude-Sonnet-4.5',
-        'claude-opus-4-5': 'Claude-Opus-4.5',
-        'claude-opus-4-5-websearch': 'Claude-Opus-4.5-Web-Search',
-        'claude-opus-4-6': 'Claude-Opus-4.6',
-        'claude-sonnet-4-6': 'Claude-Sonnet-4.6',
         'claude-sonnet-5': 'Claude-Sonnet-5',
         'claude-fable-5': 'Claude-Fable-5',
         'claude-fable-5-websearch': 'Claude-Fable-5-Web-Search',
+        'claude-opus-4-5': 'Claude-Opus-4.5',
+        'claude-opus-4-5-websearch': 'Claude-Opus-4.5-Web-Search',
         'gemini-3-flash': 'Gemini-3-Flash',
         'gemini-3-pro': 'Gemini-3-Pro',
         'gemini-3.1-pro': 'Gemini-3.1-Pro',
-        'gpt-5.3': 'GPT-5.3',
-        'gpt-5.3-websearch': 'GPT-5.3-Web-Search',
-        'gpt-5.4-thinking': 'GPT-5.4-Thinking',
-        'gpt-5.4-thinking-websearch': 'GPT-5.4-Thinking-Web-Search',
         'deepseek-chat': 'DeepSeek-Chat',
         'deepseek-reasoner': 'DeepSeek-Reasoner',
         'kimi-k2-thinking': 'Kimi-K2-thinking',
         'kimi-k2.5-thinking': 'Kimi-K2.5-thinking',
         'grok-4.1-thinking-fast': 'Grok-4.1-thinking-fast',
-        'glm-4-7-thinking': 'GLM-4.7-Thinking',
-        'glm-5-thinking': 'GLM-5-Thinking',
         'grok-4-thinking': 'Grok-4-thinking',
-        'glm-5-thinking-websearch': 'GLM-5-Thinking-Web-Search',
-        'kimi-k2.5-websearch': 'Kimi-K2.5-Web-Search'
+        'glm-4-7-thinking': 'GLM-4.7-Thinking',
+        'glm-5-thinking': 'GLM-5-Thinking'
     };
-    
-    if (nameMap[name]) {
-        return nameMap[name];
-    }
-    
-    return name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
+    if (nameMap[name]) return nameMap[name];
+    return name.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }

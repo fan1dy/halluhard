@@ -8,6 +8,20 @@ const LEADERBOARD_DATA = {
             "1": 5.0,
             "3": 5.0,
             "5": 5.5
+        "claude-fable-5": {
+            "1": 18.8,
+            "3": 9.2,
+            "5": 9.1
+        },
+        "claude-fable-5-websearch": {
+            "1": 18.1,
+            "3": 16.3,
+            "5": 11.2
+        },
+        "claude-sonnet-5": {
+            "1": 33.3,
+            "3": 18.0,
+            "5": 21.7
         },
         "nemotron-3-ultra": {
             "1": 80.0,
@@ -109,6 +123,11 @@ const LEADERBOARD_DATA = {
             "3": 45.5,
             "5": 49.5
         },
+        "glm-5.2": {
+            "1": 54.5,
+            "3": 52.0,
+            "5": 48.5
+        },
         "kimi-k2-thinking": {
             "1": 61.5,
             "3": 60.0,
@@ -186,10 +205,27 @@ const LEADERBOARD_DATA = {
         }
     },
     "legal_cases": {
+<<<<<<< HEAD
         "gpt-6-astra": {
             "1": 23.4,
             "3": 31.4,
             "5": 37.3
+=======
+        "claude-fable-5": {
+            "1": 30.8,
+            "3": 38.9,
+            "5": 44.4
+        },
+        "claude-fable-5-websearch": {
+            "1": 29.8,
+            "3": 45.3,
+            "5": 43.2
+        },
+        "claude-sonnet-5": {
+            "1": 42.6,
+            "3": 51.4,
+            "5": 56.1
+>>>>>>> 7ad79e035b8970c25d3c431df12e9c1a7568ec1a
         },
         "nemotron-3-ultra": {
             "1": 48.5,
@@ -292,6 +328,11 @@ const LEADERBOARD_DATA = {
             "3": 61.3,
             "5": 66.0
         },
+        "glm-5.2": {
+            "1": 54.3,
+            "3": 68.0,
+            "5": 74.5
+        },
         "kimi-k2-thinking": {
             "1": 51.5,
             "3": 75.7,
@@ -369,10 +410,27 @@ const LEADERBOARD_DATA = {
         }
     },
     "medical_guidelines": {
+<<<<<<< HEAD
         "gpt-6-astra": {
             "1": 62.1,
             "3": 69.1,
             "5": 79.2
+=======
+        "claude-fable-5": {
+            "1": 65.3,
+            "3": 80.3,
+            "5": 88.3
+        },
+        "claude-fable-5-websearch": {
+            "1": 32.2,
+            "3": 48.5,
+            "5": 53.7
+        },
+        "claude-sonnet-5": {
+            "1": 73.5,
+            "3": 86.5,
+            "5": 87.7
+>>>>>>> 7ad79e035b8970c25d3c431df12e9c1a7568ec1a
         },
         "nemotron-3-ultra": {
             "1": 93.1,
@@ -474,6 +532,11 @@ const LEADERBOARD_DATA = {
             "3": 87.4,
             "5": 91.5
         },
+        "glm-5.2": {
+            "1": 85.4,
+            "3": 90.5,
+            "5": 91.6
+        },
         "kimi-k2-thinking": {
             "1": 91.2,
             "3": 96.1,
@@ -551,10 +614,27 @@ const LEADERBOARD_DATA = {
         }
     },
     "research_questions": {
+<<<<<<< HEAD
         "gpt-6-astra": {
             "1": 55.6,
             "3": 70.2,
             "5": 74.2
+=======
+        "claude-fable-5": {
+            "1": 58.2,
+            "3": 78.0,
+            "5": 79.0
+        },
+        "claude-fable-5-websearch": {
+            "1": 45.2,
+            "3": 64.2,
+            "5": 56.1
+        },
+        "claude-sonnet-5": {
+            "1": 73.2,
+            "3": 83.5,
+            "5": 83.5
+>>>>>>> 7ad79e035b8970c25d3c431df12e9c1a7568ec1a
         },
         "nemotron-3-ultra": {
             "1": 90.9,
@@ -656,6 +736,11 @@ const LEADERBOARD_DATA = {
             "3": 91.8,
             "5": 92.1
         },
+        "glm-5.2": {
+            "1": 85.7,
+            "3": 91.0,
+            "5": 92.4
+        },
         "kimi-k2-thinking": {
             "1": 89.4,
             "3": 94.9,
@@ -739,7 +824,13 @@ const LEADERBOARD_DATA = {
 // For coding domain, rates are from _coding_direct reports
 const OVERALL_RATES = {
     "coding": {
+<<<<<<< HEAD
         "gpt-6-astra": 5.2,
+=======
+        "claude-fable-5": 16.1,
+        "claude-fable-5-websearch": 16.1,
+        "claude-sonnet-5": 25.8,
+>>>>>>> 7ad79e035b8970c25d3c431df12e9c1a7568ec1a
         "nemotron-3-ultra": 79.3,
         "claude-haiku-4-5": 62.5,
         "claude-opus-4-5-websearch": 29.0,
@@ -760,6 +851,7 @@ const OVERALL_RATES = {
         "gpt-5": 50.3,
         "glm-4-7-thinking": 59.2,
         "glm-5-thinking": 49.0,
+        "glm-5.2": 54.5,
         "kimi-k2-thinking": 61.8,
         "kimi-k2.5-thinking": 56.2,
         "kimi-k2.6-thinking": 35.0,
@@ -777,7 +869,13 @@ const OVERALL_RATES = {
         "deepseek-v4-pro": 61.7
     },
     "legal_cases": {
+<<<<<<< HEAD
         "gpt-6-astra": 30.6,
+=======
+        "claude-fable-5": 38.1,
+        "claude-fable-5-websearch": 39.6,
+        "claude-sonnet-5": 50.1,
+>>>>>>> 7ad79e035b8970c25d3c431df12e9c1a7568ec1a
         "nemotron-3-ultra": 69.7,
         "claude-haiku-4-5": 67.1,
         "claude-opus-4-5": 44.8,
@@ -797,6 +895,7 @@ const OVERALL_RATES = {
         "gpt-5": 52.8,
         "glm-4-7-thinking": 67.7,
         "glm-5-thinking": 57.3,
+        "glm-5.2": 65.7,
         "kimi-k2-thinking": 70.0,
         "kimi-k2.5-thinking": 65.2,
         "kimi-k2.6-thinking": 52.5,
@@ -814,7 +913,13 @@ const OVERALL_RATES = {
         "deepseek-v4-pro": 57.9
     },
     "medical_guidelines": {
+<<<<<<< HEAD
         "gpt-6-astra": 70.1,
+=======
+        "claude-fable-5": 78.5,
+        "claude-fable-5-websearch": 44.8,
+        "claude-sonnet-5": 82.8,
+>>>>>>> 7ad79e035b8970c25d3c431df12e9c1a7568ec1a
         "nemotron-3-ultra": 95.4,
         "claude-haiku-4-5": 95.7,
         "claude-opus-4-5-websearch": 29.2,
@@ -835,6 +940,7 @@ const OVERALL_RATES = {
         "gpt-5": 92.8,
         "glm-4-7-thinking": 90.9,
         "glm-5-thinking": 87.3,
+        "glm-5.2": 89.2,
         "kimi-k2-thinking": 95.0,
         "kimi-k2.5-thinking": 93.2,
         "kimi-k2.6-thinking": 84.1,
@@ -852,7 +958,13 @@ const OVERALL_RATES = {
         "deepseek-v4-pro": 89.9
     },
     "research_questions": {
+<<<<<<< HEAD
         "gpt-6-astra": 66.7,
+=======
+        "claude-fable-5": 71.1,
+        "claude-fable-5-websearch": 54.9,
+        "claude-sonnet-5": 80.1,
+>>>>>>> 7ad79e035b8970c25d3c431df12e9c1a7568ec1a
         "nemotron-3-ultra": 93.7,
         "claude-haiku-4-5": 92.9,
         "claude-opus-4-5-websearch": 29.6,
@@ -873,6 +985,7 @@ const OVERALL_RATES = {
         "gpt-5": 91.1,
         "glm-4-7-thinking": 90.7,
         "glm-5-thinking": 90.1,
+        "glm-5.2": 89.7,
         "kimi-k2-thinking": 93.5,
         "kimi-k2.5-thinking": 92.9,
         "kimi-k2.6-thinking": 82.9,

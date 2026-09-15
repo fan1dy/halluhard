@@ -10,10 +10,20 @@ const OPEN_WEIGHT_MODELS = new Set([
     'glm-4-7-thinking',
     'glm-5-thinking',
     'glm-5-thinking-websearch',
+    'glm-5.2',
     'kimi-k2-thinking',
     'kimi-k2.5-thinking',
     'kimi-k2.6-thinking',
     'kimi-k2.5-websearch',
+]);
+
+// Models evaluated on the updated benchmark (after the June 15, 2026 legal-cases
+// seed-question refresh). Marked with a dagger (†) in the leaderboard.
+const POST_UPDATE_MODELS = new Set([
+    'glm-5.2',
+    'claude-fable-5',
+    'claude-fable-5-websearch',
+    'claude-sonnet-5',
 ]);
 
 // Current sort state
@@ -368,10 +378,14 @@ function renderLeaderboard(entries, domain, turn) {
         return `
             <tr>
                 <td class="rank-col">${rankDisplay}</td>
+<<<<<<< HEAD
                 <td class="model-col">
                     <span class="model-name">${formatModelBaseName(entry.model)}</span>
                     ${webSearchTag(entry.model)}
                 </td>
+=======
+                <td class="model-col">${formatModelName(entry.model)}${POST_UPDATE_MODELS.has(entry.model) ? '<sup class="post-update-mark" title="Evaluated on the updated benchmark (after the June 15, 2026 legal-cases seed-question refresh)">†</sup>' : ''}</td>
+>>>>>>> 7ad79e035b8970c25d3c431df12e9c1a7568ec1a
                 <td class="rate-col">
                     <span class="rate-value">${entry.rate.toFixed(1)}</span>
                     <div class="rate-bar">
@@ -410,12 +424,16 @@ function formatModelName(name) {
         'gpt-5.2-thinking': 'GPT-5.2-thinking',
         'glm-4-7-thinking': 'GLM-4.7-Thinking',
         'glm-5-thinking': 'GLM-5-Thinking',
+        'glm-5.2': 'GLM-5.2',
         'claude-haiku-4-5': 'Claude-Haiku-4.5',
         'claude-sonnet-4-5': 'Claude-Sonnet-4.5',
         'claude-opus-4-5': 'Claude-Opus-4.5',
         'claude-opus-4-5-websearch': 'Claude-Opus-4.5-Web-Search',
         'claude-opus-4-6': 'Claude-Opus-4.6',
         'claude-sonnet-4-6': 'Claude-Sonnet-4.6',
+        'claude-sonnet-5': 'Claude-Sonnet-5',
+        'claude-fable-5': 'Claude-Fable-5',
+        'claude-fable-5-websearch': 'Claude-Fable-5-Web-Search',
         'gemini-3-flash': 'Gemini-3-Flash',
         'gemini-3-pro': 'Gemini-3-Pro',
         'gemini-3.1-pro': 'Gemini-3.1-Pro',
@@ -728,7 +746,7 @@ function renderBarChart(entries = null, chartId = 'bar-chart') {
         nameLabel.setAttribute('class', 'chart-axis');
         nameLabel.setAttribute('fill', '#3a3936');
         nameLabel.setAttribute('font-size', nameFontSize);
-        nameLabel.textContent = formatModelName(entry.model);
+        nameLabel.textContent = formatModelName(entry.model) + (POST_UPDATE_MODELS.has(entry.model) ? ' †' : '');
         barGroup.appendChild(nameLabel);
 
         chartGroup.appendChild(barGroup);
