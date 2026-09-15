@@ -21,6 +21,7 @@ const OPEN_WEIGHT_MODELS = new Set([
 // seed-question refresh). Marked with a dagger (†) in the leaderboard.
 const POST_UPDATE_MODELS = new Set([
     'glm-5.2',
+    'gpt-6-astra',
     'claude-fable-5',
     'claude-fable-5-websearch',
     'claude-sonnet-5',
@@ -378,14 +379,10 @@ function renderLeaderboard(entries, domain, turn) {
         return `
             <tr>
                 <td class="rank-col">${rankDisplay}</td>
-<<<<<<< HEAD
                 <td class="model-col">
-                    <span class="model-name">${formatModelBaseName(entry.model)}</span>
+                    <span class="model-name">${formatModelBaseName(entry.model)}${POST_UPDATE_MODELS.has(entry.model) ? '<sup class="post-update-mark" title="Evaluated on the updated benchmark (after the June 15, 2026 legal-cases seed-question refresh)">†</sup>' : ''}</span>
                     ${webSearchTag(entry.model)}
                 </td>
-=======
-                <td class="model-col">${formatModelName(entry.model)}${POST_UPDATE_MODELS.has(entry.model) ? '<sup class="post-update-mark" title="Evaluated on the updated benchmark (after the June 15, 2026 legal-cases seed-question refresh)">†</sup>' : ''}</td>
->>>>>>> 7ad79e035b8970c25d3c431df12e9c1a7568ec1a
                 <td class="rate-col">
                     <span class="rate-value">${entry.rate.toFixed(1)}</span>
                     <div class="rate-bar">
