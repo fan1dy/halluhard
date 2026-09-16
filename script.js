@@ -22,6 +22,7 @@ const OPEN_WEIGHT_MODELS = new Set([
 const POST_UPDATE_MODELS = new Set([
     'glm-5.2',
     'gpt-6-astra',
+    'gpt-6-astra-websearch',
     'claude-fable-5',
     'claude-fable-5-websearch',
     'claude-sonnet-5',
@@ -451,6 +452,7 @@ function formatModelName(name) {
         'claude-opus-4-7': 'Claude-Opus-4.7',
         'gpt-5.5-medium': 'GPT-5.5-thinking',
         'gpt-6-astra': 'GPT-6-Astra',
+        'gpt-6-astra-websearch': 'GPT-6-Astra-Web-Search',
         'deepseek-v4-pro': 'DeepSeek-V4-Pro'
     };
     

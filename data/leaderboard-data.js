@@ -4,6 +4,11 @@
 
 const LEADERBOARD_DATA = {
     "coding": {
+        "gpt-6-astra-websearch": {
+            "1": 7.0,
+            "3": 4.0,
+            "5": 4.0
+        },
         "gpt-6-astra": {
             "1": 5.0,
             "3": 5.0,
@@ -206,6 +211,11 @@ const LEADERBOARD_DATA = {
         }
     },
     "legal_cases": {
+        "gpt-6-astra-websearch": {
+            "1": 8.8,
+            "3": 10.0,
+            "5": 12.6
+        },
         "gpt-6-astra": {
             "1": 23.4,
             "3": 31.4,
@@ -409,6 +419,11 @@ const LEADERBOARD_DATA = {
         }
     },
     "medical_guidelines": {
+        "gpt-6-astra-websearch": {
+            "1": 28.3,
+            "3": 54.0,
+            "5": 64.3
+        },
         "gpt-6-astra": {
             "1": 62.1,
             "3": 69.1,
@@ -611,6 +626,11 @@ const LEADERBOARD_DATA = {
         }
     },
     "research_questions": {
+        "gpt-6-astra-websearch": {
+            "1": 25.3,
+            "3": 50.2,
+            "5": 57.2
+        },
         "gpt-6-astra": {
             "1": 55.6,
             "3": 70.2,
@@ -819,6 +839,7 @@ const LEADERBOARD_DATA = {
 // For coding domain, rates are from _coding_direct reports
 const OVERALL_RATES = {
     "coding": {
+        "gpt-6-astra-websearch": 5.0,
         "gpt-6-astra": 5.2,
         "claude-fable-5": 16.1,
         "claude-fable-5-websearch": 16.1,
@@ -861,6 +882,7 @@ const OVERALL_RATES = {
         "deepseek-v4-pro": 61.7
     },
     "legal_cases": {
+        "gpt-6-astra-websearch": 10.4,
         "gpt-6-astra": 30.6,
         "claude-fable-5": 38.1,
         "claude-fable-5-websearch": 39.6,
@@ -902,6 +924,7 @@ const OVERALL_RATES = {
         "deepseek-v4-pro": 57.9
     },
     "medical_guidelines": {
+        "gpt-6-astra-websearch": 49.1,
         "gpt-6-astra": 70.1,
         "claude-fable-5": 78.5,
         "claude-fable-5-websearch": 44.8,
@@ -944,6 +967,7 @@ const OVERALL_RATES = {
         "deepseek-v4-pro": 89.9
     },
     "research_questions": {
+        "gpt-6-astra-websearch": 44.4,
         "gpt-6-astra": 66.7,
         "claude-fable-5": 71.1,
         "claude-fable-5-websearch": 54.9,
